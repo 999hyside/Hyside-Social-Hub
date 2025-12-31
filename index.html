@@ -12,6 +12,21 @@
             --accent: #c5a880; 
             --bg-dark: #0a0a0a;
             --glass: rgba(20, 20, 20, 0.85);
+            --glow-shadow: 0 0 20px rgba(197, 168, 128, 0.4);
+        }
+
+        /* LÉLEGZŐ ANIMÁCIÓ DEFINÍCIÓJA */
+        @keyframes breathe {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+
+        /* NÉV RAGYOGÁS ANIMÁCIÓ */
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 10px rgba(197, 168, 128, 0.3); }
+            50% { text-shadow: 0 0 25px rgba(197, 168, 128, 0.7), 0 0 40px rgba(197, 168, 128, 0.3); }
+            100% { text-shadow: 0 0 10px rgba(197, 168, 128, 0.3); }
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -23,7 +38,6 @@
             overflow: hidden;
         }
 
-        /* ENTER SCREEN */
         #enter-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -40,11 +54,9 @@
             color: var(--accent);
             letter-spacing: 5px;
             font-size: 1rem;
-            font-weight: 300;
             text-transform: uppercase;
         }
 
-        /* MAIN LAYOUT */
         #main-content {
             height: 100vh;
             display: flex;
@@ -57,11 +69,12 @@
             background-size: cover;
         }
 
-        /* BAL OLDAL: Profilkép + Szöveg egymás mellett */
+        /* PROFIL SZEKCIÓ ANIMÁCIÓVAL */
         .profile-container {
             display: flex;
             align-items: center;
             gap: 35px;
+            animation: breathe 5s ease-in-out infinite; /* Lélegző effekt */
         }
 
         .profile-img {
@@ -73,12 +86,7 @@
             border: 1px solid rgba(197, 168, 128, 0.2);
         }
 
-        .text-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
+        /* RAGYOGÓ NÉV */
         .name-tag {
             font-size: 5.5rem;
             font-weight: 900;
@@ -86,6 +94,7 @@
             letter-spacing: -3px;
             line-height: 1;
             margin-bottom: 15px;
+            animation: glowPulse 3s ease-in-out infinite; /* Glow effekt */
         }
 
         .socials {
@@ -98,16 +107,18 @@
             color: var(--accent);
             font-size: 1.8rem;
             text-decoration: none;
-            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.3s ease;
             opacity: 0.8;
+            filter: drop-shadow(0 0 5px rgba(197, 168, 128, 0.2));
         }
 
         .socials a:hover {
             opacity: 1;
-            transform: scale(1.2) translateY(-5px);
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 15px var(--accent));
         }
 
-        /* JOBB OLDAL: Megnövelt Widget */
+        /* WIDGET ANIMÁCIÓVAL */
         .right-side {
             width: 550px; 
             background: var(--glass);
@@ -116,6 +127,7 @@
             padding: 40px;
             border: 1px solid rgba(255,255,255,0.05);
             box-shadow: 0 50px 100px rgba(0,0,0,0.7);
+            animation: breathe 6s ease-in-out infinite; /* Kicsit más tempójú lélegzés */
         }
 
         .video-box {
@@ -129,7 +141,7 @@
 
         .info-text { text-align: center; margin-bottom: 30px; }
         .info-text h3 { font-size: 1.8rem; color: #fff; margin-bottom: 8px; }
-        .info-text p { color: var(--accent); font-size: 1rem; opacity: 0.7; letter-spacing: 1px; }
+        .info-text p { color: var(--accent); font-size: 1rem; opacity: 0.7; }
 
         .player-controls {
             display: flex;
@@ -147,9 +159,6 @@
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; font-size: 1.6rem; transition: 0.3s ease;
         }
-        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(197, 168, 128, 0.3); }
-
-        .sub-btn { color: white; opacity: 0.4; font-size: 1.3rem; cursor: pointer; }
 
         .volume-box {
             display: flex;
@@ -157,8 +166,6 @@
             justify-content: center;
             gap: 20px;
         }
-
-        .volume-box i { color: var(--accent); font-size: 1rem; }
 
         input[type=range] {
             -webkit-appearance: none;
@@ -180,9 +187,7 @@
         @media (max-width: 1100px) {
             #main-content { flex-direction: column; justify-content: center; gap: 50px; padding: 20px; overflow-y: auto; }
             .profile-container { flex-direction: column; text-align: center; }
-            .socials { justify-content: center; }
             .right-side { width: 100%; max-width: 500px; }
-            .name-tag { font-size: 4rem; }
         }
     </style>
 </head>
@@ -199,9 +204,9 @@
             <div class="text-area">
                 <h1 class="name-tag">Hyside</h1>
                 <div class="socials">
-                    <a href="https://www.instagram.com/_._bence_.__/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.twitch.tv/hyside_" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
-                    <a href="https://soundcloud.com/user-880127680" target="_blank" title="SoundCloud"><i class="fab fa-soundcloud"></i></a>
+                    <a href="https://www.instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
+                    <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
                 </div>
             </div>
         </div>
@@ -219,11 +224,11 @@
             </div>
 
             <div class="player-controls">
-                <i class="fas fa-step-backward sub-btn"></i>
+                <i class="fas fa-step-backward" style="opacity:0.3; cursor:pointer;"></i>
                 <div class="play-btn" onclick="togglePlay()">
                     <i id="play-icon" class="fas fa-pause"></i>
                 </div>
-                <i class="fas fa-step-forward sub-btn"></i>
+                <i class="fas fa-step-forward" style="opacity:0.3; cursor:pointer;"></i>
             </div>
 
             <div class="volume-box">
