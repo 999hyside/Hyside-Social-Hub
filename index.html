@@ -3,176 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hyside - Profile</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Hyside | Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Alapbeállítások */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
+        /* Modern betűtípus */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
         body {
-            /* HÁTTÉRKÉP - Ide töltsd be a saját képedet */
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
-                        url('https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+            /* Háttérkép az assets mappából */
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('assets/background.jpg') no-repeat center center fixed;
             background-size: cover;
             color: white;
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
             overflow: hidden;
         }
 
-        .container {
+        .main-container {
             width: 90%;
             max-width: 1200px;
             display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            gap: 50px;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 40px;
             align-items: center;
         }
 
-        /* Profil szekció */
-        .profile-info {
+        /* --- BAL OLDAL --- */
+        .left-content {
             display: flex;
             flex-direction: column;
         }
 
-        .avatar-container {
-            position: relative;
+        .profile-pic {
             width: 110px;
             height: 110px;
-            margin-bottom: 25px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            padding: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         }
 
-        .avatar-container img {
+        .profile-pic img {
             width: 100%;
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid rgba(255,255,255,0.4);
-            padding: 4px;
         }
 
         h1 {
-            font-size: 5rem; /* Nagy, hangsúlyos név */
-            font-weight: 800;
-            letter-spacing: -3px;
-            margin-bottom: 10px;
+            font-size: 5.5rem;
+            font-weight: 900;
+            letter-spacing: -4px;
+            line-height: 0.9;
+            margin-bottom: 15px;
+            text-transform: none;
         }
 
-        .description {
+        .bio {
             font-size: 1.1rem;
             line-height: 1.6;
-            color: rgba(255,255,255,0.85);
-            max-width: 480px;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 500px;
             margin-bottom: 25px;
         }
 
-        /* Közösségi ikonok a név alatt */
-        .social-icons {
+        /* Ikonok a név alatt */
+        .social-links {
             display: flex;
-            gap: 22px;
+            gap: 25px;
         }
 
-        .social-icons a {
+        .social-links a {
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             text-decoration: none;
-            transition: 0.3s ease;
-            opacity: 0.75;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0.7;
         }
 
-        .social-icons a:hover {
+        .social-links a:hover {
             opacity: 1;
-            transform: translateY(-4px);
+            transform: translateY(-5px);
         }
 
-        /* Videó Widget (Üveghatású kártya) */
+        /* --- JOBB OLDAL (Videó Widget) --- */
         .video-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            padding: 25px;
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.4);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
 
-        .video-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            padding: 0 5px;
-        }
-
-        .video-header span {
-            font-size: 0.75rem;
-            font-weight: 600;
+        .video-label {
+            font-size: 0.7rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: rgba(255,255,255,0.6);
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 15px;
+            display: block;
         }
 
         .video-wrapper {
             width: 100%;
             aspect-ratio: 16 / 9;
-            border-radius: 15px;
-            overflow: hidden;
             background: #000;
+            border-radius: 14px;
+            overflow: hidden;
         }
 
-        .video-wrapper iframe {
+        .video-wrapper video {
             width: 100%;
             height: 100%;
-            border: none;
+            object-fit: cover;
         }
 
-        /* Mobil nézet */
-        @media (max-width: 900px) {
-            .container {
+        /* Mobil optimalizálás */
+        @media (max-width: 968px) {
+            .main-container {
                 grid-template-columns: 1fr;
                 text-align: center;
-                padding-top: 50px;
+                overflow-y: auto;
+                height: 100%;
+                padding: 40px 0;
             }
-            .profile-info { align-items: center; }
-            .social-icons { justify-content: center; }
-            h1 { font-size: 3.5rem; }
+            .left-content { align-items: center; }
+            .social-links { justify-content: center; }
+            h1 { font-size: 4rem; }
             .video-card { margin-top: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="profile-info">
-            <div class="avatar-container">
-                <img src="https://via.placeholder.com/150" alt="Hyside Profil">
+    <div class="main-container">
+        <div class="left-content">
+            <div class="profile-pic">
+                <img src="assets/profile.gif" alt="Hyside">
             </div>
             
             <h1>Hyside</h1>
             
-            <p class="description">
-                Szia! Hyside vagyok, egy magyar tartalomgyártó. Szeretem a technológiát, a videójátékokat és a kreatív fejlesztést. Nézz szét a közösségi oldalaimon is!
+            <p class="bio">
+                Szia! Hyside vagyok, egy magyar tartalomgyártó. Szeretem a technológiát, a videójátékokat és a kreatív fejlesztést. Kövess az alábbi oldalakon!
             </p>
 
-            <div class="social-icons">
-                <a href="https://instagram.com/_._bence_.__" target="_blank"><i class="fab fa-instagram"></i></a>
+            <div class="social-links">
+                <a href="https://instagram.com/felhasznalo" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="https://spotify.com" target="_blank"><i class="fab fa-spotify"></i></a>
                 <a href="https://steamcommunity.com" target="_blank"><i class="fab fa-steam"></i></a>
                 <a href="https://tiktok.com" target="_blank"><i class="fab fa-tiktok"></i></a>
                 <a href="https://github.com" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
             </div>
         </div>
 
         <div class="video-card">
-            <div class="video-header">
-                <span>LEGUTÓBBI VIDEÓ</span>
-                <i class="fas fa-video" style="opacity: 0.5;"></i>
-            </div>
+            <span class="video-label">Bemutatkozó videó</span>
             <div class="video-wrapper">
-                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                <video controls autoplay muted loop>
+                    <source src="assets/video.mp4" type="video/mp4">
+                    A böngésződ nem támogatja a videót.
+                </video>
             </div>
         </div>
     </div>
