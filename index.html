@@ -18,7 +18,7 @@
             color: white; overflow: hidden;
         }
 
-        /* FIX: TELJES KÉPERNYŐS VIDEÓ HÁTTÉR */
+        /* TELJES KÉPERNYŐS VIDEÓ HÁTTÉR */
         #bg-video {
             position: fixed;
             top: 50%;
@@ -27,11 +27,11 @@
             min-height: 100%;
             width: auto;
             height: auto;
-            z-index: -100; /* Legyen legalul */
-            transform: translateX(-50%) translateY(-50%);
-            object-fit: cover; /* Kitölti a teret torzítás nélkül */
+            z-index: -100;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
             filter: brightness(0.4);
-            background-size: cover;
+            display: block;
         }
 
         #enter-screen {
@@ -42,7 +42,7 @@
 
         #main-content {
             position: relative;
-            z-index: 1; /* A videó felett legyen */
+            z-index: 1;
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             opacity: 0; transition: 1.5s ease;
@@ -84,6 +84,29 @@
 
         input[type=range] { width: 300px; accent-color: var(--pink); cursor: pointer; }
 
+        /* VIDEÓ VEZÉRLŐ GOMB JOBB LENT */
+        #video-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid var(--pink);
+            color: white;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 0 15px var(--pink-glow);
+            transition: 0.3s;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        #video-toggle:hover { transform: scale(1.1); background: var(--pink); }
+
         #sc-target { display: none; }
     </style>
 </head>
@@ -96,6 +119,8 @@
     <video id="bg-video" loop muted playsinline>
         <source src="assets/video.mp4" type="video/mp4">
     </video>
+
+    <button id="video-toggle" onclick="toggleVideo()"><i id="vid-icon" class="fas fa-video"></i></button>
 
     <div id="main-content">
         <div class="profile-container">
@@ -132,29 +157,42 @@
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
         const widget = SC.Widget(document.getElementById('sc-iframe'));
+        const video = document.getElementById('bg-video');
 
         function launch() {
-            // Videó indítása
-            const video = document.getElementById('bg-video');
-            video.play();
+            // Videó indítása kényszerítve
+            video.play().catch(e => console.log("Video autoplay blocked"));
 
-            // Zene indítása véletlenszerű dallal
+            // Zene indítása véletlenszerű dallal kényszerítve
             widget.setVolume(10);
             widget.getSounds((sounds) => {
                 const randomIndex = Math.floor(Math.random() * sounds.length);
                 widget.skip(randomIndex);
-                widget.play();
+                setTimeout(() => { widget.play(); }, 500); // Késleltetett start a biztos sikerért
             });
 
-            // Megjelenítés
             document.getElementById('enter-screen').style.display = 'none';
             document.getElementById('main-content').style.opacity = '1';
+        }
+
+        // VIDEÓ KI-BE KAPCSOLÓ
+        function toggleVideo() {
+            const icon = document.getElementById('vid-icon');
+            if (video.paused) {
+                video.play();
+                icon.className = "fas fa-video";
+            } else {
+                video.pause();
+                icon.className = "fas fa-video-slash";
+            }
         }
 
         widget.bind(SC.Widget.Events.PLAY, () => {
             widget.getCurrentSound((sound) => {
                 document.getElementById('track-title').innerText = sound.title;
-                document.getElementById('track-art').src = sound.artwork_url.replace('large', 't500x500');
+                if(sound.artwork_url) {
+                    document.getElementById('track-art').src = sound.artwork_url.replace('large', 't500x500');
+                }
             });
             document.getElementById('play-icon').className = 'fas fa-pause control-btn';
         });
