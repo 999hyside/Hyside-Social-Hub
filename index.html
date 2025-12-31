@@ -2,179 +2,171 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hyside | Official</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
-        :root { --pink: #ff2d8d; --pink-glow: rgba(255, 45, 141, 0.6); --bg: #0a0a0a; --glass: rgba(15, 15, 15, 0.85); }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body, html { height: 100%; background-color: var(--bg); color: white; overflow: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
+        :root {
+            --pink: #ff2d8d;
+            --pink-glow: rgba(255, 45, 141, 0.8);
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            background: #000; font-family: 'Inter', sans-serif;
+            color: white; overflow: hidden;
+        }
+
+        /* BELÉPŐ KÉPERNYŐ */
         #enter-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; align-items: center; justify-content: center;
-            z-index: 10000; cursor: pointer; transition: opacity 1s ease;
+            position: fixed; inset: 0; background: #000;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10000; cursor: pointer; transition: 1s ease;
         }
-        #enter-screen h2 { color: var(--pink); letter-spacing: 15px; animation: pulse 2.5s infinite; text-shadow: 0 0 20px var(--pink-glow); }
 
+        /* VIDEÓ HÁTTÉR */
         #bg-video {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; filter: brightness(0.25);
-            background-color: black; /* Fekete háttér, ha a videó nem töltene be */
+            position: fixed; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1; filter: brightness(0.4);
         }
 
-        #main-content { 
-            height: 100vh; display: flex; align-items: center; 
-            justify-content: space-between; padding: 0 10%; 
-            opacity: 0; visibility: hidden; transition: opacity 1.5s ease;
+        /* FŐ TARTALOM ELRENDEZÉSE */
+        #main-content {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            opacity: 0; transition: 1.5s ease;
         }
 
-        .profile-side { display: flex; flex-direction: column; align-items: flex-start; }
-        .profile-header { display: flex; align-items: center; gap: 40px; margin-bottom: 25px; }
-        .profile-container { width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 4px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow); }
-        .profile-img { width: 100%; height: 100%; object-fit: cover; }
-        .name-tag { font-size: 7.5rem; font-weight: 900; color: white; line-height: 1; text-shadow: 0 0 50px var(--pink-glow); }
-        .bio-box { border-left: 5px solid var(--pink); padding-left: 25px; margin-bottom: 35px; }
-        .bio-text { font-size: 1.6rem; color: #eee; text-transform: uppercase; }
+        /* PROFIL SZEKCIÓ (image_c99936.png alapján) */
+        .profile-container {
+            display: flex; align-items: center; gap: 30px; margin-bottom: 20px;
+        }
 
-        .socials { display: flex; gap: 35px; margin-bottom: 45px; }
-        .socials a { color: white; font-size: 2.8rem; transition: 0.3s; opacity: 0.7; }
-        .socials a:hover { opacity: 1; transform: scale(1.2); color: var(--pink); filter: drop-shadow(0 0 20px var(--pink)); }
+        .pfp-wrapper {
+            width: 130px; height: 130px; border-radius: 50%;
+            border: 3px solid var(--pink);
+            box-shadow: 0 0 25px var(--pink-glow);
+            overflow: hidden;
+        }
+        .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
 
-        .discord-card { width: 400px; background: rgba(255, 255, 255, 0.05); border-radius: 25px; border: 1px solid var(--pink-glow); padding: 20px; display: flex; align-items: center; gap: 20px; backdrop-filter: blur(15px); }
-        .discord-avatar-wrapper { position: relative; width: 65px; height: 65px; }
-        .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .status-dot { position: absolute; bottom: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid #1a1a1a; }
-        .discord-user { font-weight: 700; font-size: 1.2rem; }
-        .discord-activity { font-size: 0.9rem; color: #ccc; }
+        .name-tag { font-size: 6rem; font-weight: 900; letter-spacing: -2px; }
 
-        .player-card { width: 480px; background: var(--glass); padding: 30px; border-radius: 50px; backdrop-filter: blur(25px); border: 1px solid var(--pink-glow); display: flex; flex-direction: column; gap: 30px; }
-        .sc-container { width: 100%; height: 450px; border-radius: 35px; overflow: hidden; background: #000; }
-        .play-btn { width: 70px; height: 70px; background: var(--pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: black !important; font-size: 2.2rem !important; border: none; cursor: pointer; }
-        input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 10px; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--pink); border-radius: 50%; cursor: pointer; }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        /* BIO SZEKCIÓ */
+        .bio {
+            border-left: 3px solid var(--pink);
+            padding-left: 15px; margin-bottom: 30px;
+            font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px;
+        }
+
+        /* SZOCIÁLIS IKONOK */
+        .socials { display: flex; gap: 25px; margin-bottom: 40px; }
+        .socials a { color: white; font-size: 1.8rem; opacity: 0.6; transition: 0.3s; }
+        .socials a:hover { opacity: 1; color: var(--pink); transform: scale(1.2); }
+
+        /* DISCORD KÁRTYA (image_c9303e.png stílusban) */
+        .discord-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 45, 141, 0.3);
+            border-radius: 20px;
+            padding: 15px 25px;
+            display: flex; align-items: center; gap: 15px;
+            width: 350px;
+        }
+
+        .discord-pfp-area { position: relative; width: 55px; height: 55px; }
+        .discord-pfp-area img { width: 100%; height: 100%; border-radius: 50%; }
+        .status-dot {
+            position: absolute; bottom: 0; right: 0;
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid #1a1a1a;
+        }
+
+        .discord-info { display: flex; flex-direction: column; }
+        .discord-user { font-weight: 700; font-size: 1.1rem; }
+        .discord-status-text { font-size: 0.85rem; color: #bbb; }
+
     </style>
 </head>
 <body>
 
     <div id="enter-screen" onclick="launch()">
-        <h2>Press to Enter</h2>
+        <h2 style="color:var(--pink); letter-spacing:8px;">CLICK TO ENTER</h2>
     </div>
 
-    <video id="bg-video" loop muted playsinline preload="auto">
+    <video id="bg-video" loop muted playsinline>
         <source src="assets/video.mp4" type="video/mp4">
-        Sajnos a böngésződ nem támogatja a videót.
     </video>
 
     <div id="main-content">
-        <div class="profile-side">
-            <div class="profile-header">
-                <div class="profile-container"><img src="assets/profile.gif" class="profile-img"></div>
-                <h1 class="name-tag">Hyside</h1>
+        <div class="profile-container">
+            <div class="pfp-wrapper">
+                <img src="assets/profile.gif" alt="PFP">
             </div>
-            <div class="bio-box"><p class="bio-text">Hyside vagyok content creator</p></div>
-            <div class="socials">
-                <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
-                <a href="https://instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
-                <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
-            </div>
-            <div class="discord-card">
-                <div class="discord-avatar-wrapper">
-                    <img id="discord-pfp" src="https://cdn.discordapp.com/embed/avatars/0.png" class="discord-avatar">
-                    <div id="discord-status" class="status-dot"></div>
-                </div>
-                <div class="discord-info">
-                    <div id="discord-name" class="discord-user">Hyside</div>
-                    <div id="discord-activity" class="discord-activity">Connecting...</div>
-                </div>
-            </div>
+            <h1 class="name-tag">Hyside</h1>
         </div>
 
-        <div class="player-card">
-            <div class="sc-container" id="sc-target"></div>
-            <div class="controls">
-                <div class="btn-row" style="display:flex; justify-content:center; align-items:center; gap:45px;">
-                    <button onclick="ctrl('prev')" style="background:none; border:none; color:white; font-size:1.8rem; cursor:pointer;"><i class="fas fa-step-backward"></i></button>
-                    <button class="play-btn" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
-                    <button onclick="ctrl('next')" style="background:none; border:none; color:white; font-size:1.8rem; cursor:pointer;"><i class="fas fa-step-forward"></i></button>
-                </div>
-                <div class="vol-row" style="display:flex; align-items:center; gap:15px; margin-top:20px;">
-                    <i class="fas fa-volume-down" style="color:var(--pink)"></i>
-                    <input type="range" id="volumeSlider" min="0" max="100" value="20">
-                    <i class="fas fa-volume-up" style="color:var(--pink)"></i>
-                </div>
+        <div class="bio">Hyside vagyok content creator</div>
+
+        <div class="socials">
+            <a href="#"><i class="fab fa-steam"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitch"></i></a>
+            <a href="#"><i class="fab fa-soundcloud"></i></a>
+        </div>
+
+        <div class="discord-card">
+            <div class="discord-pfp-area">
+                <img id="d-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png">
+                <div id="d-status" class="status-dot"></div>
+            </div>
+            <div class="discord-info">
+                <span id="d-name" class="discord-user">Loading...</span>
+                <span id="d-activity" class="discord-status-text">Not doing anything</span>
             </div>
         </div>
     </div>
 
-    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
-        let widget;
-        let isPlaying = true;
-        const DISCORD_ID = "939688591381135401"; 
+        const DISCORD_ID = "939688591381135401";
 
-        // Discord WebSocket
-        const lanyardWS = new WebSocket('wss://api.lanyard.rest/socket');
-        lanyardWS.onmessage = (event) => {
-            const data = JSON.parse(event.data);
+        // WebSocket az azonnali frissítéshez
+        const ws = new WebSocket('wss://api.lanyard.rest/socket');
+        ws.onmessage = (e) => {
+            const data = JSON.parse(e.data);
             if (data.op === 1) {
-                lanyardWS.send(JSON.stringify({ op: 2, d: { subscribe_to_ids: [DISCORD_ID] } }));
-                setInterval(() => lanyardWS.send(JSON.stringify({ op: 3 })), data.d.heartbeat_interval);
+                ws.send(JSON.stringify({ op: 2, d: { subscribe_to_ids: [DISCORD_ID] } }));
+                setInterval(() => ws.send(JSON.stringify({ op: 3 })), data.d.heartbeat_interval);
             }
             if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') {
                 const user = data.t === 'INIT_STATE' ? data.d[DISCORD_ID] : data.d;
-                if (!user) return;
-                if (user.discord_user.avatar) document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png`;
+                if(!user) return;
+                
+                document.getElementById('d-name').innerText = user.discord_user.username;
+                if(user.discord_user.avatar) {
+                    document.getElementById('d-avatar').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png`;
+                }
+                
                 const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
-                document.getElementById('discord-status').style.background = colors[user.discord_status] || '#747f8d';
-                document.getElementById('discord-name').innerText = user.discord_user.username;
-                if (user.activities && user.activities.length > 0) {
-                    const act = user.activities.find(a => a.type === 0) || user.activities[0];
-                    document.getElementById('discord-activity').innerText = (user.spotify && act.name === "Spotify") ? `Listening to ${user.spotify.song}` : `Playing ${act.name}`;
-                } else { document.getElementById('discord-activity').innerText = "No activity"; }
+                document.getElementById('d-status').style.backgroundColor = colors[user.discord_status];
+                
+                if(user.activities.length > 0) {
+                    document.getElementById('d-activity').innerText = user.activities[0].state || user.activities[0].name;
+                } else {
+                    document.getElementById('d-activity').innerText = "Do not disturb";
+                }
             }
         };
 
         function launch() {
-            // SoundCloud Setup
-            const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
-            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true"></iframe>`;
-            
-            widget = SC.Widget(document.getElementById('sc-iframe'));
-            const slider = document.getElementById('volumeSlider');
-            widget.bind(SC.Widget.Events.READY, () => widget.setVolume(20));
-            slider.addEventListener('input', () => widget.setVolume(slider.value));
-
-            // Videó elindítása kényszerítve
-            const video = document.getElementById('bg-video');
-            const playPromise = video.play();
-
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Videó hiba:", error);
-                    // Ha hiba van, próbáljuk meg némítva újra (néha a böngésző igényli)
-                    video.muted = true;
-                    video.play();
-                });
-            }
-
+            document.getElementById('bg-video').play();
             document.getElementById('enter-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('enter-screen').style.display = 'none';
-                document.getElementById('main-content').style.visibility = 'visible';
                 document.getElementById('main-content').style.opacity = '1';
             }, 1000);
-        }
-
-        function ctrl(action) {
-            if(!widget) return;
-            const icon = document.getElementById('play-icon');
-            if(action === 'toggle') { widget.toggle(); isPlaying = !isPlaying; icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play'; }
-            else if (action === 'next') widget.next();
-            else if (action === 'prev') widget.prev();
         }
     </script>
 </body>
