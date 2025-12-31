@@ -11,17 +11,18 @@
         :root {
             --accent: #c5a880; 
             --bg: #0a0a0a;
-            --glass: rgba(15, 15, 15, 0.85);
+            --glass: rgba(18, 18, 18, 0.9);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: auto; }
+        /* Alapbeállítások */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body, html { height: 100%; background-color: var(--bg); color: white; overflow: hidden; }
 
-        /* ENTER SCREEN */
+        /* BELÉPŐ KÉPERNYŐ */
         #enter-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; align-items: center; justify-content: center;
-            z-index: 10000; cursor: pointer; transition: 0.6s ease;
+            z-index: 10000; cursor: pointer; transition: opacity 0.8s ease;
         }
         #enter-screen h2 { 
             color: var(--accent); letter-spacing: 12px; font-weight: 300; 
@@ -30,48 +31,72 @@
 
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
 
-        /* HÁTTÉR VIDEÓ (Némítva a zene miatt) */
+        /* HÁTTÉR VIDEÓ */
         #bg-video {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; filter: brightness(0.3);
+            object-fit: cover; z-index: -1; filter: brightness(0.25);
         }
 
-        /* TARTALOM */
+        /* FŐ TARTALOM ELRENDEZÉS */
         #main-content { 
             height: 100vh; display: flex; align-items: center; 
-            justify-content: space-between; padding: 0 10%; 
-            opacity: 0; transition: opacity 1.5s ease;
+            justify-content: space-between; padding: 0 12%; 
+            opacity: 0; visibility: hidden; transition: opacity 1.2s ease;
         }
 
         /* BAL OLDAL: PROFIL */
         .profile-side { max-width: 450px; }
-        .profile-img { width: 220px; height: 220px; border-radius: 20px; border: 1px solid rgba(197, 168, 128, 0.2); margin-bottom: 25px; }
-        .name-tag { font-size: 4.5rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 20px; }
-        .bio-text { font-size: 1rem; color: #bbb; margin-bottom: 30px; border-left: 3px solid var(--accent); padding-left: 20px; }
         
-        .socials { display: flex; gap: 25px; }
-        .socials a { color: var(--accent); font-size: 1.6rem; transition: 0.3s; opacity: 0.5; }
-        .socials a:hover { opacity: 1; transform: translateY(-5px); }
+        .profile-container {
+            width: 250px; height: 250px; border-radius: 24px;
+            overflow: hidden; border: 1px solid rgba(197, 168, 128, 0.2);
+            margin-bottom: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        
+        /* A GIF arányainak megtartása */
+        .profile-img { 
+            width: 100%; height: 100%; 
+            object-fit: cover; /* Kitölti a keretet torzítás nélkül */
+            display: block;
+        }
+
+        .name-tag { font-size: 4.5rem; font-weight: 900; color: var(--accent); line-height: 1; margin-bottom: 15px; }
+        .bio-text { font-size: 1rem; color: #a0a0a0; line-height: 1.6; margin-bottom: 30px; border-left: 3px solid var(--accent); padding-left: 20px; }
+        
+        .socials { display: flex; gap: 20px; }
+        .socials a { color: var(--accent); font-size: 1.5rem; transition: 0.3s; opacity: 0.5; text-decoration: none; }
+        .socials a:hover { opacity: 1; transform: translateY(-3px); }
 
         /* JOBB OLDAL: SOUNDCLOUD WIDGET */
         .widget-side {
-            width: 450px; background: var(--glass); padding: 25px; border-radius: 35px;
-            backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            width: 420px; background: var(--glass); padding: 25px; border-radius: 35px;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
         }
-        .sc-container { width: 100%; height: 350px; border-radius: 20px; overflow: hidden; background: #000; }
+        
+        .sc-frame-container { 
+            width: 100%; height: 400px; border-radius: 20px; 
+            overflow: hidden; background: #000;
+        }
 
+        .status-tag {
+            text-align: center; color: var(--accent); font-size: 0.7rem; 
+            margin-top: 20px; letter-spacing: 3px; opacity: 0.6; font-weight: 700;
+        }
+
+        /* Mobil nézet optimalizálás */
         @media (max-width: 1100px) {
-            #main-content { flex-direction: column; justify-content: center; text-align: center; gap: 40px; padding: 20px; overflow-y: auto; }
+            #main-content { flex-direction: column; justify-content: center; text-align: center; padding: 20px; gap: 40px; overflow-y: auto; }
             .socials { justify-content: center; }
             .bio-text { border: none; padding: 0; }
-            .widget-side { width: 100%; }
+            .widget-side { width: 100%; max-width: 420px; }
+            .profile-container { margin: 0 auto 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="enter-screen" onclick="startExperience()">
+    <div id="enter-screen" onclick="launch()">
         <h2>Press to Enter</h2>
     </div>
 
@@ -81,7 +106,9 @@
 
     <div id="main-content">
         <div class="profile-side">
-            <img src="assets/profile.gif" class="profile-img">
+            <div class="profile-container">
+                <img src="assets/profile.gif" class="profile-img">
+            </div>
             <h1 class="name-tag">Hyside</h1>
             <div class="bio-text">
                 Hyside vagyok content creator és egy unalmas ember.
@@ -95,35 +122,33 @@
         </div>
 
         <div class="widget-side">
-            <div class="sc-container" id="music-box">
+            <div class="sc-frame-container" id="sc-target">
                 </div>
-            <p style="text-align:center; color:var(--accent); font-size:0.65rem; margin-top:15px; letter-spacing:2px; opacity:0.5;">PLAYLIST RANDOMIZER ACTIVE</p>
+            <p class="status-tag">PLAYLIST RANDOMIZER ACTIVE</p>
         </div>
     </div>
 
     <script>
         const video = document.getElementById('bg-video');
+        const main = document.getElementById('main-content');
+        const enter = document.getElementById('enter-screen');
 
-        function startExperience() {
-            // SoundCloud Playlist URL (A megadott playlist linkje beágyazva)
-            // A &start_track paraméter gondoskodik a véletlenszerű kezdésről, ha playlistet használunk
-            const playlistUrl = "https://soundcloud.com/user-880127680/sets/faves"; // A playlist azonosítód alapján
-            const encodedUrl = encodeURIComponent("https://soundcloud.com/user-880127680/sets/faves");
+        function launch() {
+            // SoundCloud API link a hosszú URL-ed alapján
+            const playlistId = "1517371900"; // Az "Everything Too" playlist azonosítója
+            const scWidget = `<iframe width="100%" height="400" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/${playlistId}&color=%23c5a880&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>`;
             
-            // Véletlenszerű index szimulálása a playlistben (0-50 között pl.)
-            const randomIndex = Math.floor(Math.random() * 20); 
-            
-            const iframeHtml = `<iframe width="100%" height="350" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1517371900&color=%23c5a880&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>`;
-            
-            document.getElementById('music-box').innerHTML = iframeHtml;
+            document.getElementById('sc-target').innerHTML = scWidget;
 
-            // Indítás
+            // Indítási folyamat
             video.play();
-            document.getElementById('enter-screen').style.opacity = '0';
+            enter.style.opacity = '0';
+            
             setTimeout(() => {
-                document.getElementById('enter-screen').style.display = 'none';
-                document.getElementById('main-content').style.opacity = '1';
-            }, 600);
+                enter.style.display = 'none';
+                main.style.visibility = 'visible';
+                main.style.opacity = '1';
+            }, 800);
         }
     </script>
 </body>
