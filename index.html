@@ -7,35 +7,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
-
-        :root {
-            --pink: #ff2d8d; 
-            --pink-glow: rgba(255, 45, 141, 0.6);
-            --bg: #0a0a0a;
-            --glass: rgba(15, 15, 15, 0.85);
-        }
-
+        :root { --pink: #ff2d8d; --pink-glow: rgba(255, 45, 141, 0.6); --bg: #0a0a0a; --glass: rgba(15, 15, 15, 0.85); }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body, html { height: 100%; background-color: var(--bg); color: white; overflow: hidden; }
 
-        /* BELÉPŐ KÉPERNYŐ */
         #enter-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; align-items: center; justify-content: center;
             z-index: 10000; cursor: pointer; transition: opacity 1s ease;
         }
-        #enter-screen h2 { color: var(--pink); letter-spacing: 15px; font-weight: 300; text-transform: uppercase; animation: pulse 2.5s infinite; text-shadow: 0 0 20px var(--pink-glow); }
+        #enter-screen h2 { color: var(--pink); letter-spacing: 15px; animation: pulse 2.5s infinite; text-shadow: 0 0 20px var(--pink-glow); }
 
-        /* HELYI VIDEÓ HÁTTÉR */
         #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            filter: brightness(0.25); /* Sötétítés a jobb láthatóságért */
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -1; filter: brightness(0.25);
+            background-color: black; /* Fekete háttér, ha a videó nem töltene be */
         }
 
         #main-content { 
@@ -44,50 +30,30 @@
             opacity: 0; visibility: hidden; transition: opacity 1.5s ease;
         }
 
-        /* PROFIL */
         .profile-side { display: flex; flex-direction: column; align-items: flex-start; }
         .profile-header { display: flex; align-items: center; gap: 40px; margin-bottom: 25px; }
-        .profile-container {
-            width: 150px; height: 150px; border-radius: 50%; 
-            overflow: hidden; border: 4px solid var(--pink);
-            box-shadow: 0 0 40px var(--pink-glow);
-        }
+        .profile-container { width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 4px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow); }
         .profile-img { width: 100%; height: 100%; object-fit: cover; }
         .name-tag { font-size: 7.5rem; font-weight: 900; color: white; line-height: 1; text-shadow: 0 0 50px var(--pink-glow); }
         .bio-box { border-left: 5px solid var(--pink); padding-left: 25px; margin-bottom: 35px; }
-        .bio-text { font-size: 1.6rem; color: #eee; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; }
+        .bio-text { font-size: 1.6rem; color: #eee; text-transform: uppercase; }
 
-        /* IKONOK */
         .socials { display: flex; gap: 35px; margin-bottom: 45px; }
         .socials a { color: white; font-size: 2.8rem; transition: 0.3s; opacity: 0.7; }
         .socials a:hover { opacity: 1; transform: scale(1.2); color: var(--pink); filter: drop-shadow(0 0 20px var(--pink)); }
 
-        /* DISCORD */
-        .discord-card {
-            width: 400px; background: rgba(255, 255, 255, 0.05);
-            border-radius: 25px; border: 1px solid var(--pink-glow);
-            padding: 20px; display: flex; align-items: center; gap: 20px;
-            backdrop-filter: blur(15px);
-        }
+        .discord-card { width: 400px; background: rgba(255, 255, 255, 0.05); border-radius: 25px; border: 1px solid var(--pink-glow); padding: 20px; display: flex; align-items: center; gap: 20px; backdrop-filter: blur(15px); }
         .discord-avatar-wrapper { position: relative; width: 65px; height: 65px; }
         .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         .status-dot { position: absolute; bottom: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid #1a1a1a; }
-        .discord-user { font-weight: 700; font-size: 1.2rem; color: white; }
-        .discord-activity { font-size: 0.9rem; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
+        .discord-user { font-weight: 700; font-size: 1.2rem; }
+        .discord-activity { font-size: 0.9rem; color: #ccc; }
 
-        /* PLAYER */
-        .player-card {
-            width: 480px; background: var(--glass); padding: 30px; border-radius: 50px;
-            backdrop-filter: blur(25px); border: 1px solid var(--pink-glow);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 30px;
-        }
+        .player-card { width: 480px; background: var(--glass); padding: 30px; border-radius: 50px; backdrop-filter: blur(25px); border: 1px solid var(--pink-glow); display: flex; flex-direction: column; gap: 30px; }
         .sc-container { width: 100%; height: 450px; border-radius: 35px; overflow: hidden; background: #000; }
-        .btn-row { display: flex; justify-content: center; align-items: center; gap: 45px; }
-        .play-btn { width: 70px; height: 70px; background: var(--pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: black !important; font-size: 2.2rem !important; box-shadow: 0 0 25px var(--pink-glow); border: none; cursor: pointer; }
-        .vol-row { display: flex; align-items: center; gap: 15px; }
-        input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 10px; outline: none; }
+        .play-btn { width: 70px; height: 70px; background: var(--pink); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: black !important; font-size: 2.2rem !important; border: none; cursor: pointer; }
+        input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 10px; }
         input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--pink); border-radius: 50%; cursor: pointer; }
-
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
     </style>
 </head>
@@ -97,8 +63,9 @@
         <h2>Press to Enter</h2>
     </div>
 
-    <video id="bg-video" loop muted playsinline>
+    <video id="bg-video" loop muted playsinline preload="auto">
         <source src="assets/video.mp4" type="video/mp4">
+        Sajnos a böngésződ nem támogatja a videót.
     </video>
 
     <div id="main-content">
@@ -129,12 +96,12 @@
         <div class="player-card">
             <div class="sc-container" id="sc-target"></div>
             <div class="controls">
-                <div class="btn-row">
+                <div class="btn-row" style="display:flex; justify-content:center; align-items:center; gap:45px;">
                     <button onclick="ctrl('prev')" style="background:none; border:none; color:white; font-size:1.8rem; cursor:pointer;"><i class="fas fa-step-backward"></i></button>
                     <button class="play-btn" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
                     <button onclick="ctrl('next')" style="background:none; border:none; color:white; font-size:1.8rem; cursor:pointer;"><i class="fas fa-step-forward"></i></button>
                 </div>
-                <div class="vol-row">
+                <div class="vol-row" style="display:flex; align-items:center; gap:15px; margin-top:20px;">
                     <i class="fas fa-volume-down" style="color:var(--pink)"></i>
                     <input type="range" id="volumeSlider" min="0" max="100" value="20">
                     <i class="fas fa-volume-up" style="color:var(--pink)"></i>
@@ -149,7 +116,7 @@
         let isPlaying = true;
         const DISCORD_ID = "939688591381135401"; 
 
-        // Instant Discord WebSocket
+        // Discord WebSocket
         const lanyardWS = new WebSocket('wss://api.lanyard.rest/socket');
         lanyardWS.onmessage = (event) => {
             const data = JSON.parse(event.data);
@@ -172,7 +139,7 @@
         };
 
         function launch() {
-            // SoundCloud beállítása
+            // SoundCloud Setup
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
             document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true"></iframe>`;
             
@@ -181,9 +148,18 @@
             widget.bind(SC.Widget.Events.READY, () => widget.setVolume(20));
             slider.addEventListener('input', () => widget.setVolume(slider.value));
 
-            // Videó elindítása
+            // Videó elindítása kényszerítve
             const video = document.getElementById('bg-video');
-            video.play();
+            const playPromise = video.play();
+
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Videó hiba:", error);
+                    // Ha hiba van, próbáljuk meg némítva újra (néha a böngésző igényli)
+                    video.muted = true;
+                    video.play();
+                });
+            }
 
             document.getElementById('enter-screen').style.opacity = '0';
             setTimeout(() => {
