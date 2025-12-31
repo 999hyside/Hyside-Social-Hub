@@ -45,7 +45,7 @@
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
         .name-tag { 
-            font-size: 8rem; /* MÉG NAGYOBB NÉV */
+            font-size: 8rem; 
             font-weight: 900; 
             letter-spacing: -3px; 
             color: white;
@@ -56,7 +56,7 @@
             border-left: 4px solid var(--pink); 
             padding-left: 20px; 
             margin-bottom: 20px; 
-            font-size: 1.5rem; /* NAGYOBB BIO */
+            font-size: 1.5rem; 
             text-transform: uppercase; 
             letter-spacing: 2px;
         }
@@ -78,7 +78,7 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 20px; 
+            gap: 25px; 
             background: rgba(0, 0, 0, 0.6);
             padding: 35px;
             border-radius: 40px;
@@ -86,33 +86,34 @@
             width: 450px;
         }
 
+        /* KÖZÉPRE IGAZÍTOTT ZENE INFÓ */
         .track-info-container {
             display: flex;
+            flex-direction: column; /* Egymás alá kerülnek a középre igazításhoz */
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             width: 100%;
         }
 
         #track-art {
-            width: 70px;
-            height: 70px;
-            border-radius: 12px;
+            width: 100px; /* Kicsit nagyobb lett a borító */
+            height: 100px;
+            border-radius: 15px;
             border: 2px solid var(--pink);
-            box-shadow: 0 0 15px var(--pink-glow);
+            box-shadow: 0 0 20px var(--pink-glow);
             object-fit: cover;
         }
 
         #track-title { 
-            font-size: 1.8rem; /* NAGYOBB ZENE CÍM */
+            font-size: 1.6rem; 
             color: var(--pink); 
             font-weight: 700; 
             text-transform: uppercase; 
-            text-align: left;
+            text-align: center; /* KÖZÉPRE ZÁRT SZÖVEG */
             text-shadow: 0 0 15px rgba(255, 45, 141, 0.6);
-            white-space: nowrap;
+            width: 100%;
+            white-space: normal; /* Engedjük több sorba ha hosszú */
             overflow: hidden;
-            text-overflow: ellipsis;
-            flex: 1;
         }
         
         .controls { display: flex; align-items: center; gap: 45px; }
@@ -168,7 +169,7 @@
 
         <div class="music-player">
             <div class="track-info-container">
-                <img id="track-art" src="https://via.placeholder.com/70" alt="Art">
+                <img id="track-art" src="https://via.placeholder.com/100" alt="Art">
                 <div id="track-title">Loading track...</div>
             </div>
             <div class="controls">
@@ -212,29 +213,27 @@
 
         function launch() {
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
+            // Kényszerített autoplay az iframe URL-ben
             document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true"></iframe>`;
             
             widget = SC.Widget(document.getElementById('sc-iframe'));
             
             widget.bind(SC.Widget.Events.READY, () => {
-                // HANGERŐ BEÁLLÍTÁSA 10%-RA
                 widget.setVolume(10);
                 
-                // VÉLETLENSZERŰ ZENE INDÍTÁSA
                 widget.getSounds((sounds) => {
                     const randomIndex = Math.floor(Math.random() * sounds.length);
                     widget.skip(randomIndex);
+                    // Azonnali lejátszás kérése skip után
+                    widget.play();
                     updateTitle();
                 });
             });
 
-            widget.bind(SC.Widget.Events.PLAY, () => updateTitle());
-            widget.bind(SC.Widget.Events.FINISH, () => {
-                // Következő véletlen szám a végén
-                widget.getSounds((sounds) => {
-                    const nextIndex = Math.floor(Math.random() * sounds.length);
-                    widget.skip(nextIndex);
-                });
+            widget.bind(SC.Widget.Events.PLAY, () => {
+                isPlaying = true;
+                document.getElementById('play-icon').className = 'fas fa-pause';
+                updateTitle();
             });
 
             document.getElementById('volumeSlider').addEventListener('input', (e) => {
