@@ -9,9 +9,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
         :root {
-            --accent: #c5a880; /* A beküldött képen látható bézs szín */
-            --bg-dark: #0f0f0f;
-            --glass: rgba(25, 25, 25, 0.8);
+            --accent: #c5a880; 
+            --bg-dark: #0a0a0a;
+            --glass: rgba(20, 20, 20, 0.85);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -23,7 +23,7 @@
             overflow: hidden;
         }
 
-        /* KEZDŐ KÉPERNYŐ */
+        /* ENTER SCREEN */
         #enter-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -44,130 +44,145 @@
             text-transform: uppercase;
         }
 
-        /* FŐ TARTALOM ELRENDEZÉS */
+        /* MAIN LAYOUT */
         #main-content {
             height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: space-between; /* Széthúzza a két oldalt */
-            padding: 0 10%; /* Távolság a szélektől */
+            justify-content: space-between;
+            padding: 0 8%;
             opacity: 0;
             transition: opacity 1.5s ease;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('assets/background.jpg') no-repeat center center;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('assets/background.jpg') no-repeat center center;
             background-size: cover;
         }
 
-        /* BAL OLDAL - PROFIL */
-        .left-side {
+        /* BAL OLDAL: Profilkép + Szöveg egymás mellett */
+        .profile-container {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            gap: 35px;
         }
 
         .profile-img {
-            width: 350px;
-            height: 350px;
-            border-radius: 25px;
+            width: 320px;
+            height: 320px;
+            border-radius: 20px;
             object-fit: cover;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            margin-bottom: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+            border: 1px solid rgba(197, 168, 128, 0.2);
+        }
+
+        .text-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         .name-tag {
-            font-size: 4.5rem;
+            font-size: 5.5rem;
             font-weight: 900;
             color: var(--accent);
-            letter-spacing: -2px;
-            margin-bottom: 10px;
+            letter-spacing: -3px;
+            line-height: 1;
+            margin-bottom: 15px;
         }
 
-        .socials { display: flex; gap: 20px; }
-        .socials a { color: var(--accent); font-size: 1.2rem; opacity: 0.7; transition: 0.3s; }
-        .socials a:hover { opacity: 1; transform: translateY(-3px); }
+        .socials {
+            display: flex;
+            gap: 25px;
+            margin-left: 5px;
+        }
 
-        /* JOBB OLDAL - WIDGET */
+        .socials a {
+            color: var(--accent);
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0.8;
+        }
+
+        .socials a:hover {
+            opacity: 1;
+            transform: scale(1.2) translateY(-5px);
+        }
+
+        /* JOBB OLDAL: Megnövelt Widget */
         .right-side {
-            width: 420px;
+            width: 550px; 
             background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-radius: 30px;
-            padding: 30px;
+            backdrop-filter: blur(30px);
+            border-radius: 40px;
+            padding: 40px;
             border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
         }
 
         .video-box {
             width: 100%;
             aspect-ratio: 16/9;
             background: #000;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
-        .info-text { text-align: center; margin-bottom: 25px; }
-        .info-text h3 { font-size: 1.5rem; color: #fff; margin-bottom: 5px; }
-        .info-text p { color: var(--accent); font-size: 0.9rem; opacity: 0.8; }
+        .info-text { text-align: center; margin-bottom: 30px; }
+        .info-text h3 { font-size: 1.8rem; color: #fff; margin-bottom: 8px; }
+        .info-text p { color: var(--accent); font-size: 1rem; opacity: 0.7; letter-spacing: 1px; }
 
-        /* VEZÉRLŐK */
         .player-controls {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 25px;
-            margin-bottom: 25px;
+            gap: 35px;
+            margin-bottom: 30px;
         }
 
         .play-btn {
-            width: 65px; height: 65px;
+            width: 75px; height: 75px;
             background: var(--accent);
             color: #111;
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.4rem; transition: 0.3s;
+            cursor: pointer; font-size: 1.6rem; transition: 0.3s ease;
         }
-        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(197, 168, 128, 0.4); }
+        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(197, 168, 128, 0.3); }
 
-        .sub-btn { color: white; opacity: 0.5; font-size: 1.1rem; cursor: pointer; }
+        .sub-btn { color: white; opacity: 0.4; font-size: 1.3rem; cursor: pointer; }
 
-        /* HANGERŐ */
         .volume-box {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .volume-box i { color: var(--accent); font-size: 0.8rem; }
+        .volume-box i { color: var(--accent); font-size: 1rem; }
 
         input[type=range] {
             -webkit-appearance: none;
-            width: 120px;
-            height: 4px;
+            width: 200px;
+            height: 5px;
             background: rgba(255,255,255,0.1);
-            border-radius: 5px;
+            border-radius: 10px;
             outline: none;
         }
 
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 12px; height: 12px;
+            width: 15px; height: 15px;
             background: var(--accent);
             border-radius: 50%;
             cursor: pointer;
         }
 
-        @media (max-width: 900px) {
-            #main-content { 
-                flex-direction: column; 
-                justify-content: center; 
-                gap: 40px; 
-                padding: 20px; 
-                overflow-y: auto;
-            }
-            .profile-img { width: 200px; height: 200px; }
-            .name-tag { font-size: 3rem; }
-            .right-side { width: 100%; }
+        @media (max-width: 1100px) {
+            #main-content { flex-direction: column; justify-content: center; gap: 50px; padding: 20px; overflow-y: auto; }
+            .profile-container { flex-direction: column; text-align: center; }
+            .socials { justify-content: center; }
+            .right-side { width: 100%; max-width: 500px; }
+            .name-tag { font-size: 4rem; }
         }
     </style>
 </head>
@@ -179,14 +194,15 @@
 
     <div id="main-content">
         
-        <div class="left-side">
+        <div class="profile-container">
             <img src="assets/profile.gif" class="profile-img" alt="Hyside">
-            <h1 class="name-tag">Hyside</h1>
-            <div class="socials">
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-spotify"></i></a>
-                <a href="#"><i class="fab fa-tiktok"></i></a>
-                <a href="#"><i class="fab fa-github"></i></a>
+            <div class="text-area">
+                <h1 class="name-tag">Hyside</h1>
+                <div class="socials">
+                    <a href="https://www.instagram.com/_._bence_.__/" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.twitch.tv/hyside_" target="_blank" title="Twitch"><i class="fab fa-twitch"></i></a>
+                    <a href="https://soundcloud.com/user-880127680" target="_blank" title="SoundCloud"><i class="fab fa-soundcloud"></i></a>
+                </div>
             </div>
         </div>
 
@@ -199,7 +215,7 @@
 
             <div class="info-text">
                 <h3>Hyside Experience</h3>
-                <p>Now Playing • Special Edit</p>
+                <p>Now Playing • Audio Visual</p>
             </div>
 
             <div class="player-controls">
@@ -229,7 +245,7 @@
                 document.getElementById('enter-screen').style.display = 'none';
                 document.getElementById('main-content').style.opacity = '1';
                 video.play();
-                video.muted = false; // Kezdésnél legyen hangja
+                video.muted = false;
             }, 800);
         }
 
