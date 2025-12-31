@@ -33,98 +33,97 @@
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             opacity: 0; transition: 1.5s ease;
-            gap: 20px;
+            gap: 25px;
         }
 
-        .profile-container { display: flex; align-items: center; gap: 40px; margin-bottom: 20px; }
+        .profile-container { display: flex; align-items: center; gap: 45px; margin-bottom: 20px; }
         .pfp-wrapper {
-            width: 160px; height: 160px; border-radius: 50%;
-            border: 4px solid var(--pink); box-shadow: 0 0 35px var(--pink-glow);
+            width: 180px; height: 180px; border-radius: 50%;
+            border: 5px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow);
             overflow: hidden;
         }
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
         .name-tag { 
-            font-size: 8rem; 
+            font-size: 9rem; 
             font-weight: 900; 
-            letter-spacing: -3px; 
+            letter-spacing: -4px; 
             color: white;
-            text-shadow: 0 0 25px var(--pink), 0 0 50px var(--pink-glow);
+            text-shadow: 0 0 30px var(--pink), 0 0 60px var(--pink-glow);
         }
 
         .bio { 
-            border-left: 4px solid var(--pink); 
-            padding-left: 20px; 
-            margin-bottom: 20px; 
-            font-size: 1.5rem; 
+            border-left: 5px solid var(--pink); 
+            padding-left: 25px; 
+            margin-bottom: 25px; 
+            font-size: 1.8rem; 
             text-transform: uppercase; 
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            font-weight: 700;
         }
 
-        .socials { display: flex; gap: 35px; margin-bottom: 20px; }
-        .socials a { color: white; font-size: 2.5rem; opacity: 0.7; transition: 0.3s; text-decoration: none; }
+        .socials { display: flex; gap: 40px; margin-bottom: 25px; }
+        .socials a { color: white; font-size: 3rem; opacity: 0.7; transition: 0.3s; text-decoration: none; }
         .socials a:hover { opacity: 1; color: var(--pink); transform: scale(1.2); }
 
         .discord-card {
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 45, 141, 0.4); border-radius: 25px;
-            padding: 20px 35px; display: flex; align-items: center; gap: 20px; width: 400px; margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 45, 141, 0.5); border-radius: 30px;
+            padding: 25px 40px; display: flex; align-items: center; gap: 25px; width: 450px; margin-bottom: 20px;
         }
-        .discord-pfp-area { position: relative; width: 70px; height: 70px; }
+        .discord-pfp-area { position: relative; width: 80px; height: 80px; }
         .discord-pfp-area img { width: 100%; height: 100%; border-radius: 50%; }
-        .status-dot { position: absolute; bottom: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid #1a1a1a; }
+        .status-dot { position: absolute; bottom: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; border: 3px solid #1a1a1a; }
 
         .music-player { 
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            gap: 25px; 
-            background: rgba(0, 0, 0, 0.6);
-            padding: 35px;
-            border-radius: 40px;
-            border: 1px solid rgba(255, 45, 141, 0.3);
-            width: 450px;
+            gap: 30px; 
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 45, 141, 0.4);
+            width: 500px;
         }
 
-        /* KÖZÉPRE IGAZÍTOTT ZENE INFÓ */
         .track-info-container {
             display: flex;
-            flex-direction: column; /* Egymás alá kerülnek a középre igazításhoz */
+            flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
             width: 100%;
         }
 
         #track-art {
-            width: 100px; /* Kicsit nagyobb lett a borító */
-            height: 100px;
-            border-radius: 15px;
-            border: 2px solid var(--pink);
-            box-shadow: 0 0 20px var(--pink-glow);
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            border: 3px solid var(--pink);
+            box-shadow: 0 0 25px var(--pink-glow);
             object-fit: cover;
         }
 
         #track-title { 
-            font-size: 1.6rem; 
+            font-size: 2rem; 
             color: var(--pink); 
-            font-weight: 700; 
+            font-weight: 900; 
             text-transform: uppercase; 
-            text-align: center; /* KÖZÉPRE ZÁRT SZÖVEG */
-            text-shadow: 0 0 15px rgba(255, 45, 141, 0.6);
+            text-align: center;
+            text-shadow: 0 0 20px var(--pink-glow);
             width: 100%;
-            white-space: normal; /* Engedjük több sorba ha hosszú */
-            overflow: hidden;
+            white-space: normal;
         }
         
-        .controls { display: flex; align-items: center; gap: 45px; }
+        .controls { display: flex; align-items: center; gap: 50px; }
         .control-btn { 
             background: none; border: none; color: white; 
-            font-size: 2.2rem; cursor: pointer; transition: 0.2s; opacity: 0.8; 
+            font-size: 2.5rem; cursor: pointer; transition: 0.2s; opacity: 0.8; 
         }
         .control-btn:hover { opacity: 1; color: var(--pink); transform: scale(1.15); }
 
-        .volume-container { display: flex; align-items: center; gap: 20px; width: 300px; }
-        input[type=range] { flex: 1; accent-color: var(--pink); cursor: pointer; height: 8px; }
+        .volume-container { display: flex; align-items: center; gap: 25px; width: 350px; }
+        input[type=range] { flex: 1; accent-color: var(--pink); cursor: pointer; height: 10px; }
 
         #sc-target { display: none; }
     </style>
@@ -132,17 +131,17 @@
 <body>
 
     <div id="enter-screen" onclick="launch()">
-        <h2 style="color:var(--pink); letter-spacing:10px; text-transform:uppercase; font-size: 2rem;">Click to Enter</h2>
+        <h2 style="color:var(--pink); letter-spacing:12px; text-transform:uppercase; font-size: 2.5rem; text-shadow: 0 0 20px var(--pink);">Click to Enter</h2>
     </div>
 
     <video id="bg-video" loop muted playsinline preload="auto">
-        <source src="video.mp4" type="video/mp4">
+        <source src="assets/video.mp4" type="video/mp4">
     </video>
 
     <div id="main-content">
         <div class="profile-container">
             <div class="pfp-wrapper">
-                <img src="profile.gif" alt="PFP">
+                <img src="assets/profile.gif" alt="PFP">
             </div>
             <h1 class="name-tag">Hyside</h1>
         </div>
@@ -162,25 +161,25 @@
                 <div id="d-status" class="status-dot"></div>
             </div>
             <div class="discord-info">
-                <div id="d-name" style="font-weight:700; font-size: 1.4rem;">Loading...</div>
-                <div id="d-activity" style="font-size:1rem; color:#bbb;">No activity</div>
+                <div id="d-name" style="font-weight:700; font-size: 1.6rem;">Loading...</div>
+                <div id="d-activity" style="font-size:1.1rem; color:#bbb;">No activity</div>
             </div>
         </div>
 
         <div class="music-player">
             <div class="track-info-container">
-                <img id="track-art" src="https://via.placeholder.com/100" alt="Art">
+                <img id="track-art" src="https://via.placeholder.com/120" alt="Art">
                 <div id="track-title">Loading track...</div>
             </div>
             <div class="controls">
                 <button class="control-btn" onclick="ctrl('prev')"><i class="fas fa-step-backward"></i></button>
-                <button class="control-btn" style="font-size:3rem;" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
+                <button class="control-btn" style="font-size:3.5rem;" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
                 <button class="control-btn" onclick="ctrl('next')"><i class="fas fa-step-forward"></i></button>
             </div>
             <div class="volume-container">
-                <i class="fas fa-volume-down" style="font-size: 1.2rem; opacity: 0.5;"></i>
+                <i class="fas fa-volume-down" style="font-size: 1.5rem; opacity: 0.5;"></i>
                 <input type="range" id="volumeSlider" min="0" max="100" value="10">
-                <i class="fas fa-volume-up" style="font-size: 1.2rem; opacity: 0.5;"></i>
+                <i class="fas fa-volume-up" style="font-size: 1.5rem; opacity: 0.5;"></i>
             </div>
         </div>
     </div>
@@ -213,7 +212,6 @@
 
         function launch() {
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
-            // Kényszerített autoplay az iframe URL-ben
             document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true"></iframe>`;
             
             widget = SC.Widget(document.getElementById('sc-iframe'));
@@ -224,7 +222,6 @@
                 widget.getSounds((sounds) => {
                     const randomIndex = Math.floor(Math.random() * sounds.length);
                     widget.skip(randomIndex);
-                    // Azonnali lejátszás kérése skip után
                     widget.play();
                     updateTitle();
                 });
