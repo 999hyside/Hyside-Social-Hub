@@ -12,38 +12,36 @@
             --pink: #ff2d8d; 
             --pink-glow: rgba(255, 45, 141, 0.6);
             --bg: #0a0a0a;
-            --glass: rgba(15, 15, 15, 0.8);
+            --glass: rgba(15, 15, 15, 0.85);
+            --online: #43b581;
+            --idle: #faa61a;
+            --dnd: #f04747;
+            --offline: #747f8d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body, html { height: 100%; background-color: var(--bg); color: white; overflow: hidden; }
 
-        /* BELÉPŐ KÉPERNYŐ */
+        /* ENTER SCREEN */
         #enter-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; align-items: center; justify-content: center;
             z-index: 10000; cursor: pointer; transition: opacity 1s ease;
         }
-        #enter-screen h2 { 
-            color: var(--pink); letter-spacing: 15px; font-weight: 300; 
-            text-transform: uppercase; animation: pulse 2.5s infinite;
-            text-shadow: 0 0 20px var(--pink-glow);
-        }
+        #enter-screen h2 { color: var(--pink); letter-spacing: 15px; font-weight: 300; text-transform: uppercase; animation: pulse 2.5s infinite; text-shadow: 0 0 20px var(--pink-glow); }
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* HÁTTÉR VIDEÓ */
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.2); }
+        /* BACKGROUND VIDEO */
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.18); }
 
-        /* FŐ TARTALOM */
         #main-content { 
             height: 100vh; display: flex; align-items: center; 
             justify-content: space-between; padding: 0 10%; 
             opacity: 0; visibility: hidden; transition: opacity 1.5s ease;
         }
 
-        /* BAL OLDAL: PROFIL PINK GLOW-VAL */
+        /* PROFILE SECTION */
         .profile-side { display: flex; flex-direction: column; align-items: flex-start; }
-        
         .profile-header { display: flex; align-items: center; gap: 40px; margin-bottom: 25px; }
         .profile-container {
             width: 140px; height: 140px; border-radius: 50%; 
@@ -51,64 +49,50 @@
             box-shadow: 0 0 35px var(--pink-glow);
         }
         .profile-img { width: 100%; height: 100%; object-fit: cover; }
-
-        .name-tag { 
-            font-size: 7rem; font-weight: 900; color: white; line-height: 1;
-            text-shadow: 0 0 45px var(--pink-glow); /* PINK NÉV GLOW */
-        }
-
+        .name-tag { font-size: 7rem; font-weight: 900; color: white; line-height: 1; text-shadow: 0 0 45px var(--pink-glow); }
         .bio-box { border-left: 4px solid var(--pink); padding-left: 25px; margin-bottom: 30px; }
-        .bio-text { 
-            font-size: 1.5rem; color: #eee; font-weight: 300; 
-            letter-spacing: 1px; text-transform: uppercase;
-            text-shadow: 0 0 10px var(--pink-glow);
-        }
-
+        .bio-text { font-size: 1.5rem; color: #eee; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 10px var(--pink-glow); }
         .socials { display: flex; gap: 25px; margin-bottom: 40px; }
         .socials a { color: white; font-size: 1.8rem; transition: 0.3s; opacity: 0.6; }
         .socials a:hover { opacity: 1; transform: translateY(-5px); color: var(--pink); filter: drop-shadow(0 0 15px var(--pink)); }
 
-        /* DISCORD WIDGET */
-        .discord-widget {
-            width: 350px; height: 80px; background: rgba(255, 45, 141, 0.05); 
+        /* LIVE DISCORD WIDGET */
+        .discord-card {
+            width: 380px; background: rgba(255, 255, 255, 0.05);
             border-radius: 20px; border: 1px solid var(--pink-glow);
-            display: flex; align-items: center; padding: 0 20px; gap: 15px;
-            backdrop-filter: blur(10px); transition: 0.3s;
-            box-shadow: 0 0 15px rgba(255, 45, 141, 0.1);
+            padding: 15px; display: flex; align-items: center; gap: 15px;
+            backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0,0,0,0.4);
         }
-        .discord-icon { font-size: 2rem; color: #5865F2; }
-        .discord-info h4 { font-size: 1rem; color: white; }
-        .discord-info p { font-size: 0.8rem; color: #888; }
+        .discord-avatar-wrapper { position: relative; width: 60px; height: 60px; }
+        .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .status-dot { 
+            position: absolute; bottom: 2px; right: 2px; width: 16px; height: 16px; 
+            border-radius: 50%; border: 3px solid #1a1a1a; background: var(--offline);
+        }
+        .discord-info { display: flex; flex-direction: column; gap: 2px; }
+        .discord-user { font-weight: 700; font-size: 1.1rem; color: white; }
+        .discord-activity { font-size: 0.85rem; color: #bbb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
 
-        /* JOBB OLDAL: PLAYER */
+        /* PLAYER */
         .player-card {
             width: 460px; background: var(--glass); padding: 25px; border-radius: 45px;
             backdrop-filter: blur(25px); border: 1px solid var(--pink-glow);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.7), 0 0 20px rgba(255, 45, 141, 0.1);
-            display: flex; flex-direction: column; gap: 25px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 25px;
         }
         .sc-container { width: 100%; height: 420px; border-radius: 30px; overflow: hidden; background: #000; }
-
-        /* VEZÉRLŐK PINKBEN */
         .controls { width: 100%; display: flex; flex-direction: column; gap: 20px; padding: 0 10px; }
         .btn-row { display: flex; justify-content: center; align-items: center; gap: 40px; }
-        .btn-row button { background: none; border: none; color: white; font-size: 1.6rem; cursor: pointer; transition: 0.3s; opacity: 0.7; }
-        .btn-row button:hover { color: var(--pink); filter: drop-shadow(0 0 8px var(--pink)); }
-        .btn-row .play-btn { font-size: 2.8rem; color: var(--pink); opacity: 1; filter: drop-shadow(0 0 15px var(--pink)); }
-        
+        .btn-row button { background: none; border: none; color: white; font-size: 1.6rem; cursor: pointer; transition: 0.3s; }
+        .btn-row .play-btn { font-size: 2.8rem; color: var(--pink); filter: drop-shadow(0 0 15px var(--pink)); }
         .vol-row { display: flex; align-items: center; gap: 15px; }
         input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255, 255, 255, 0.1); height: 5px; border-radius: 10px; outline: none; }
-        input[type=range]::-webkit-slider-thumb { 
-            -webkit-appearance: none; width: 16px; height: 16px; background: var(--pink); 
-            border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px var(--pink); 
-        }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--pink); border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px var(--pink); }
 
         @media (max-width: 1200px) {
             #main-content { flex-direction: column; text-align: center; justify-content: center; gap: 40px; overflow-y: auto; padding: 60px 20px; }
-            .profile-header { flex-direction: column; }
             .name-tag { font-size: 4.5rem; }
-            .bio-box { border: none; padding: 0; }
             .profile-side { align-items: center; }
+            .player-card { width: 100%; max-width: 450px; }
         }
     </style>
 </head>
@@ -131,9 +115,7 @@
                 <h1 class="name-tag">Hyside</h1>
             </div>
             
-            <div class="bio-box">
-                <p class="bio-text">Hyside vagyok content creator</p>
-            </div>
+            <div class="bio-box"><p class="bio-text">Hyside vagyok content creator</p></div>
 
             <div class="socials">
                 <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
@@ -142,11 +124,14 @@
                 <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
             </div>
 
-            <div class="discord-widget">
-                <i class="fab fa-discord discord-icon"></i>
+            <div class="discord-card">
+                <div class="discord-avatar-wrapper">
+                    <img id="discord-pfp" src="https://cdn.discordapp.com/embed/avatars/0.png" class="discord-avatar">
+                    <div id="discord-status" class="status-dot"></div>
+                </div>
                 <div class="discord-info">
-                    <h4>Discord Status</h4>
-                    <p>hyside_official</p>
+                    <div id="discord-name" class="discord-user">Loading...</div>
+                    <div id="discord-activity" class="discord-activity">Not doing anything</div>
                 </div>
             </div>
         </div>
@@ -171,19 +156,45 @@
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
         let widget;
-        let isPlaying = true;
+        const DISCORD_ID = "1133036437597143041"; // <-- IDE ÍRD AZ ID-DAT!
+
+        async function fetchDiscord() {
+            try {
+                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+                const data = await response.json();
+                const user = data.data;
+
+                // Avatar és Státusz
+                document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${939688591381135401}/${user.discord_user.avatar}.png`;
+                
+                const statusColors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
+                document.getElementById('discord-status').style.background = statusColors[user.discord_status] || '#747f8d';
+                
+                document.getElementById('discord-name').innerText = user.discord_user.username;
+
+                // Aktivitás (Játék vagy Spotify)
+                if (user.activities && user.activities.length > 0) {
+                    const activity = user.activities.find(a => a.type === 0) || user.activities[0];
+                    document.getElementById('discord-activity').innerText = `Playing ${activity.name}`;
+                } else if (user.spotify) {
+                    document.getElementById('discord-activity').innerText = `Listening to ${user.spotify.song}`;
+                } else {
+                    document.getElementById('discord-activity').innerText = "No activity";
+                }
+            } catch (e) { console.error("Discord error", e); }
+        }
+
+        setInterval(fetchDiscord, 10000); // 10 másodpercenként frissít
+        fetchDiscord();
 
         function launch() {
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
-            const scWidgetHtml = `<iframe id="sc-iframe" width="100%" height="420" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>`;
+            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="420" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>`;
             
-            document.getElementById('sc-target').innerHTML = scWidgetHtml;
-            const iframe = document.getElementById('sc-iframe');
-            widget = SC.Widget(iframe);
+            widget = SC.Widget(document.getElementById('sc-iframe'));
             const slider = document.getElementById('volumeSlider');
-
-            widget.bind(SC.Widget.Events.READY, () => { widget.setVolume(slider.value); });
-            slider.addEventListener('input', () => { widget.setVolume(slider.value); });
+            widget.bind(SC.Widget.Events.READY, () => widget.setVolume(slider.value));
+            slider.addEventListener('input', () => widget.setVolume(slider.value));
 
             document.getElementById('bg-video').play();
             document.getElementById('enter-screen').style.opacity = '0';
@@ -196,14 +207,9 @@
 
         function ctrl(action) {
             if(!widget) return;
-            const icon = document.getElementById('play-icon');
             if(action === 'next') widget.next();
             if(action === 'prev') widget.prev();
-            if(action === 'toggle') {
-                widget.toggle();
-                isPlaying = !isPlaying;
-                icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
-            }
+            if(action === 'toggle') widget.toggle();
         }
     </script>
 </body>
