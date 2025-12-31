@@ -14,135 +14,63 @@
             --glass: rgba(15, 15, 15, 0.85);
         }
 
-        /* JUICE WRLD 999 CURSOR */
-        * { cursor: none !important; }
+        * { cursor: none !important; margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body, html { height: 100%; background-color: var(--bg-dark); color: white; overflow: hidden; scroll-behavior: smooth; }
+
+        /* 999 CURSOR */
         #custom-cursor {
-            position: fixed;
-            pointer-events: none;
-            z-index: 11000;
-            color: var(--accent);
-            font-weight: 900;
-            font-size: 24px;
-            text-shadow: 0 0 10px var(--accent);
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out;
-            user-select: none;
+            position: fixed; pointer-events: none; z-index: 11000;
+            color: var(--accent); font-weight: 900; font-size: 22px;
+            text-shadow: 0 0 10px var(--accent); transform: translate(-50%, -50%);
         }
 
-        @keyframes breathe {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes glowPulse {
-            0% { text-shadow: 0 0 10px rgba(197, 168, 128, 0.3); }
-            50% { text-shadow: 0 0 25px rgba(197, 168, 128, 0.6); }
-            100% { text-shadow: 0 0 10px rgba(197, 168, 128, 0.3); }
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body, html { height: 100%; background-color: var(--bg-dark); color: white; overflow: hidden; }
+        /* ANIMÁCIÓK */
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        @keyframes glow { 0%, 100% { text-shadow: 0 0 10px rgba(197, 168, 128, 0.3); } 50% { text-shadow: 0 0 25px var(--accent); } }
 
         /* ENTER SCREEN */
         #enter-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; align-items: center; justify-content: center;
+            z-index: 10000; transition: transform 1s cubic-bezier(0.85, 0, 0.15, 1);
         }
-        #enter-screen h2 {
-            color: var(--accent);
-            letter-spacing: 15px;
-            font-size: 2.5rem;
-            animation: glowPulse 2s infinite;
-        }
-
-        /* MAIN CONTENT */
-        #main-content {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Középre rendezve */
-            opacity: 0;
-            transition: opacity 1.5s ease;
-            position: relative;
-        }
+        #enter-screen h2 { color: var(--accent); letter-spacing: 12px; font-size: 2.5rem; animation: glow 2s infinite; }
 
         /* HÁTTÉR VIDEÓ */
-        #bg-video {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            filter: brightness(0.4);
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.4); }
+
+        /* MAIN WRAPPER (SZEKCIÓKHOZ) */
+        #content-wrapper { height: 200vh; transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1); }
+
+        /* FŐOLDAL SZEKCIÓ */
+        .page-section { height: 100vh; display: flex; align-items: center; justify-content: center; gap: 60px; padding: 0 10%; }
+
+        .profile-side { text-align: center; animation: breathe 5s infinite; }
+        .profile-img { width: 300px; height: 300px; border-radius: 25px; object-fit: cover; border: 1px solid var(--accent); box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+        .name-tag { font-size: 4.5rem; font-weight: 900; color: var(--accent); margin-top: 20px; animation: glow 3s infinite; }
+        
+        .socials { display: flex; gap: 25px; justify-content: center; margin-top: 20px; }
+        .socials a { color: var(--accent); font-size: 1.8rem; transition: 0.3s; opacity: 0.7; }
+        .socials a:hover { opacity: 1; transform: scale(1.2); }
+
+        /* SPOTIFY WIDGET */
+        .widget-side {
+            width: 450px; background: var(--glass); padding: 35px; border-radius: 35px;
+            backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.7); animation: breathe 6s infinite;
         }
+        .video-preview { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 15px; overflow: hidden; margin-bottom: 25px; }
 
-        /* KÖZÉPSŐ PROFIL KÁRTYA */
-        .profile-card {
-            background: var(--glass);
-            padding: 50px;
-            border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            text-align: center;
-            animation: breathe 6s ease-in-out infinite;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-        }
+        /* ALSÓ SZEKCIÓ (SOCIAL BROWSER) */
+        #social-viewer { height: 100vh; background: #050505; display: flex; flex-direction: column; }
+        .browser-header { padding: 20px; display: flex; align-items: center; gap: 20px; background: #111; }
+        .back-btn { background: var(--accent); color: #000; padding: 10px 25px; border-radius: 5px; font-weight: 700; }
+        #social-iframe { flex-grow: 1; border: none; width: 100%; background: #fff; }
 
-        .profile-img {
-            width: 250px; height: 250px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 25px;
-            border: 3px solid var(--accent);
-            box-shadow: 0 0 30px rgba(197, 168, 128, 0.3);
-        }
+        /* VIEW COUNTER */
+        #view-counter { position: fixed; bottom: 20px; left: 30px; font-size: 0.8rem; color: var(--accent); opacity: 0.5; z-index: 5; }
 
-        .name-tag {
-            font-size: 4rem;
-            font-weight: 900;
-            color: var(--accent);
-            margin-bottom: 20px;
-            animation: glowPulse 3s infinite;
-        }
-
-        .socials { display: flex; gap: 30px; justify-content: center; margin-bottom: 40px; }
-        .socials a { color: var(--accent); font-size: 2rem; transition: 0.3s; opacity: 0.8; }
-        .socials a:hover { opacity: 1; transform: scale(1.3); }
-
-        /* PLAYER CONTROLS IN CARD */
-        .controls { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .play-row { display: flex; align-items: center; gap: 30px; }
-        .play-btn {
-            width: 60px; height: 60px;
-            background: var(--accent); color: #000;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; transition: 0.3s;
-        }
-        .nav-btn { font-size: 1.5rem; color: white; opacity: 0.5; }
-
-        input[type=range] { -webkit-appearance: none; width: 180px; height: 4px; background: rgba(255,255,255,0.1); }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; }
-
-        /* VIEW COUNTER BAL LENT */
-        #view-counter {
-            position: fixed;
-            bottom: 30px; left: 40px;
-            font-size: 0.9rem;
-            color: var(--accent);
-            opacity: 0.6;
-            letter-spacing: 2px;
-        }
-
-        @media (max-width: 600px) {
-            .profile-card { width: 90%; padding: 30px; }
-            .name-tag { font-size: 2.5rem; }
-        }
+        @media (max-width: 1000px) { .page-section { flex-direction: column; gap: 30px; } .widget-side { width: 100%; } }
     </style>
 </head>
 <body>
@@ -150,94 +78,88 @@
     <div id="custom-cursor">999</div>
 
     <div id="enter-screen" onclick="startExp()">
-        <h2>CLICK TO ENTER</h2>
+        <h2>CLICK TO CONTINUE...</h2>
     </div>
 
     <video id="bg-video" loop></video>
 
-    <div id="main-content">
-        <div class="profile-card">
-            <img src="assets/profile.gif" class="profile-img" alt="Hyside">
-            <h1 class="name-tag">Hyside</h1>
-            
-            <div class="socials">
-                <a href="https://www.instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
-                <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
+    <div id="content-wrapper">
+        <section class="page-section">
+            <div class="profile-side">
+                <img src="assets/profile.gif" class="profile-img">
+                <h1 class="name-tag">Hyside</h1>
+                <div class="socials">
+                    <a href="javascript:void(0)" onclick="openSocial('https://instagram.com/_._bence_.__/')"><i class="fab fa-instagram"></i></a>
+                    <a href="javascript:void(0)" onclick="openSocial('https://twitch.tv/hyside_')"><i class="fab fa-twitch"></i></a>
+                    <a href="javascript:void(0)" onclick="openSocial('https://soundcloud.com/user-880127680')"><i class="fab fa-soundcloud"></i></a>
+                </div>
             </div>
 
-            <div class="controls">
-                <div class="play-row">
-                    <i class="fas fa-step-backward nav-btn" onclick="nextVideo()"></i>
-                    <div class="play-btn" onclick="togglePlay()">
-                        <i id="play-icon" class="fas fa-pause"></i>
+            <div class="widget-side">
+                <div class="video-preview">
+                    <div style="width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-play" style="font-size:3rem; color:var(--accent);"></i>
                     </div>
-                    <i class="fas fa-step-forward nav-btn" onclick="nextVideo()"></i>
                 </div>
-                <div style="display:flex; align-items:center; gap:15px;">
-                    <i class="fas fa-volume-low" style="color:var(--accent); font-size:0.8rem;"></i>
-                    <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)">
-                    <i class="fas fa-volume-high" style="color:var(--accent); font-size:0.8rem;"></i>
+                <h3 style="text-align:center; margin-bottom:20px;">Hyside Experience</h3>
+                <div style="display:flex; justify-content:center; gap:25px; margin-bottom:20px;">
+                    <i class="fas fa-step-backward" onclick="changeVid()" style="cursor:pointer; opacity:0.5;"></i>
+                    <i id="p-icon" class="fas fa-pause" onclick="togglePlay()" style="cursor:pointer; font-size:1.5rem;"></i>
+                    <i class="fas fa-step-forward" onclick="changeVid()" style="cursor:pointer; opacity:0.5;"></i>
                 </div>
+                <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)" style="width:100%;">
             </div>
-        </div>
+        </section>
+
+        <section id="social-viewer">
+            <div class="browser-header">
+                <div class="back-btn" onclick="goHome()">VISSZA</div>
+                <span id="current-url" style="opacity:0.5; font-size:0.9rem;"></span>
+            </div>
+            <iframe id="social-iframe" src=""></iframe>
+        </section>
     </div>
 
-    <div id="view-counter"><i class="far fa-eye"></i> VIEWS: <span id="count">1,284</span></div>
+    <div id="view-counter">VIEWS: <span id="v-count">1,285</span></div>
 
     <script>
-        // VIDEÓK LISTÁJA - Itt add meg a fájlneveket!
-        const playlist = [
-            'assets/video1.mp4',
-            'assets/video2.mp4',
-            'assets/video3.mp4'
-        ];
-
+        const vids = ['assets/video1.mp4', 'assets/video2.mp4', 'assets/video3.mp4'];
         const video = document.getElementById('bg-video');
+        const wrapper = document.getElementById('content-wrapper');
         const cursor = document.getElementById('custom-cursor');
 
-        // Kurzór követés
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Véletlenszerű videó választás indításkor
-        function pickRandomVideo() {
-            const random = playlist[Math.floor(Math.random() * playlist.length)];
-            video.src = random;
-        }
-
-        function startExp() {
-            pickRandomVideo();
-            document.getElementById('enter-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('enter-screen').style.display = 'none';
-                document.getElementById('main-content').style.opacity = '1';
-                video.play();
-                video.muted = false;
-                updateViews();
-            }, 800);
-        }
-
-        function togglePlay() {
-            if (video.paused) { video.play(); document.getElementById('play-icon').className = 'fas fa-pause'; }
-            else { video.pause(); document.getElementById('play-icon').className = 'fas fa-play'; }
-        }
-
-        function nextVideo() {
-            pickRandomVideo();
+        function changeVid() {
+            video.src = vids[Math.floor(Math.random() * vids.length)];
             video.play();
         }
 
-        function setVol(val) { video.volume = val; }
+        function startExp() {
+            changeVid();
+            document.getElementById('enter-screen').style.transform = 'translateY(-100%)';
+            video.muted = false;
+        }
 
-        // Egyszerű nézettségszámláló szimuláció (helyi tárolással)
-        function updateViews() {
-            let views = localStorage.getItem('hyside_views') || 1284;
-            views = parseInt(views) + 1;
-            localStorage.setItem('hyside_views', views);
-            document.getElementById('count').innerText = views.toLocaleString();
+        function togglePlay() {
+            if (video.paused) { video.play(); document.getElementById('p-icon').className = 'fas fa-pause'; }
+            else { video.pause(); document.getElementById('p-icon').className = 'fas fa-play'; }
+        }
+
+        function setVol(v) { video.volume = v; }
+
+        function openSocial(url) {
+            document.getElementById('social-iframe').src = url;
+            document.getElementById('current-url').innerText = url;
+            wrapper.style.transform = 'translateY(-50%)';
+        }
+
+        function goHome() {
+            wrapper.style.transform = 'translateY(0)';
+            setTimeout(() => { document.getElementById('social-iframe').src = ''; }, 1000);
         }
     </script>
 </body>
