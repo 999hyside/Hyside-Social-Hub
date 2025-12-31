@@ -25,9 +25,19 @@
             z-index: 10000; cursor: pointer; transition: opacity 1s ease;
         }
         #enter-screen h2 { color: var(--pink); letter-spacing: 15px; font-weight: 300; text-transform: uppercase; animation: pulse 2.5s infinite; text-shadow: 0 0 20px var(--pink-glow); }
-        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.18); }
+        /* YOUTUBE BACKGROUND */
+        .video-background {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: hidden;
+            filter: brightness(0.2);
+        }
+        .video-background iframe {
+            width: 100vw; height: 56.25vw; /* 16:9 ratio */
+            min-height: 100vh; min-width: 177.77vh; 
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
         #main-content { 
             height: 100vh; display: flex; align-items: center; 
@@ -83,17 +93,12 @@
             color: black !important; font-size: 2rem !important; 
             box-shadow: 0 0 20px var(--pink-glow); transition: 0.2s !important;
         }
-        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--pink); }
 
         .vol-row { display: flex; align-items: center; gap: 15px; }
         input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 10px; outline: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--pink); border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px var(--pink); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--pink); border-radius: 50%; cursor: pointer; }
 
-        @media (max-width: 1200px) {
-            #main-content { flex-direction: column; text-align: center; justify-content: center; padding: 40px 20px; overflow-y: auto; }
-            .name-tag { font-size: 5rem; }
-            .profile-side { align-items: center; }
-        }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -102,28 +107,23 @@
         <h2>Press to Enter</h2>
     </div>
 
-    <video id="bg-video" loop playsinline muted>
-        <source src="assets/video.mp4" type="video/mp4">
-    </video>
+    <div class="video-background">
+        <div id="yt-player"></div>
+    </div>
 
     <div id="main-content">
         <div class="profile-side">
             <div class="profile-header">
-                <div class="profile-container">
-                    <img src="assets/profile.gif" class="profile-img">
-                </div>
+                <div class="profile-container"><img src="assets/profile.gif" class="profile-img"></div>
                 <h1 class="name-tag">Hyside</h1>
             </div>
-            
             <div class="bio-box"><p class="bio-text">Hyside vagyok content creator</p></div>
-
             <div class="socials">
                 <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
                 <a href="https://instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="https://twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
                 <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
             </div>
-
             <div class="discord-card">
                 <div class="discord-avatar-wrapper">
                     <img id="discord-pfp" src="https://cdn.discordapp.com/embed/avatars/0.png" class="discord-avatar">
@@ -141,78 +141,81 @@
             <div class="controls">
                 <div class="btn-row">
                     <button onclick="ctrl('prev')"><i class="fas fa-step-backward"></i></button>
-                    <button class="play-btn" onclick="ctrl('toggle')">
-                        <i id="play-icon" class="fas fa-pause"></i>
-                    </button>
+                    <button class="play-btn" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
                     <button onclick="ctrl('next')"><i class="fas fa-step-forward"></i></button>
                 </div>
                 <div class="vol-row">
                     <i class="fas fa-volume-down" style="color:var(--pink)"></i>
-                    <input type="range" id="volumeSlider" min="0" max="100" value="80">
-                    <i class="fas fa-volume-up" style="color:var(--pink)"></i>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="20"> <i class="fas fa-volume-up" style="color:var(--pink)"></i>
                 </div>
             </div>
         </div>
     </div>
 
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
         let widget;
-        let isPlaying = true;
+        let ytPlayer;
         const DISCORD_ID = "939688591381135401"; 
+
+        // Youtube Player inicializálása
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('yt-player', {
+                videoId: 'DtE5Y5VGkjU',
+                playerVars: { 
+                    'autoplay': 1, 'controls': 0, 'mute': 1, 'loop': 1, 
+                    'playlist': 'DtE5Y5VGkjU', 'rel': 0, 'showinfo': 0, 'vq': 'hd2160' 
+                },
+                events: { 'onReady': (e) => e.target.mute() }
+            });
+        }
 
         async function fetchDiscord() {
             try {
-                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-                const data = await response.json();
-                const user = data.data;
-                
-                if (user.discord_user.avatar) {
-                    document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png`;
-                }
-                
-                const statusColors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
-                document.getElementById('discord-status').style.background = statusColors[user.discord_status] || '#747f8d';
+                const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+                const d = await r.json();
+                const user = d.data;
+                document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png`;
+                const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
+                document.getElementById('discord-status').style.background = colors[user.discord_status] || '#747f8d';
                 document.getElementById('discord-name').innerText = user.discord_user.username;
-                
                 if (user.activities.length > 0) {
                     const act = user.activities.find(a => a.type === 0) || user.activities[0];
                     document.getElementById('discord-activity').innerText = act.name === "Spotify" ? `Listening to ${user.spotify.song}` : `Playing ${act.name}`;
-                } else {
-                    document.getElementById('discord-activity').innerText = "No activity";
-                }
-            } catch (e) { console.log("Lanyard Error:", e); }
+                } else { document.getElementById('discord-activity').innerText = "No activity"; }
+            } catch (e) {}
         }
         setInterval(fetchDiscord, 10000); fetchDiscord();
 
         function launch() {
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
-            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>`;
+            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true"></iframe>`;
             
             widget = SC.Widget(document.getElementById('sc-iframe'));
             const slider = document.getElementById('volumeSlider');
-            widget.bind(SC.Widget.Events.READY, () => widget.setVolume(slider.value));
+            
+            widget.bind(SC.Widget.Events.READY, () => widget.setVolume(20)); // Kezdő hangerő 20%
             slider.addEventListener('input', () => widget.setVolume(slider.value));
 
-            document.getElementById('bg-video').play();
             document.getElementById('enter-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('enter-screen').style.display = 'none';
                 document.getElementById('main-content').style.visibility = 'visible';
                 document.getElementById('main-content').style.opacity = '1';
+                if(ytPlayer) ytPlayer.playVideo();
             }, 1000);
         }
 
         function ctrl(action) {
             if(!widget) return;
             const icon = document.getElementById('play-icon');
-            if(action === 'next') widget.next();
-            if(action === 'prev') widget.prev();
             if(action === 'toggle') {
                 widget.toggle();
-                isPlaying = !isPlaying;
-                icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
-            }
+                icon.classList.toggle('fa-pause');
+                icon.classList.toggle('fa-play');
+            } else if (action === 'next') widget.next();
+            else if (action === 'prev') widget.prev();
         }
     </script>
 </body>
