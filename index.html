@@ -18,27 +18,24 @@
             color: white; overflow: hidden;
         }
 
-        /* BELÉPŐ KÉPERNYŐ */
         #enter-screen {
             position: fixed; inset: 0; background: #000;
             display: flex; align-items: center; justify-content: center;
             z-index: 10000; cursor: pointer; transition: 1s ease;
         }
 
-        /* VIDEÓ HÁTTÉR */
+        /* LETÖLTÖTT VIDEÓ HÁTTÉR */
         #bg-video {
             position: fixed; inset: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: -1; filter: brightness(0.4);
         }
 
-        /* FŐ TARTALOM */
         #main-content {
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             opacity: 0; transition: 1.5s ease;
         }
 
-        /* PROFIL RÉSZ (image_c99936.png alapján) */
         .profile-container { display: flex; align-items: center; gap: 30px; margin-bottom: 20px; }
         .pfp-wrapper {
             width: 130px; height: 130px; border-radius: 50%;
@@ -48,28 +45,33 @@
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         .name-tag { font-size: 6rem; font-weight: 900; letter-spacing: -2px; }
 
-        .bio { border-left: 3px solid var(--pink); padding-left: 15px; margin-bottom: 30px; font-size: 1.2rem; text-transform: uppercase; }
+        .bio { border-left: 3px solid var(--pink); padding-left: 15px; margin-bottom: 30px; font-size: 1.1rem; text-transform: uppercase; }
 
-        .socials { display: flex; gap: 25px; margin-bottom: 40px; }
+        .socials { display: flex; gap: 25px; margin-bottom: 30px; }
         .socials a { color: white; font-size: 1.8rem; opacity: 0.6; transition: 0.3s; text-decoration: none; }
         .socials a:hover { opacity: 1; color: var(--pink); transform: scale(1.2); }
 
-        /* DISCORD KÁRTYA (image_c9303e.png alapján) */
         .discord-card {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 45, 141, 0.3); border-radius: 20px;
-            padding: 15px 25px; display: flex; align-items: center; gap: 15px; width: 350px;
+            padding: 12px 25px; display: flex; align-items: center; gap: 15px; width: 320px; margin-bottom: 25px;
         }
-        .discord-pfp-area { position: relative; width: 55px; height: 55px; }
+        .discord-pfp-area { position: relative; width: 50px; height: 50px; }
         .discord-pfp-area img { width: 100%; height: 100%; border-radius: 50%; }
-        .status-dot { position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #1a1a1a; }
+        .status-dot { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #1a1a1a; }
 
-        /* REJTETT SOUNDCLOUD WIDGET */
+        /* ZENE VEZÉRLŐK */
+        .music-player { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        #track-title { font-size: 0.9rem; color: var(--pink); font-weight: 700; text-transform: uppercase; height: 20px; }
+        
+        .controls { display: flex; align-items: center; gap: 25px; margin-bottom: 5px; }
+        .control-btn { background: none; border: none; color: white; font-size: 1.4rem; cursor: pointer; transition: 0.2s; opacity: 0.7; }
+        .control-btn:hover { opacity: 1; color: var(--pink); }
+
+        .volume-container { display: flex; align-items: center; gap: 12px; width: 180px; }
+        input[type=range] { flex: 1; accent-color: var(--pink); cursor: pointer; height: 4px; }
+
         #sc-target { display: none; }
-
-        /* HANGERŐ SZABÁLYZÓ */
-        .volume-container { margin-top: 20px; display: flex; align-items: center; gap: 10px; width: 200px; }
-        input[type=range] { flex: 1; accent-color: var(--pink); cursor: pointer; }
     </style>
 </head>
 <body>
@@ -79,13 +81,13 @@
     </div>
 
     <video id="bg-video" loop muted playsinline preload="auto">
-        <source src="assets/video.mp4" type="video/mp4">
+        <source src="video.mp4" type="video/mp4">
     </video>
 
     <div id="main-content">
         <div class="profile-container">
             <div class="pfp-wrapper">
-                <img src="assets/profile.gif" alt="PFP">
+                <img src="profile.gif" alt="PFP">
             </div>
             <h1 class="name-tag">Hyside</h1>
         </div>
@@ -106,14 +108,22 @@
             </div>
             <div class="discord-info">
                 <div id="d-name" style="font-weight:700;">Loading...</div>
-                <div id="d-activity" style="font-size:0.85rem; color:#bbb;">Not doing anything</div>
+                <div id="d-activity" style="font-size:0.75rem; color:#bbb;">Not doing anything</div>
             </div>
         </div>
 
-        <div class="volume-container">
-            <i class="fas fa-volume-down"></i>
-            <input type="range" id="volumeSlider" min="0" max="100" value="20">
-            <i class="fas fa-volume-up"></i>
+        <div class="music-player">
+            <div id="track-title">Loading track...</div>
+            <div class="controls">
+                <button class="control-btn" onclick="ctrl('prev')"><i class="fas fa-backward"></i></button>
+                <button class="control-btn" style="font-size:2rem;" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
+                <button class="control-btn" onclick="ctrl('next')"><i class="fas fa-forward"></i></button>
+            </div>
+            <div class="volume-container">
+                <i class="fas fa-volume-down" style="font-size: 0.8rem; opacity: 0.5;"></i>
+                <input type="range" id="volumeSlider" min="0" max="100" value="25">
+                <i class="fas fa-volume-up" style="font-size: 0.8rem; opacity: 0.5;"></i>
+            </div>
         </div>
     </div>
 
@@ -123,8 +133,8 @@
     <script>
         const DISCORD_ID = "939688591381135401";
         let widget;
+        let isPlaying = true;
 
-        // INSTANT DISCORD UPDATE
         const ws = new WebSocket('wss://api.lanyard.rest/socket');
         ws.onmessage = (e) => {
             const data = JSON.parse(e.data);
@@ -144,27 +154,47 @@
         };
 
         function launch() {
-            // SoundCloud betöltés (20% hangerővel kezd)
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
-            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>`;
+            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true"></iframe>`;
             
             widget = SC.Widget(document.getElementById('sc-iframe'));
+            
             widget.bind(SC.Widget.Events.READY, () => {
-                widget.setVolume(20);
+                // HANGERŐ BEÁLLÍTÁSA 25%-RA
+                widget.setVolume(25);
+                updateTitle();
             });
+
+            widget.bind(SC.Widget.Events.PLAY_PROGRESS, () => updateTitle());
 
             document.getElementById('volumeSlider').addEventListener('input', (e) => {
                 if(widget) widget.setVolume(e.target.value);
             });
 
-            // Videó indul
             document.getElementById('bg-video').play();
-            
             document.getElementById('enter-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('enter-screen').style.display = 'none';
                 document.getElementById('main-content').style.opacity = '1';
             }, 1000);
+        }
+
+        function updateTitle() {
+            widget.getCurrentSound((sound) => {
+                if(sound) document.getElementById('track-title').innerText = sound.title;
+            });
+        }
+
+        function ctrl(action) {
+            if(!widget) return;
+            const icon = document.getElementById('play-icon');
+            if(action === 'toggle') {
+                widget.toggle();
+                isPlaying = !isPlaying;
+                icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+            } else if (action === 'next') widget.next();
+            else if (action === 'prev') widget.prev();
+            setTimeout(updateTitle, 500);
         }
     </script>
 </body>
