@@ -13,24 +13,23 @@
         }
 
         body, html {
-            margin: 0; padding: 0; height: 100%; width: 100%;
+            margin: 0; padding: 0; 
+            height: 100vh; width: 100vw;
             background: #000; font-family: 'Inter', sans-serif;
-            color: white; overflow: hidden;
+            color: white; overflow: hidden; /* Megakadályozza a görgetést */
         }
 
-        /* FIX: A VIDEÓ MOST MÁR AZ EGÉSZ HÁTTÉRBEN VAN */
+        /* BRUTÁLIS FULL SCREEN VIDEÓ FIX */
         #bg-video {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -100;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            filter: brightness(0.4);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1000; /* Nagyon mélyen a tartalom alatt */
+            object-fit: cover; /* Kitölti a képernyőt torzítás nélkül */
+            filter: brightness(0.3);
+            pointer-events: none;
         }
 
         #enter-screen {
@@ -41,54 +40,66 @@
 
         #main-content {
             position: relative;
-            z-index: 1;
-            height: 100vh; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            opacity: 0; transition: 1.5s ease;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1.5s ease;
             gap: 20px;
+            text-align: center;
         }
 
         .pfp-wrapper {
-            width: 160px; height: 160px; border-radius: 50%;
-            border: 5px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow);
-            overflow: hidden;
+            width: 150px; height: 150px; border-radius: 50%;
+            border: 4px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow);
+            overflow: hidden; flex-shrink: 0;
         }
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
         .name-tag { 
-            font-size: 8rem; font-weight: 900; 
-            text-shadow: 0 0 30px var(--pink), 0 0 60px var(--pink-glow);
+            font-size: clamp(4rem, 10vw, 8rem); /* Rugalmas méret */
+            font-weight: 900; 
+            text-shadow: 0 0 25px var(--pink-glow);
             text-transform: uppercase; margin: 0;
         }
 
         .music-player { 
             display: flex; flex-direction: column; align-items: center; 
-            gap: 15px; background: rgba(0, 0, 0, 0.7);
-            padding: 30px; border-radius: 30px;
-            border: 1px solid rgba(255, 45, 141, 0.4); width: 400px;
+            gap: 15px; background: rgba(0, 0, 0, 0.75);
+            padding: 25px; border-radius: 25px;
+            border: 1px solid var(--pink); 
+            width: 380px;
+            max-height: 400px;
+            backdrop-filter: blur(5px);
         }
 
         #track-art {
-            width: 100px; height: 100px; border-radius: 15px;
-            border: 2px solid var(--pink); box-shadow: 0 0 20px var(--pink-glow);
+            width: 90px; height: 90px; border-radius: 12px;
+            border: 2px solid var(--pink);
         }
 
         #track-title { 
-            font-size: 1.4rem; color: var(--pink); font-weight: 800; 
-            text-align: center; text-shadow: 0 0 15px var(--pink-glow);
+            font-size: 1.2rem; color: var(--pink); font-weight: 800; 
+            text-shadow: 0 0 10px var(--pink-glow);
+            width: 100%;
+            white-space: nowrap; /* Egy sorban tartja */
+            overflow: hidden; /* Ami nem fér el, eltünteti */
+            text-overflow: ellipsis; /* Három pontot tesz a végére ha hosszú */
         }
         
-        .controls { display: flex; align-items: center; gap: 40px; }
-        .control-btn { background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; }
-
-        input[type=range] { width: 80%; accent-color: var(--pink); cursor: pointer; }
+        .controls { display: flex; align-items: center; gap: 35px; }
+        .control-btn { background: none; border: none; color: white; font-size: 2.2rem; cursor: pointer; transition: 0.2s; }
+        .control-btn:hover { color: var(--pink); transform: scale(1.1); }
 
         #video-toggle {
-            position: fixed; bottom: 30px; right: 30px;
-            background: rgba(0, 0, 0, 0.6); border: 2px solid var(--pink);
-            color: white; width: 60px; height: 60px; border-radius: 50%;
+            position: fixed; bottom: 20px; right: 20px;
+            background: rgba(0, 0, 0, 0.6); border: 1px solid var(--pink);
+            color: white; width: 50px; height: 50px; border-radius: 50%;
             cursor: pointer; z-index: 1001;
-            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+            display: flex; align-items: center; justify-content: center;
         }
 
         #sc-wrapper { position: absolute; visibility: hidden; }
@@ -97,7 +108,7 @@
 <body>
 
     <div id="enter-screen" onclick="launch()">
-        <h2 style="color:var(--pink); letter-spacing:10px; text-transform:uppercase; font-size: 2.5rem; text-shadow: 0 0 20px var(--pink);">Click to Enter</h2>
+        <h2 style="color:var(--pink); letter-spacing:8px; text-transform:uppercase; text-shadow: 0 0 15px var(--pink);">Click to Enter</h2>
     </div>
 
     <video id="bg-video" loop muted playsinline>
@@ -110,24 +121,25 @@
         <div class="pfp-wrapper">
             <img src="assets/profile.gif" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
         </div>
+        
         <h1 class="name-tag">Hyside</h1>
 
-        <div class="socials" style="display: flex; gap: 30px;">
-            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-steam"></i></a>
-            <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-twitch"></i></a>
-            <a href="https://soundcloud.com/user-880127680" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-soundcloud"></i></a>
+        <div class="socials" style="display: flex; gap: 25px;">
+            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-steam"></i></a>
+            <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-twitch"></i></a>
+            <a href="https://soundcloud.com/user-880127680" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-soundcloud"></i></a>
         </div>
 
         <div class="music-player">
             <img id="track-art" src="" alt="">
-            <div id="track-title">Indítás...</div>
+            <div id="track-title">Betöltés...</div>
             <div class="controls">
                 <i class="fas fa-step-backward control-btn" onclick="widget.prev()"></i>
-                <i id="play-icon" class="fas fa-play control-btn" style="font-size:3rem;" onclick="ctrl()"></i>
+                <i id="play-icon" class="fas fa-play control-btn" style="font-size:2.8rem;" onclick="ctrl()"></i>
                 <i class="fas fa-step-forward control-btn" onclick="widget.next()"></i>
             </div>
-            <input type="range" id="volumeSlider" min="0" max="100" value="10">
+            <input type="range" id="volumeSlider" min="0" max="100" value="10" style="accent-color: var(--pink); cursor:pointer; width:80%;">
         </div>
     </div>
 
@@ -143,24 +155,22 @@
         const video = document.getElementById('bg-video');
 
         function launch() {
-            // Videó indítása kényszerítve
             video.play();
-
-            // Zene indítása brute force (folyamatos próbálkozás, amíg el nem indul)
             widget.setVolume(10);
+            
             widget.getSounds((sounds) => {
                 const randomIndex = Math.floor(Math.random() * sounds.length);
                 widget.skip(randomIndex);
                 
+                // Erőszakos indítás, amíg a böngésző engedi
+                let attempts = 0;
                 const forcePlay = setInterval(() => {
                     widget.play();
+                    attempts++;
                     widget.isPaused((p) => {
-                        if(!p) {
-                            clearInterval(forcePlay);
-                            console.log("Zene sikeresen elindult!");
-                        }
+                        if(!p || attempts > 20) clearInterval(forcePlay);
                     });
-                }, 300);
+                }, 200);
             });
 
             document.getElementById('enter-screen').style.display = 'none';
