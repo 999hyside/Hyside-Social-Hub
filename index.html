@@ -11,21 +11,21 @@
         :root {
             --accent: #c5a880; 
             --bg-dark: #0a0a0a;
-            --glass: rgba(15, 15, 15, 0.85);
+            --glass: rgba(15, 15, 15, 0.7);
         }
 
-        * { cursor: none !important; margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body, html { height: 100%; background-color: var(--bg-dark); color: white; overflow: hidden; scroll-behavior: smooth; }
-
         /* 999 CURSOR */
+        * { cursor: none !important; margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         #custom-cursor {
             position: fixed; pointer-events: none; z-index: 11000;
             color: var(--accent); font-weight: 900; font-size: 22px;
             text-shadow: 0 0 10px var(--accent); transform: translate(-50%, -50%);
         }
 
+        body, html { height: 100%; background-color: var(--bg-dark); color: white; overflow: hidden; scroll-behavior: smooth; }
+
         /* ANIMÁCIÓK */
-        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
         @keyframes glow { 0%, 100% { text-shadow: 0 0 10px rgba(197, 168, 128, 0.3); } 50% { text-shadow: 0 0 25px var(--accent); } }
 
         /* ENTER SCREEN */
@@ -37,40 +37,62 @@
         #enter-screen h2 { color: var(--accent); letter-spacing: 12px; font-size: 2.5rem; animation: glow 2s infinite; }
 
         /* HÁTTÉR VIDEÓ */
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.4); }
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.35); }
 
-        /* MAIN WRAPPER (SZEKCIÓKHOZ) */
         #content-wrapper { height: 200vh; transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1); }
 
-        /* FŐOLDAL SZEKCIÓ */
-        .page-section { height: 100vh; display: flex; align-items: center; justify-content: center; gap: 60px; padding: 0 10%; }
+        /* ELRENDEZÉS: BAL OLDAL ÉS JOBB OLDAL */
+        .page-section { 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 10%; 
+        }
 
-        .profile-side { text-align: center; animation: breathe 5s infinite; }
-        .profile-img { width: 300px; height: 300px; border-radius: 25px; object-fit: cover; border: 1px solid var(--accent); box-shadow: 0 0 40px rgba(0,0,0,0.8); }
-        .name-tag { font-size: 4.5rem; font-weight: 900; color: var(--accent); margin-top: 20px; animation: glow 3s infinite; }
-        
-        .socials { display: flex; gap: 25px; justify-content: center; margin-top: 20px; }
-        .socials a { color: var(--accent); font-size: 1.8rem; transition: 0.3s; opacity: 0.7; }
+        /* BAL OLDAL: PROFIL */
+        .profile-side { text-align: left; animation: breathe 5s infinite; }
+        .profile-img { width: 280px; height: 280px; border-radius: 20px; object-fit: cover; border: 1px solid rgba(197, 168, 128, 0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        .name-tag { font-size: 5rem; font-weight: 900; color: var(--accent); margin-top: 15px; animation: glow 3s infinite; line-height: 1; }
+        .socials { display: flex; gap: 20px; margin-top: 15px; }
+        .socials a { color: var(--accent); font-size: 1.5rem; transition: 0.3s; opacity: 0.6; }
         .socials a:hover { opacity: 1; transform: scale(1.2); }
 
-        /* SPOTIFY WIDGET */
+        /* JOBB OLDAL: ZENE/VIDEÓ WIDGET */
         .widget-side {
-            width: 450px; background: var(--glass); padding: 35px; border-radius: 35px;
-            backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.7); animation: breathe 6s infinite;
+            width: 400px; background: var(--glass); padding: 30px; border-radius: 30px;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6); animation: breathe 6s infinite;
         }
-        .video-preview { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 15px; overflow: hidden; margin-bottom: 25px; }
+        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 15px; overflow: hidden; margin-bottom: 20px; position: relative; }
+        .widget-info { text-align: center; margin-bottom: 20px; }
+        .widget-info h3 { font-size: 1.4rem; color: #fff; margin-bottom: 5px; }
+        .widget-info p { font-size: 0.8rem; color: var(--accent); opacity: 0.7; }
 
-        /* ALSÓ SZEKCIÓ (SOCIAL BROWSER) */
+        /* VEZÉRLŐK */
+        .controls { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .btn-row { display: flex; align-items: center; gap: 25px; }
+        .play-btn { width: 55px; height: 55px; background: var(--accent); color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
+        .play-btn:hover { transform: scale(1.1); }
+        
+        input[type=range] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; background: var(--accent); border-radius: 50%; }
+
+        /* SOCIAL BROWSER SZEKCIÓ */
         #social-viewer { height: 100vh; background: #050505; display: flex; flex-direction: column; }
-        .browser-header { padding: 20px; display: flex; align-items: center; gap: 20px; background: #111; }
-        .back-btn { background: var(--accent); color: #000; padding: 10px 25px; border-radius: 5px; font-weight: 700; }
-        #social-iframe { flex-grow: 1; border: none; width: 100%; background: #fff; }
+        .browser-header { padding: 15px 30px; display: flex; align-items: center; gap: 20px; background: #111; border-bottom: 1px solid #222; }
+        .back-btn { background: var(--accent); color: #000; padding: 8px 20px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; }
+        #social-iframe { flex-grow: 1; border: none; width: 100%; }
 
         /* VIEW COUNTER */
-        #view-counter { position: fixed; bottom: 20px; left: 30px; font-size: 0.8rem; color: var(--accent); opacity: 0.5; z-index: 5; }
+        #view-counter { position: fixed; bottom: 20px; left: 30px; font-size: 0.75rem; color: var(--accent); opacity: 0.4; letter-spacing: 2px; }
 
-        @media (max-width: 1000px) { .page-section { flex-direction: column; gap: 30px; } .widget-side { width: 100%; } }
+        @media (max-width: 1100px) { 
+            .page-section { flex-direction: column; justify-content: center; gap: 40px; text-align: center; } 
+            .profile-side { text-align: center; } 
+            .socials { justify-content: center; }
+            .widget-side { width: 100%; max-width: 400px; }
+        }
     </style>
 </head>
 <body>
@@ -78,7 +100,7 @@
     <div id="custom-cursor">999</div>
 
     <div id="enter-screen" onclick="startExp()">
-        <h2>CLICK TO CONTINUE...</h2>
+        <h2>CLICK TO ENTER</h2>
     </div>
 
     <video id="bg-video" loop></video>
@@ -96,25 +118,35 @@
             </div>
 
             <div class="widget-side">
-                <div class="video-preview">
-                    <div style="width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center;">
-                        <i class="fas fa-play" style="font-size:3rem; color:var(--accent);"></i>
+                <div class="video-box">
+                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.4);">
+                        <i class="fas fa-music" style="font-size:2.5rem; color:var(--accent); opacity:0.6;"></i>
                     </div>
                 </div>
-                <h3 style="text-align:center; margin-bottom:20px;">Hyside Experience</h3>
-                <div style="display:flex; justify-content:center; gap:25px; margin-bottom:20px;">
-                    <i class="fas fa-step-backward" onclick="changeVid()" style="cursor:pointer; opacity:0.5;"></i>
-                    <i id="p-icon" class="fas fa-pause" onclick="togglePlay()" style="cursor:pointer; font-size:1.5rem;"></i>
-                    <i class="fas fa-step-forward" onclick="changeVid()" style="cursor:pointer; opacity:0.5;"></i>
+                <div class="widget-info">
+                    <h3>Hyside Experience</h3>
+                    <p>Now Playing • Audio Visual</p>
                 </div>
-                <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)" style="width:100%;">
+                <div class="controls">
+                    <div class="btn-row">
+                        <i class="fas fa-backward" onclick="changeVid()" style="opacity:0.4; font-size:1.2rem;"></i>
+                        <div class="play-btn" onclick="togglePlay()">
+                            <i id="p-icon" class="fas fa-pause"></i>
+                        </div>
+                        <i class="fas fa-forward" onclick="changeVid()" style="opacity:0.4; font-size:1.2rem;"></i>
+                    </div>
+                    <div style="width:100%; display:flex; align-items:center; gap:12px;">
+                        <i class="fas fa-volume-down" style="font-size:0.7rem; color:var(--accent)"></i>
+                        <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)">
+                    </div>
+                </div>
             </div>
         </section>
 
         <section id="social-viewer">
             <div class="browser-header">
                 <div class="back-btn" onclick="goHome()">VISSZA</div>
-                <span id="current-url" style="opacity:0.5; font-size:0.9rem;"></span>
+                <span id="url-display" style="opacity:0.4; font-size:0.8rem;"></span>
             </div>
             <iframe id="social-iframe" src=""></iframe>
         </section>
@@ -123,18 +155,19 @@
     <div id="view-counter">VIEWS: <span id="v-count">1,285</span></div>
 
     <script>
-        const vids = ['assets/video1.mp4', 'assets/video2.mp4', 'assets/video3.mp4'];
+        const playlist = ['assets/video1.mp4', 'assets/video2.mp4', 'assets/video3.mp4'];
         const video = document.getElementById('bg-video');
         const wrapper = document.getElementById('content-wrapper');
         const cursor = document.getElementById('custom-cursor');
 
+        // Kurzór követés
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
         function changeVid() {
-            video.src = vids[Math.floor(Math.random() * vids.length)];
+            video.src = playlist[Math.floor(Math.random() * playlist.length)];
             video.play();
         }
 
@@ -153,7 +186,7 @@
 
         function openSocial(url) {
             document.getElementById('social-iframe').src = url;
-            document.getElementById('current-url').innerText = url;
+            document.getElementById('url-display').innerText = url;
             wrapper.style.transform = 'translateY(-50%)';
         }
 
