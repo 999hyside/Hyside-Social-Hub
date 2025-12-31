@@ -24,7 +24,6 @@
             z-index: 10000; cursor: pointer; transition: 1s ease;
         }
 
-        /* LETÖLTÖTT VIDEÓ HÁTTÉR */
         #bg-video {
             position: fixed; inset: 0; width: 100%; height: 100%;
             object-fit: cover; z-index: -1; filter: brightness(0.4);
@@ -60,16 +59,48 @@
         .discord-pfp-area img { width: 100%; height: 100%; border-radius: 50%; }
         .status-dot { position: absolute; bottom: 0; right: 0; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #1a1a1a; }
 
-        /* ZENE VEZÉRLŐK */
-        .music-player { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        #track-title { font-size: 0.9rem; color: var(--pink); font-weight: 700; text-transform: uppercase; height: 20px; }
-        
-        .controls { display: flex; align-items: center; gap: 25px; margin-bottom: 5px; }
-        .control-btn { background: none; border: none; color: white; font-size: 1.4rem; cursor: pointer; transition: 0.2s; opacity: 0.7; }
-        .control-btn:hover { opacity: 1; color: var(--pink); }
+        /* ZENE VEZÉRLŐK MÓDOSÍTVA */
+        .music-player { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 15px; 
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 25px;
+        }
 
-        .volume-container { display: flex; align-items: center; gap: 12px; width: 180px; }
-        input[type=range] { flex: 1; accent-color: var(--pink); cursor: pointer; height: 4px; }
+        #track-title { 
+            font-size: 1.4rem; /* Nagyobb betűméret */
+            color: var(--pink); 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            text-align: center;
+            min-height: 30px;
+            text-shadow: 0 0 10px rgba(255, 45, 141, 0.5);
+        }
+        
+        .controls { display: flex; align-items: center; gap: 35px; margin-bottom: 10px; }
+        .control-btn { 
+            background: none; 
+            border: none; 
+            color: white; 
+            font-size: 1.8rem; /* Nagyobb gombok */
+            cursor: pointer; 
+            transition: 0.2s; 
+            opacity: 0.7; 
+        }
+        .control-btn:hover { opacity: 1; color: var(--pink); transform: scale(1.1); }
+
+        .volume-container { display: flex; align-items: center; gap: 15px; width: 220px; }
+        
+        /* Nagyobb hangerő csúszka */
+        input[type=range] { 
+            flex: 1; 
+            accent-color: var(--pink); 
+            cursor: pointer; 
+            height: 6px; 
+        }
 
         #sc-target { display: none; }
     </style>
@@ -115,14 +146,14 @@
         <div class="music-player">
             <div id="track-title">Loading track...</div>
             <div class="controls">
-                <button class="control-btn" onclick="ctrl('prev')"><i class="fas fa-backward"></i></button>
-                <button class="control-btn" style="font-size:2rem;" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
-                <button class="control-btn" onclick="ctrl('next')"><i class="fas fa-forward"></i></button>
+                <button class="control-btn" onclick="ctrl('prev')"><i class="fas fa-step-backward"></i></button>
+                <button class="control-btn" style="font-size:2.5rem;" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
+                <button class="control-btn" onclick="ctrl('next')"><i class="fas fa-step-forward"></i></button>
             </div>
             <div class="volume-container">
-                <i class="fas fa-volume-down" style="font-size: 0.8rem; opacity: 0.5;"></i>
-                <input type="range" id="volumeSlider" min="0" max="100" value="25">
-                <i class="fas fa-volume-up" style="font-size: 0.8rem; opacity: 0.5;"></i>
+                <i class="fas fa-volume-down" style="font-size: 1rem; opacity: 0.5;"></i>
+                <input type="range" id="volumeSlider" min="0" max="100" value="20">
+                <i class="fas fa-volume-up" style="font-size: 1rem; opacity: 0.5;"></i>
             </div>
         </div>
     </div>
@@ -160,8 +191,8 @@
             widget = SC.Widget(document.getElementById('sc-iframe'));
             
             widget.bind(SC.Widget.Events.READY, () => {
-                // HANGERŐ BEÁLLÍTÁSA 25%-RA
-                widget.setVolume(25);
+                // HANGERŐ BEÁLLÍTÁSA 20%-RA
+                widget.setVolume(20);
                 updateTitle();
             });
 
