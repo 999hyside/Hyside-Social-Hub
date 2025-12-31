@@ -31,72 +31,54 @@
             object-fit: cover; z-index: -1; filter: brightness(0.4);
         }
 
-        /* FŐ TARTALOM ELRENDEZÉSE */
+        /* FŐ TARTALOM */
         #main-content {
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             opacity: 0; transition: 1.5s ease;
         }
 
-        /* PROFIL SZEKCIÓ (image_c99936.png alapján) */
-        .profile-container {
-            display: flex; align-items: center; gap: 30px; margin-bottom: 20px;
-        }
-
+        /* PROFIL RÉSZ (image_c99936.png alapján) */
+        .profile-container { display: flex; align-items: center; gap: 30px; margin-bottom: 20px; }
         .pfp-wrapper {
             width: 130px; height: 130px; border-radius: 50%;
-            border: 3px solid var(--pink);
-            box-shadow: 0 0 25px var(--pink-glow);
+            border: 3px solid var(--pink); box-shadow: 0 0 25px var(--pink-glow);
             overflow: hidden;
         }
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-
         .name-tag { font-size: 6rem; font-weight: 900; letter-spacing: -2px; }
 
-        /* BIO SZEKCIÓ */
-        .bio {
-            border-left: 3px solid var(--pink);
-            padding-left: 15px; margin-bottom: 30px;
-            font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px;
-        }
+        .bio { border-left: 3px solid var(--pink); padding-left: 15px; margin-bottom: 30px; font-size: 1.2rem; text-transform: uppercase; }
 
-        /* SZOCIÁLIS IKONOK */
         .socials { display: flex; gap: 25px; margin-bottom: 40px; }
-        .socials a { color: white; font-size: 1.8rem; opacity: 0.6; transition: 0.3s; }
+        .socials a { color: white; font-size: 1.8rem; opacity: 0.6; transition: 0.3s; text-decoration: none; }
         .socials a:hover { opacity: 1; color: var(--pink); transform: scale(1.2); }
 
-        /* DISCORD KÁRTYA (image_c9303e.png stílusban) */
+        /* DISCORD KÁRTYA (image_c9303e.png alapján) */
         .discord-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 45, 141, 0.3);
-            border-radius: 20px;
-            padding: 15px 25px;
-            display: flex; align-items: center; gap: 15px;
-            width: 350px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 45, 141, 0.3); border-radius: 20px;
+            padding: 15px 25px; display: flex; align-items: center; gap: 15px; width: 350px;
         }
-
         .discord-pfp-area { position: relative; width: 55px; height: 55px; }
         .discord-pfp-area img { width: 100%; height: 100%; border-radius: 50%; }
-        .status-dot {
-            position: absolute; bottom: 0; right: 0;
-            width: 14px; height: 14px; border-radius: 50%;
-            border: 2px solid #1a1a1a;
-        }
+        .status-dot { position: absolute; bottom: 0; right: 0; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #1a1a1a; }
 
-        .discord-info { display: flex; flex-direction: column; }
-        .discord-user { font-weight: 700; font-size: 1.1rem; }
-        .discord-status-text { font-size: 0.85rem; color: #bbb; }
+        /* REJTETT SOUNDCLOUD WIDGET */
+        #sc-target { display: none; }
 
+        /* HANGERŐ SZABÁLYZÓ */
+        .volume-container { margin-top: 20px; display: flex; align-items: center; gap: 10px; width: 200px; }
+        input[type=range] { flex: 1; accent-color: var(--pink); cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div id="enter-screen" onclick="launch()">
-        <h2 style="color:var(--pink); letter-spacing:8px;">CLICK TO ENTER</h2>
+        <h2 style="color:var(--pink); letter-spacing:8px; text-transform:uppercase;">Click to Enter</h2>
     </div>
 
-    <video id="bg-video" loop muted playsinline>
+    <video id="bg-video" loop muted playsinline preload="auto">
         <source src="assets/video.mp4" type="video/mp4">
     </video>
 
@@ -123,16 +105,26 @@
                 <div id="d-status" class="status-dot"></div>
             </div>
             <div class="discord-info">
-                <span id="d-name" class="discord-user">Loading...</span>
-                <span id="d-activity" class="discord-status-text">Not doing anything</span>
+                <div id="d-name" style="font-weight:700;">Loading...</div>
+                <div id="d-activity" style="font-size:0.85rem; color:#bbb;">Not doing anything</div>
             </div>
+        </div>
+
+        <div class="volume-container">
+            <i class="fas fa-volume-down"></i>
+            <input type="range" id="volumeSlider" min="0" max="100" value="20">
+            <i class="fas fa-volume-up"></i>
         </div>
     </div>
 
+    <div id="sc-target"></div>
+
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
         const DISCORD_ID = "939688591381135401";
+        let widget;
 
-        // WebSocket az azonnali frissítéshez
+        // INSTANT DISCORD UPDATE
         const ws = new WebSocket('wss://api.lanyard.rest/socket');
         ws.onmessage = (e) => {
             const data = JSON.parse(e.data);
@@ -143,25 +135,31 @@
             if (data.t === 'INIT_STATE' || data.t === 'PRESENCE_UPDATE') {
                 const user = data.t === 'INIT_STATE' ? data.d[DISCORD_ID] : data.d;
                 if(!user) return;
-                
                 document.getElementById('d-name').innerText = user.discord_user.username;
-                if(user.discord_user.avatar) {
-                    document.getElementById('d-avatar').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png`;
-                }
-                
+                if(user.discord_user.avatar) document.getElementById('d-avatar').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png`;
                 const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
-                document.getElementById('d-status').style.backgroundColor = colors[user.discord_status];
-                
-                if(user.activities.length > 0) {
-                    document.getElementById('d-activity').innerText = user.activities[0].state || user.activities[0].name;
-                } else {
-                    document.getElementById('d-activity').innerText = "Do not disturb";
-                }
+                document.getElementById('d-status').style.backgroundColor = colors[user.discord_status] || '#747f8d';
+                document.getElementById('d-activity').innerText = user.activities[0] ? (user.activities[0].state || user.activities[0].name) : "No activity";
             }
         };
 
         function launch() {
+            // SoundCloud betöltés (20% hangerővel kezd)
+            const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
+            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false"></iframe>`;
+            
+            widget = SC.Widget(document.getElementById('sc-iframe'));
+            widget.bind(SC.Widget.Events.READY, () => {
+                widget.setVolume(20);
+            });
+
+            document.getElementById('volumeSlider').addEventListener('input', (e) => {
+                if(widget) widget.setVolume(e.target.value);
+            });
+
+            // Videó indul
             document.getElementById('bg-video').play();
+            
             document.getElementById('enter-screen').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('enter-screen').style.display = 'none';
