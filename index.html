@@ -12,7 +12,7 @@
             --accent: #c5a880; 
             --accent-glow: rgba(197, 168, 128, 0.4);
             --bg: #0a0a0a;
-            --glass: rgba(20, 20, 20, 0.7);
+            --glass: rgba(15, 15, 15, 0.85);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -32,84 +32,77 @@
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
         /* HÁTTÉR VIDEÓ */
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.2); }
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.18); }
 
-        /* FŐ TARTALOM ELRENDEZÉS */
+        /* FŐ TARTALOM */
         #main-content { 
             height: 100vh; display: flex; align-items: center; 
-            justify-content: space-between; padding: 0 8%; 
+            justify-content: space-between; padding: 0 10%; 
             opacity: 0; visibility: hidden; transition: opacity 1.5s ease;
         }
 
-        /* BAL OLDAL: NAGY PROFIL ÉS SZÖVEG */
+        /* BAL OLDAL: PROFIL */
         .profile-side { display: flex; flex-direction: column; align-items: flex-start; }
         
-        .profile-header { display: flex; align-items: center; gap: 40px; margin-bottom: 30px; }
+        .profile-header { display: flex; align-items: center; gap: 40px; margin-bottom: 40px; }
         
         .profile-container {
-            width: 150px; height: 150px; border-radius: 50%; /* Kör alakú mint a képen */
+            width: 160px; height: 160px; border-radius: 50%; 
             overflow: hidden; border: 3px solid var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
+            box-shadow: 0 0 40px var(--accent-glow);
         }
         .profile-img { width: 100%; height: 100%; object-fit: cover; }
 
         .name-tag { 
-            font-size: 7rem; font-weight: 900; color: white; line-height: 1;
-            text-shadow: 0 0 40px rgba(255,255,255,0.2);
+            font-size: 7.5rem; font-weight: 900; color: white; line-height: 1;
+            text-shadow: 0 0 50px rgba(255,255,255,0.15);
         }
 
         .bio-box { 
-            max-width: 550px; border-left: 3px solid var(--accent); 
-            padding-left: 30px; margin-bottom: 40px; 
+            max-width: 500px; border-left: 4px solid var(--accent); 
+            padding-left: 30px; margin-bottom: 50px; 
         }
-        .bio-text { font-size: 1.2rem; color: #d0d0d0; line-height: 1.6; font-weight: 300; }
+        .bio-text { font-size: 1.4rem; color: #e0e0e0; font-weight: 400; letter-spacing: 1px; }
         
-        .socials { display: flex; gap: 25px; }
-        .socials a { 
-            color: white; font-size: 2rem; transition: 0.3s; opacity: 0.6; 
-            filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
-        }
+        .socials { display: flex; gap: 30px; }
+        .socials a { color: white; font-size: 2.2rem; transition: 0.3s; opacity: 0.5; }
         .socials a:hover { opacity: 1; transform: translateY(-5px); color: var(--accent); filter: drop-shadow(0 0 15px var(--accent)); }
 
-        /* JOBB OLDAL: CLEAN PLAYER KÁRTYA */
+        /* JOBB OLDAL: NAGYOBB PLAYER */
         .player-card {
-            width: 400px; background: var(--glass); padding: 30px; border-radius: 40px;
-            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
-            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            width: 480px; /* Megnövelt szélesség */
+            background: var(--glass); padding: 25px; border-radius: 45px;
+            backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 50px 100px rgba(0,0,0,0.7);
+            display: flex; flex-direction: column; gap: 25px;
         }
 
-        .sc-container { width: 100%; height: 350px; border-radius: 25px; overflow: hidden; margin-bottom: 10px; }
+        .sc-container { width: 100%; height: 450px; border-radius: 30px; overflow: hidden; background: #000; }
 
-        /* EGYEDI VEZÉRLŐK */
-        .controls { width: 100%; display: flex; flex-direction: column; gap: 20px; }
+        /* VEZÉRLŐK */
+        .controls { width: 100%; display: flex; flex-direction: column; gap: 20px; padding: 0 10px; }
         
-        .btn-row { display: flex; justify-content: center; align-items: center; gap: 35px; }
-        .btn-row button { 
-            background: none; border: none; color: white; font-size: 1.4rem; 
-            cursor: pointer; transition: 0.3s; opacity: 0.8;
-        }
-        .btn-row button:hover { color: var(--accent); transform: scale(1.1); }
-        .btn-row .play-btn { 
-            font-size: 2.5rem; color: var(--accent); opacity: 1;
-            filter: drop-shadow(0 0 10px var(--accent-glow));
-        }
+        .btn-row { display: flex; justify-content: center; align-items: center; gap: 40px; }
+        .btn-row button { background: none; border: none; color: white; font-size: 1.6rem; cursor: pointer; transition: 0.3s; opacity: 0.7; }
+        .btn-row button:hover { color: var(--accent); transform: scale(1.1); opacity: 1; }
+        .btn-row .play-btn { font-size: 2.8rem; color: var(--accent); opacity: 1; filter: drop-shadow(0 0 15px var(--accent-glow)); }
 
-        .vol-row { display: flex; align-items: center; gap: 15px; width: 100%; padding: 0 10px; }
-        .vol-row i { color: white; opacity: 0.5; font-size: 0.8rem; }
+        .vol-row { display: flex; align-items: center; gap: 15px; width: 100%; }
+        .vol-row i { color: white; opacity: 0.4; font-size: 0.9rem; }
         
-        input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; outline: none; }
+        input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255,255,255,0.1); height: 5px; border-radius: 10px; outline: none; }
         input[type=range]::-webkit-slider-thumb { 
-            -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent); 
+            -webkit-appearance: none; width: 16px; height: 16px; background: var(--accent); 
             border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px var(--accent); 
         }
 
         @media (max-width: 1200px) {
-            #main-content { flex-direction: column; text-align: center; justify-content: center; gap: 50px; overflow-y: auto; padding: 40px 20px; }
+            #main-content { flex-direction: column; text-align: center; justify-content: flex-start; gap: 40px; overflow-y: auto; padding: 60px 20px; }
             .profile-header { flex-direction: column; gap: 20px; }
-            .name-tag { font-size: 4rem; }
+            .name-tag { font-size: 5rem; }
             .bio-box { border: none; padding: 0; }
             .profile-side { align-items: center; }
+            .player-card { width: 100%; max-width: 450px; }
         }
     </style>
 </head>
@@ -133,9 +126,7 @@
             </div>
             
             <div class="bio-box">
-                <p class="bio-text">
-                    Hyside vagyok, content creator és egy unalmas ember. Szeretem a letisztult designt, a jó zenéket és a minőségi tartalmat.
-                </p>
+                <p class="bio-text">CONTENT CREATOR</p>
             </div>
 
             <div class="socials">
@@ -156,7 +147,7 @@
                     <button onclick="ctrl('next')"><i class="fas fa-step-forward"></i></button>
                 </div>
                 <div class="vol-row">
-                    <i class="fas fa-volume-off"></i>
+                    <i class="fas fa-volume-down"></i>
                     <input type="range" id="volumeSlider" min="0" max="100" value="80">
                     <i class="fas fa-volume-up"></i>
                 </div>
@@ -171,7 +162,7 @@
 
         function launch() {
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
-            const scWidgetHtml = `<iframe id="sc-iframe" width="100%" height="350" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23c5a880&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>`;
+            const scWidgetHtml = `<iframe id="sc-iframe" width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23c5a880&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>`;
             
             document.getElementById('sc-target').innerHTML = scWidgetHtml;
             const iframe = document.getElementById('sc-iframe');
