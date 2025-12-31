@@ -18,7 +18,7 @@
             color: white; overflow: hidden;
         }
 
-        /* TELJES KÉPERNYŐS VIDEÓ HÁTTÉR */
+        /* HÁTTÉR VIDEÓ FIXÁLVA */
         #bg-video {
             position: fixed;
             top: 50%;
@@ -45,11 +45,11 @@
             z-index: 1;
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            opacity: 0; transition: 1.5s ease;
+            opacity: 0; transition: 1s ease;
             gap: 25px;
         }
 
-        .profile-container { display: flex; align-items: center; gap: 45px; }
+        .profile-container { display: flex; align-items: center; gap: 40px; }
         .pfp-wrapper {
             width: 180px; height: 180px; border-radius: 50%;
             border: 5px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow);
@@ -58,62 +58,51 @@
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
         .name-tag { 
-            font-size: 9rem; font-weight: 900; 
+            font-size: 8rem; font-weight: 900; 
             text-shadow: 0 0 30px var(--pink), 0 0 60px var(--pink-glow);
+            text-transform: uppercase;
         }
 
         .music-player { 
             display: flex; flex-direction: column; align-items: center; 
-            gap: 25px; background: rgba(0, 0, 0, 0.7);
-            padding: 40px; border-radius: 50px;
-            border: 2px solid rgba(255, 45, 141, 0.4); width: 500px;
+            gap: 20px; background: rgba(0, 0, 0, 0.7);
+            padding: 35px; border-radius: 40px;
+            border: 1px solid rgba(255, 45, 141, 0.4); width: 450px;
         }
 
         #track-art {
-            width: 120px; height: 120px; border-radius: 20px;
-            border: 3px solid var(--pink); box-shadow: 0 0 25px var(--pink-glow);
+            width: 110px; height: 110px; border-radius: 15px;
+            border: 2px solid var(--pink); box-shadow: 0 0 20px var(--pink-glow);
         }
 
         #track-title { 
-            font-size: 1.8rem; color: var(--pink); font-weight: 900; 
-            text-align: center; text-shadow: 0 0 20px var(--pink-glow);
+            font-size: 1.5rem; color: var(--pink); font-weight: 800; 
+            text-align: center; text-shadow: 0 0 15px var(--pink-glow);
+            margin: 10px 0;
         }
         
-        .controls { display: flex; align-items: center; gap: 50px; }
-        .control-btn { background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; }
+        .controls { display: flex; align-items: center; gap: 40px; }
+        .control-btn { background: none; border: none; color: white; font-size: 2.2rem; cursor: pointer; transition: 0.3s; }
+        .control-btn:hover { color: var(--pink); transform: scale(1.1); }
 
-        input[type=range] { width: 300px; accent-color: var(--pink); cursor: pointer; }
+        input[type=range] { width: 80%; accent-color: var(--pink); cursor: pointer; margin-top: 15px; }
 
-        /* VIDEÓ VEZÉRLŐ GOMB JOBB LENT */
         #video-toggle {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid var(--pink);
-            color: white;
-            padding: 15px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 1001;
-            box-shadow: 0 0 15px var(--pink-glow);
-            transition: 0.3s;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
+            position: fixed; bottom: 25px; right: 25px;
+            background: rgba(0, 0, 0, 0.5); border: 2px solid var(--pink);
+            color: white; width: 55px; height: 55px; border-radius: 50%;
+            cursor: pointer; z-index: 1001; box-shadow: 0 0 15px var(--pink-glow);
+            display: flex; align-items: center; justify-content: center; font-size: 1.3rem;
         }
-        #video-toggle:hover { transform: scale(1.1); background: var(--pink); }
 
-        #sc-target { display: none; }
+        /* Rejtett SoundCloud iframe */
+        #sc-wrapper { position: absolute; top: -5000px; left: -5000px; }
     </style>
 </head>
 <body>
 
     <div id="enter-screen" onclick="launch()">
-        <h2 style="color:var(--pink); letter-spacing:12px; text-transform:uppercase; font-size: 2.5rem; text-shadow: 0 0 20px var(--pink);">Click to Enter</h2>
+        <h2 style="color:var(--pink); letter-spacing:10px; text-transform:uppercase; font-size: 2.2rem; text-shadow: 0 0 15px var(--pink);">Click to Enter</h2>
     </div>
 
     <video id="bg-video" loop muted playsinline>
@@ -130,28 +119,28 @@
             <h1 class="name-tag">Hyside</h1>
         </div>
 
-        <div class="socials" style="display: flex; gap: 40px;">
-            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-steam"></i></a>
-            <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-twitch"></i></a>
-            <a href="https://soundcloud.com/user-880127680" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-soundcloud"></i></a>
+        <div class="socials" style="display: flex; gap: 35px;">
+            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:2.8rem;"><i class="fab fa-steam"></i></a>
+            <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:2.8rem;"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:2.8rem;"><i class="fab fa-twitch"></i></a>
+            <a href="https://soundcloud.com/user-880127680" target="_blank" style="color:white; font-size:2.8rem;"><i class="fab fa-soundcloud"></i></a>
         </div>
 
         <div class="music-player">
             <img id="track-art" src="" alt="">
-            <div id="track-title">Loading...</div>
+            <div id="track-title">Hangrendszer indítása...</div>
             <div class="controls">
                 <i class="fas fa-step-backward control-btn" onclick="widget.prev()"></i>
-                <i id="play-icon" class="fas fa-pause control-btn" style="font-size:3.5rem;" onclick="ctrl()"></i>
+                <i id="play-icon" class="fas fa-play control-btn" style="font-size:3rem;" onclick="ctrl()"></i>
                 <i class="fas fa-step-forward control-btn" onclick="widget.next()"></i>
             </div>
             <input type="range" id="volumeSlider" min="0" max="100" value="10">
         </div>
     </div>
 
-    <div id="sc-target">
+    <div id="sc-wrapper">
         <iframe id="sc-iframe" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" 
-            src="https://w.soundcloud.com/player/?url=https://soundcloud.com/user-880127680/sets/everything-too&auto_play=false"></iframe>
+            src="https://w.soundcloud.com/player/?url=https://soundcloud.com/user-880127680/sets/everything-too&auto_play=false&show_artwork=true"></iframe>
     </div>
 
     <script src="https://w.soundcloud.com/player/api.js"></script>
@@ -160,31 +149,35 @@
         const video = document.getElementById('bg-video');
 
         function launch() {
-            // Videó indítása kényszerítve
-            video.play().catch(e => console.log("Video autoplay blocked"));
+            // 1. VIDEÓ KÉNYSZERÍTÉSE
+            video.muted = false; // Ha akarod hallani a videót is, vedd ki a muted-ot a tag-ből
+            video.play();
 
-            // Zene indítása véletlenszerű dallal kényszerítve
+            // 2. ZENE KÉNYSZERÍTÉSE
             widget.setVolume(10);
+            
+            // Lekérjük a dalokat és azonnal ugrunk egy véletlenre
             widget.getSounds((sounds) => {
                 const randomIndex = Math.floor(Math.random() * sounds.length);
                 widget.skip(randomIndex);
-                setTimeout(() => { widget.play(); }, 500); // Késleltetett start a biztos sikerért
+                
+                // Többszöri lejátszási kísérlet (brute force)
+                const playInterval = setInterval(() => {
+                    widget.play();
+                    widget.isPaused((paused) => {
+                        if (!paused) clearInterval(playInterval);
+                    });
+                }, 200);
             });
 
             document.getElementById('enter-screen').style.display = 'none';
             document.getElementById('main-content').style.opacity = '1';
         }
 
-        // VIDEÓ KI-BE KAPCSOLÓ
         function toggleVideo() {
             const icon = document.getElementById('vid-icon');
-            if (video.paused) {
-                video.play();
-                icon.className = "fas fa-video";
-            } else {
-                video.pause();
-                icon.className = "fas fa-video-slash";
-            }
+            if (video.paused) { video.play(); icon.className = "fas fa-video"; }
+            else { video.pause(); icon.className = "fas fa-video-slash"; }
         }
 
         widget.bind(SC.Widget.Events.PLAY, () => {
