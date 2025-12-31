@@ -10,78 +10,106 @@
 
         :root {
             --accent: #c5a880; 
+            --accent-glow: rgba(197, 168, 128, 0.4);
             --bg: #0a0a0a;
-            --glass: rgba(18, 18, 18, 0.95);
+            --glass: rgba(20, 20, 20, 0.7);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body, html { height: 100%; background-color: var(--bg); color: white; overflow: hidden; }
 
-        /* ENTER SCREEN */
+        /* BELÉPŐ KÉPERNYŐ */
         #enter-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; display: flex; align-items: center; justify-content: center;
-            z-index: 10000; cursor: pointer; transition: opacity 0.8s ease;
+            z-index: 10000; cursor: pointer; transition: opacity 1s ease;
         }
-        #enter-screen h2 { color: var(--accent); letter-spacing: 12px; font-weight: 300; text-transform: uppercase; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+        #enter-screen h2 { 
+            color: var(--accent); letter-spacing: 15px; font-weight: 300; 
+            text-transform: uppercase; animation: pulse 2.5s infinite;
+            text-shadow: 0 0 20px var(--accent-glow);
+        }
+        @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
         /* HÁTTÉR VIDEÓ */
-        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.15); }
+        #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.2); }
 
-        /* FŐ TARTALOM - Szélekre rendezve */
+        /* FŐ TARTALOM ELRENDEZÉS */
         #main-content { 
             height: 100vh; display: flex; align-items: center; 
-            justify-content: space-between; padding: 0 5%; 
-            opacity: 0; visibility: hidden; transition: opacity 1.2s ease;
+            justify-content: space-between; padding: 0 8%; 
+            opacity: 0; visibility: hidden; transition: opacity 1.5s ease;
         }
 
-        /* BAL OLDAL: NAGYOBB PROFIL */
-        .profile-side { display: flex; align-items: center; gap: 45px; }
+        /* BAL OLDAL: NAGY PROFIL ÉS SZÖVEG */
+        .profile-side { display: flex; flex-direction: column; align-items: flex-start; }
+        
+        .profile-header { display: flex; align-items: center; gap: 40px; margin-bottom: 30px; }
         
         .profile-container {
-            flex-shrink: 0; width: 300px; height: 300px; border-radius: 30px; /* Megnövelt GIF */
+            width: 150px; height: 150px; border-radius: 50%; /* Kör alakú mint a képen */
             overflow: hidden; border: 3px solid var(--accent);
-            box-shadow: 0 0 40px rgba(197, 168, 128, 0.3);
+            box-shadow: 0 0 30px var(--accent-glow);
         }
-        .profile-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .profile-img { width: 100%; height: 100%; object-fit: cover; }
 
-        .profile-info { display: flex; flex-direction: column; }
-        .name-tag { font-size: 6rem; font-weight: 900; color: var(--accent); line-height: 0.9; margin-bottom: 20px; } /* Hatalmas név */
-        .bio-text { font-size: 1.3rem; color: #a0a0a0; margin-bottom: 30px; max-width: 450px; border-left: 4px solid var(--accent); padding-left: 25px; line-height: 1.4; } /* Nagyobb bio */
+        .name-tag { 
+            font-size: 7rem; font-weight: 900; color: white; line-height: 1;
+            text-shadow: 0 0 40px rgba(255,255,255,0.2);
+        }
+
+        .bio-box { 
+            max-width: 550px; border-left: 3px solid var(--accent); 
+            padding-left: 30px; margin-bottom: 40px; 
+        }
+        .bio-text { font-size: 1.2rem; color: #d0d0d0; line-height: 1.6; font-weight: 300; }
         
-        .socials { display: flex; gap: 30px; }
-        .socials a { color: var(--accent); font-size: 2.2rem; transition: 0.3s; opacity: 0.7; } /* Nagyobb ikonok */
-        .socials a:hover { opacity: 1; transform: translateY(-5px); color: #fff; text-shadow: 0 0 15px var(--accent); }
+        .socials { display: flex; gap: 25px; }
+        .socials a { 
+            color: white; font-size: 2rem; transition: 0.3s; opacity: 0.6; 
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.2));
+        }
+        .socials a:hover { opacity: 1; transform: translateY(-5px); color: var(--accent); filter: drop-shadow(0 0 15px var(--accent)); }
 
-        /* JOBB OLDAL: WIDGET */
-        .widget-side { width: 420px; display: flex; flex-direction: column; gap: 15px; }
-        .sc-frame-container { 
-            width: 100%; height: 400px; border-radius: 24px; overflow: hidden; 
-            background: #000; border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        /* JOBB OLDAL: CLEAN PLAYER KÁRTYA */
+        .player-card {
+            width: 400px; background: var(--glass); padding: 30px; border-radius: 40px;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
         }
 
-        .custom-player {
-            background: var(--glass); padding: 20px; border-radius: 24px;
-            border: 1px solid rgba(197, 168, 128, 0.2);
-            display: flex; flex-direction: column; gap: 20px;
-        }
-        .playback-btns { display: flex; align-items: center; justify-content: center; gap: 30px; }
-        .playback-btns button { background: none; border: none; color: var(--accent); font-size: 1.5rem; cursor: pointer; transition: 0.3s; }
-        .playback-btns .main-btn { font-size: 2.2rem; }
+        .sc-container { width: 100%; height: 350px; border-radius: 25px; overflow: hidden; margin-bottom: 10px; }
+
+        /* EGYEDI VEZÉRLŐK */
+        .controls { width: 100%; display: flex; flex-direction: column; gap: 20px; }
         
-        .volume-control { display: flex; align-items: center; gap: 15px; }
+        .btn-row { display: flex; justify-content: center; align-items: center; gap: 35px; }
+        .btn-row button { 
+            background: none; border: none; color: white; font-size: 1.4rem; 
+            cursor: pointer; transition: 0.3s; opacity: 0.8;
+        }
+        .btn-row button:hover { color: var(--accent); transform: scale(1.1); }
+        .btn-row .play-btn { 
+            font-size: 2.5rem; color: var(--accent); opacity: 1;
+            filter: drop-shadow(0 0 10px var(--accent-glow));
+        }
+
+        .vol-row { display: flex; align-items: center; gap: 15px; width: 100%; padding: 0 10px; }
+        .vol-row i { color: white; opacity: 0.5; font-size: 0.8rem; }
+        
         input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; outline: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 50%; cursor: pointer; }
+        input[type=range]::-webkit-slider-thumb { 
+            -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent); 
+            border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px var(--accent); 
+        }
 
-        /* Mobil nézet optimalizálás */
         @media (max-width: 1200px) {
-            #main-content { flex-direction: column; text-align: center; gap: 50px; overflow-y: auto; padding: 60px 20px; }
-            .profile-side { flex-direction: column; }
+            #main-content { flex-direction: column; text-align: center; justify-content: center; gap: 50px; overflow-y: auto; padding: 40px 20px; }
+            .profile-header { flex-direction: column; gap: 20px; }
             .name-tag { font-size: 4rem; }
-            .bio-text { border: none; padding: 0; font-size: 1.1rem; }
-            .profile-container { width: 220px; height: 220px; }
+            .bio-box { border: none; padding: 0; }
+            .profile-side { align-items: center; }
         }
     </style>
 </head>
@@ -97,31 +125,37 @@
 
     <div id="main-content">
         <div class="profile-side">
-            <div class="profile-container">
-                <img src="assets/profile.gif" class="profile-img">
+            <div class="profile-header">
+                <div class="profile-container">
+                    <img src="assets/profile.gif" class="profile-img">
+                </div>
+                <h1 class="name-tag">Hyside</h1>
             </div>
             
-            <div class="profile-info">
-                <h1 class="name-tag">Hyside</h1>
-                <p class="bio-text">Hyside vagyok content creator és egy unalmas ember.</p>
-                <div class="socials">
-                    <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
-                    <a href="https://instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
-                    <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
-                </div>
+            <div class="bio-box">
+                <p class="bio-text">
+                    Hyside vagyok, content creator és egy unalmas ember. Szeretem a letisztult designt, a jó zenéket és a minőségi tartalmat.
+                </p>
+            </div>
+
+            <div class="socials">
+                <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
+                <a href="https://instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
+                <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
             </div>
         </div>
 
-        <div class="widget-side">
-            <div class="sc-frame-container" id="sc-target"></div>
-            <div class="custom-player">
-                <div class="playback-btns">
-                    <button onclick="ctrl('prev')"><i class="fas fa-backward"></i></button>
-                    <button class="main-btn" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
-                    <button onclick="ctrl('next')"><i class="fas fa-forward"></i></button>
+        <div class="player-card">
+            <div class="sc-container" id="sc-target"></div>
+            
+            <div class="controls">
+                <div class="btn-row">
+                    <button onclick="ctrl('prev')"><i class="fas fa-step-backward"></i></button>
+                    <button class="play-btn" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
+                    <button onclick="ctrl('next')"><i class="fas fa-step-forward"></i></button>
                 </div>
-                <div class="volume-control">
+                <div class="vol-row">
                     <i class="fas fa-volume-off"></i>
                     <input type="range" id="volumeSlider" min="0" max="100" value="80">
                     <i class="fas fa-volume-up"></i>
@@ -137,7 +171,7 @@
 
         function launch() {
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
-            const scWidgetHtml = `<iframe id="sc-iframe" width="100%" height="400" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23c5a880&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false"></iframe>`;
+            const scWidgetHtml = `<iframe id="sc-iframe" width="100%" height="350" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23c5a880&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>`;
             
             document.getElementById('sc-target').innerHTML = scWidgetHtml;
             const iframe = document.getElementById('sc-iframe');
@@ -153,7 +187,7 @@
                 document.getElementById('enter-screen').style.display = 'none';
                 document.getElementById('main-content').style.visibility = 'visible';
                 document.getElementById('main-content').style.opacity = '1';
-            }, 800);
+            }, 1000);
         }
 
         function ctrl(action) {
