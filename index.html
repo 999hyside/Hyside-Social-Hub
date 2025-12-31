@@ -13,9 +13,25 @@
         }
 
         body, html {
-            margin: 0; padding: 0; height: 100%;
+            margin: 0; padding: 0; height: 100%; width: 100%;
             background: #000; font-family: 'Inter', sans-serif;
             color: white; overflow: hidden;
+        }
+
+        /* FIX: TELJES KÉPERNYŐS VIDEÓ HÁTTÉR */
+        #bg-video {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100; /* Legyen legalul */
+            transform: translateX(-50%) translateY(-50%);
+            object-fit: cover; /* Kitölti a teret torzítás nélkül */
+            filter: brightness(0.4);
+            background-size: cover;
         }
 
         #enter-screen {
@@ -24,14 +40,9 @@
             z-index: 10000; cursor: pointer;
         }
 
-        #bg-video {
-            position: fixed; inset: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -1; filter: brightness(0.4);
-            background-color: black;
-            display: block;
-        }
-
         #main-content {
+            position: relative;
+            z-index: 1; /* A videó felett legyen */
             height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             opacity: 0; transition: 1.5s ease;
@@ -47,22 +58,15 @@
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
         .name-tag { 
-            font-size: 9rem; 
-            font-weight: 900; 
-            color: white;
+            font-size: 9rem; font-weight: 900; 
             text-shadow: 0 0 30px var(--pink), 0 0 60px var(--pink-glow);
         }
 
         .music-player { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 25px; 
-            background: rgba(0, 0, 0, 0.7);
-            padding: 40px;
-            border-radius: 50px;
-            border: 2px solid rgba(255, 45, 141, 0.4);
-            width: 500px;
+            display: flex; flex-direction: column; align-items: center; 
+            gap: 25px; background: rgba(0, 0, 0, 0.7);
+            padding: 40px; border-radius: 50px;
+            border: 2px solid rgba(255, 45, 141, 0.4); width: 500px;
         }
 
         #track-art {
@@ -80,13 +84,13 @@
 
         input[type=range] { width: 300px; accent-color: var(--pink); cursor: pointer; }
 
-        #sc-target { visibility: hidden; position: absolute; }
+        #sc-target { display: none; }
     </style>
 </head>
 <body>
 
     <div id="enter-screen" onclick="launch()">
-        <h2 style="color:var(--pink); letter-spacing:12px; text-transform:uppercase; font-size: 2.5rem;">Click to Enter</h2>
+        <h2 style="color:var(--pink); letter-spacing:12px; text-transform:uppercase; font-size: 2.5rem; text-shadow: 0 0 20px var(--pink);">Click to Enter</h2>
     </div>
 
     <video id="bg-video" loop muted playsinline>
@@ -101,7 +105,7 @@
             <h1 class="name-tag">Hyside</h1>
         </div>
 
-        <div class="socials">
+        <div class="socials" style="display: flex; gap: 40px;">
             <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-steam"></i></a>
             <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-instagram"></i></a>
             <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:3rem;"><i class="fab fa-twitch"></i></a>
@@ -110,7 +114,7 @@
 
         <div class="music-player">
             <img id="track-art" src="" alt="">
-            <div id="track-title">Zene betöltése...</div>
+            <div id="track-title">Loading...</div>
             <div class="controls">
                 <i class="fas fa-step-backward control-btn" onclick="widget.prev()"></i>
                 <i id="play-icon" class="fas fa-pause control-btn" style="font-size:3.5rem;" onclick="ctrl()"></i>
@@ -130,11 +134,11 @@
         const widget = SC.Widget(document.getElementById('sc-iframe'));
 
         function launch() {
-            // Videó indítása kényszerítve
+            // Videó indítása
             const video = document.getElementById('bg-video');
-            video.play().catch(err => console.log("Videó hiba:", err));
+            video.play();
 
-            // Zene indítása kényszerítve
+            // Zene indítása véletlenszerű dallal
             widget.setVolume(10);
             widget.getSounds((sounds) => {
                 const randomIndex = Math.floor(Math.random() * sounds.length);
@@ -142,7 +146,7 @@
                 widget.play();
             });
 
-            // Felület megjelenítése
+            // Megjelenítés
             document.getElementById('enter-screen').style.display = 'none';
             document.getElementById('main-content').style.opacity = '1';
         }
