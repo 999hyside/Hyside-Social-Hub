@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Hyside | Official</title>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
@@ -12,195 +14,246 @@
             --pink-glow: rgba(255, 45, 141, 0.8);
         }
 
-        body, html {
-            margin: 0; padding: 0; 
-            height: 100vh; width: 100vw;
-            background: #000; font-family: 'Inter', sans-serif;
-            color: white; overflow: hidden; /* Megakadályozza a görgetést */
+        /* 🔧 VIEWPORT FIX */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100svh;
+            min-height: 100dvh;
+            background: #000;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            overflow-x: hidden;
         }
 
-        /* BRUTÁLIS FULL SCREEN VIDEÓ FIX */
+        /* 🔥 FULLSCREEN HÁTTÉRVIDEÓ – FIX */
         #bg-video {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1000; /* Nagyon mélyen a tartalom alatt */
-            object-fit: cover; /* Kitölti a képernyőt torzítás nélkül */
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1000;
             filter: brightness(0.3);
             pointer-events: none;
         }
 
         #enter-screen {
-            position: fixed; inset: 0; background: #000;
-            display: flex; align-items: center; justify-content: center;
-            z-index: 10000; cursor: pointer;
+            position: fixed;
+            inset: 0;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            cursor: pointer;
         }
 
         #main-content {
             position: relative;
             z-index: 10;
-            height: 100vh;
+            min-height: 100svh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            transition: opacity 1.5s ease;
             gap: 20px;
             text-align: center;
+            opacity: 0;
+            transition: opacity 1.5s ease;
         }
 
         .pfp-wrapper {
-            width: 150px; height: 150px; border-radius: 50%;
-            border: 4px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow);
-            overflow: hidden; flex-shrink: 0;
-        }
-        .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .name-tag { 
-            font-size: clamp(4rem, 10vw, 8rem); /* Rugalmas méret */
-            font-weight: 900; 
-            text-shadow: 0 0 25px var(--pink-glow);
-            text-transform: uppercase; margin: 0;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--pink);
+            box-shadow: 0 0 30px var(--pink-glow);
+            overflow: hidden;
         }
 
-        .music-player { 
-            display: flex; flex-direction: column; align-items: center; 
-            gap: 15px; background: rgba(0, 0, 0, 0.75);
-            padding: 25px; border-radius: 25px;
-            border: 1px solid var(--pink); 
+        .pfp-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .name-tag {
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 900;
+            text-shadow: 0 0 25px var(--pink-glow);
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .music-player {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 25px;
+            border-radius: 25px;
+            border: 1px solid var(--pink);
             width: 380px;
-            max-height: 400px;
             backdrop-filter: blur(5px);
         }
 
         #track-art {
-            width: 90px; height: 90px; border-radius: 12px;
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
             border: 2px solid var(--pink);
         }
 
-        #track-title { 
-            font-size: 1.2rem; color: var(--pink); font-weight: 800; 
+        #track-title {
+            font-size: 1.2rem;
+            color: var(--pink);
+            font-weight: 800;
             text-shadow: 0 0 10px var(--pink-glow);
             width: 100%;
-            white-space: nowrap; /* Egy sorban tartja */
-            overflow: hidden; /* Ami nem fér el, eltünteti */
-            text-overflow: ellipsis; /* Három pontot tesz a végére ha hosszú */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
-        
-        .controls { display: flex; align-items: center; gap: 35px; }
-        .control-btn { background: none; border: none; color: white; font-size: 2.2rem; cursor: pointer; transition: 0.2s; }
-        .control-btn:hover { color: var(--pink); transform: scale(1.1); }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .control-btn:hover {
+            color: var(--pink);
+            transform: scale(1.1);
+        }
 
         #video-toggle {
-            position: fixed; bottom: 20px; right: 20px;
-            background: rgba(0, 0, 0, 0.6); border: 1px solid var(--pink);
-            color: white; width: 50px; height: 50px; border-radius: 50%;
-            cursor: pointer; z-index: 1001;
-            display: flex; align-items: center; justify-content: center;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--pink);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        #sc-wrapper { position: absolute; visibility: hidden; }
+        #sc-wrapper {
+            position: absolute;
+            visibility: hidden;
+        }
     </style>
 </head>
+
 <body>
 
-    <div id="enter-screen" onclick="launch()">
-        <h2 style="color:var(--pink); letter-spacing:8px; text-transform:uppercase; text-shadow: 0 0 15px var(--pink);">Click to Enter</h2>
+<div id="enter-screen" onclick="launch()">
+    <h2 style="color:var(--pink); letter-spacing:8px; text-transform:uppercase; text-shadow:0 0 15px var(--pink);">
+        Click to Enter
+    </h2>
+</div>
+
+<video id="bg-video" autoplay muted loop playsinline>
+    <source src="assets/video.mp4" type="video/mp4">
+</video>
+
+<button id="video-toggle" onclick="toggleVideo()">
+    <i id="vid-icon" class="fas fa-video"></i>
+</button>
+
+<div id="main-content">
+
+    <div class="pfp-wrapper">
+        <img src="assets/profile.gif" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
     </div>
 
-    <video id="bg-video" loop muted playsinline>
-        <source src="assets/video.mp4" type="video/mp4">
-    </video>
+    <h1 class="name-tag">Hyside</h1>
 
-    <button id="video-toggle" onclick="toggleVideo()"><i id="vid-icon" class="fas fa-video"></i></button>
-
-    <div id="main-content">
-        <div class="pfp-wrapper">
-            <img src="assets/profile.gif" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
-        </div>
-        
-        <h1 class="name-tag">Hyside</h1>
-
-        <div class="socials" style="display: flex; gap: 25px;">
-            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-steam"></i></a>
-            <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-twitch"></i></a>
-            <a href="https://soundcloud.com/user-880127680" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-soundcloud"></i></a>
-        </div>
-
-        <div class="music-player">
-            <img id="track-art" src="" alt="">
-            <div id="track-title">Betöltés...</div>
-            <div class="controls">
-                <i class="fas fa-step-backward control-btn" onclick="widget.prev()"></i>
-                <i id="play-icon" class="fas fa-play control-btn" style="font-size:2.8rem;" onclick="ctrl()"></i>
-                <i class="fas fa-step-forward control-btn" onclick="widget.next()"></i>
-            </div>
-            <input type="range" id="volumeSlider" min="0" max="100" value="10" style="accent-color: var(--pink); cursor:pointer; width:80%;">
-        </div>
+    <div class="socials" style="display:flex; gap:25px;">
+        <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam fa-2x"></i></a>
+        <a href="https://www.instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+        <a href="https://www.twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch fa-2x"></i></a>
+        <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud fa-2x"></i></a>
     </div>
 
-    <div id="sc-wrapper">
-        <iframe id="sc-iframe" width="100%" height="166" scrolling="no" frameborder="no" 
-            allow="autoplay; encrypted-media" 
-            src="https://w.soundcloud.com/player/?url=https://soundcloud.com/user-880127680/sets/everything-too&auto_play=false"></iframe>
+    <div class="music-player">
+        <img id="track-art" src="">
+        <div id="track-title">Betöltés...</div>
+        <div class="controls">
+            <i class="fas fa-step-backward control-btn" onclick="widget.prev()"></i>
+            <i id="play-icon" class="fas fa-play control-btn" style="font-size:2.8rem;" onclick="ctrl()"></i>
+            <i class="fas fa-step-forward control-btn" onclick="widget.next()"></i>
+        </div>
+        <input type="range" id="volumeSlider" min="0" max="100" value="10" style="accent-color:var(--pink); width:80%;">
     </div>
 
-    <script src="https://w.soundcloud.com/player/api.js"></script>
-    <script>
-        const widget = SC.Widget(document.getElementById('sc-iframe'));
-        const video = document.getElementById('bg-video');
+</div>
 
-        function launch() {
+<div id="sc-wrapper">
+    <iframe id="sc-iframe" width="100%" height="166" frameborder="no"
+        allow="autoplay"
+        src="https://w.soundcloud.com/player/?url=https://soundcloud.com/user-880127680/sets/everything-too">
+    </iframe>
+</div>
+
+<script src="https://w.soundcloud.com/player/api.js"></script>
+<script>
+    const widget = SC.Widget(document.getElementById('sc-iframe'));
+    const video = document.getElementById('bg-video');
+
+    function launch() {
+        video.play();
+        widget.setVolume(10);
+
+        widget.getSounds(sounds => {
+            widget.skip(Math.floor(Math.random() * sounds.length));
+            widget.play();
+        });
+
+        document.getElementById('enter-screen').style.display = 'none';
+        document.getElementById('main-content').style.opacity = '1';
+    }
+
+    function toggleVideo() {
+        const icon = document.getElementById('vid-icon');
+        if (video.paused) {
             video.play();
-            widget.setVolume(10);
-            
-            widget.getSounds((sounds) => {
-                const randomIndex = Math.floor(Math.random() * sounds.length);
-                widget.skip(randomIndex);
-                
-                // Erőszakos indítás, amíg a böngésző engedi
-                let attempts = 0;
-                const forcePlay = setInterval(() => {
-                    widget.play();
-                    attempts++;
-                    widget.isPaused((p) => {
-                        if(!p || attempts > 20) clearInterval(forcePlay);
-                    });
-                }, 200);
-            });
-
-            document.getElementById('enter-screen').style.display = 'none';
-            document.getElementById('main-content').style.opacity = '1';
+            icon.className = "fas fa-video";
+        } else {
+            video.pause();
+            icon.className = "fas fa-video-slash";
         }
+    }
 
-        function toggleVideo() {
-            const icon = document.getElementById('vid-icon');
-            if (video.paused) { video.play(); icon.className = "fas fa-video"; }
-            else { video.pause(); icon.className = "fas fa-video-slash"; }
-        }
-
-        widget.bind(SC.Widget.Events.PLAY, () => {
-            widget.getCurrentSound((sound) => {
-                document.getElementById('track-title').innerText = sound.title;
-                if(sound.artwork_url) document.getElementById('track-art').src = sound.artwork_url.replace('large', 't500x500');
-            });
-            document.getElementById('play-icon').className = 'fas fa-pause control-btn';
+    function ctrl() {
+        widget.toggle();
+        widget.isPaused(p => {
+            document.getElementById('play-icon').className =
+                p ? 'fas fa-play control-btn' : 'fas fa-pause control-btn';
         });
+    }
 
-        function ctrl() {
-            widget.toggle();
-            widget.isPaused((p) => {
-                document.getElementById('play-icon').className = p ? 'fas fa-play control-btn' : 'fas fa-pause control-btn';
-            });
-        }
+    document.getElementById('volumeSlider').addEventListener('input', e => {
+        widget.setVolume(e.target.value);
+    });
+</script>
 
-        document.getElementById('volumeSlider').addEventListener('input', (e) => {
-            widget.setVolume(e.target.value);
-        });
-    </script>
 </body>
 </html>
