@@ -13,10 +13,6 @@
             --pink-glow: rgba(255, 45, 141, 0.6);
             --bg: #0a0a0a;
             --glass: rgba(15, 15, 15, 0.85);
-            --online: #43b581;
-            --idle: #faa61a;
-            --dnd: #f04747;
-            --offline: #747f8d;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -31,7 +27,6 @@
         #enter-screen h2 { color: var(--pink); letter-spacing: 15px; font-weight: 300; text-transform: uppercase; animation: pulse 2.5s infinite; text-shadow: 0 0 20px var(--pink-glow); }
         @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* BACKGROUND VIDEO */
         #bg-video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; filter: brightness(0.18); }
 
         #main-content { 
@@ -44,55 +39,60 @@
         .profile-side { display: flex; flex-direction: column; align-items: flex-start; }
         .profile-header { display: flex; align-items: center; gap: 40px; margin-bottom: 25px; }
         .profile-container {
-            width: 140px; height: 140px; border-radius: 50%; 
-            overflow: hidden; border: 3px solid var(--pink);
-            box-shadow: 0 0 35px var(--pink-glow);
+            width: 150px; height: 150px; border-radius: 50%; 
+            overflow: hidden; border: 4px solid var(--pink);
+            box-shadow: 0 0 40px var(--pink-glow);
         }
         .profile-img { width: 100%; height: 100%; object-fit: cover; }
-        .name-tag { font-size: 7rem; font-weight: 900; color: white; line-height: 1; text-shadow: 0 0 45px var(--pink-glow); }
-        .bio-box { border-left: 4px solid var(--pink); padding-left: 25px; margin-bottom: 30px; }
-        .bio-text { font-size: 1.5rem; color: #eee; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; text-shadow: 0 0 10px var(--pink-glow); }
-        .socials { display: flex; gap: 25px; margin-bottom: 40px; }
-        .socials a { color: white; font-size: 1.8rem; transition: 0.3s; opacity: 0.6; }
-        .socials a:hover { opacity: 1; transform: translateY(-5px); color: var(--pink); filter: drop-shadow(0 0 15px var(--pink)); }
+        .name-tag { font-size: 7.5rem; font-weight: 900; color: white; line-height: 1; text-shadow: 0 0 50px var(--pink-glow); }
+        .bio-box { border-left: 5px solid var(--pink); padding-left: 25px; margin-bottom: 35px; }
+        .bio-text { font-size: 1.6rem; color: #eee; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; }
+
+        .socials { display: flex; gap: 35px; margin-bottom: 45px; }
+        .socials a { color: white; font-size: 2.5rem; transition: 0.3s; opacity: 0.7; }
+        .socials a:hover { opacity: 1; transform: scale(1.2); color: var(--pink); filter: drop-shadow(0 0 20px var(--pink)); }
 
         /* LIVE DISCORD WIDGET */
         .discord-card {
-            width: 380px; background: rgba(255, 255, 255, 0.05);
-            border-radius: 20px; border: 1px solid var(--pink-glow);
-            padding: 15px; display: flex; align-items: center; gap: 15px;
-            backdrop-filter: blur(10px); box-shadow: 0 0 20px rgba(0,0,0,0.4);
+            width: 400px; background: rgba(255, 255, 255, 0.05);
+            border-radius: 25px; border: 1px solid var(--pink-glow);
+            padding: 20px; display: flex; align-items: center; gap: 20px;
+            backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .discord-avatar-wrapper { position: relative; width: 60px; height: 60px; }
+        .discord-avatar-wrapper { position: relative; width: 65px; height: 65px; }
         .discord-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        .status-dot { 
-            position: absolute; bottom: 2px; right: 2px; width: 16px; height: 16px; 
-            border-radius: 50%; border: 3px solid #1a1a1a; background: var(--offline);
-        }
-        .discord-info { display: flex; flex-direction: column; gap: 2px; }
-        .discord-user { font-weight: 700; font-size: 1.1rem; color: white; }
-        .discord-activity { font-size: 0.85rem; color: #bbb; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px; }
+        .status-dot { position: absolute; bottom: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid #1a1a1a; }
+        .discord-info { display: flex; flex-direction: column; gap: 4px; }
+        .discord-user { font-weight: 700; font-size: 1.2rem; color: white; }
+        .discord-activity { font-size: 0.9rem; color: #ccc; }
 
-        /* PLAYER */
+        /* PLAYER CARD */
         .player-card {
-            width: 460px; background: var(--glass); padding: 25px; border-radius: 45px;
+            width: 480px; background: var(--glass); padding: 30px; border-radius: 50px;
             backdrop-filter: blur(25px); border: 1px solid var(--pink-glow);
-            box-shadow: 0 50px 100px rgba(0,0,0,0.7); display: flex; flex-direction: column; gap: 25px;
+            box-shadow: 0 50px 100px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 30px;
         }
-        .sc-container { width: 100%; height: 420px; border-radius: 30px; overflow: hidden; background: #000; }
-        .controls { width: 100%; display: flex; flex-direction: column; gap: 20px; padding: 0 10px; }
-        .btn-row { display: flex; justify-content: center; align-items: center; gap: 40px; }
-        .btn-row button { background: none; border: none; color: white; font-size: 1.6rem; cursor: pointer; transition: 0.3s; }
-        .btn-row .play-btn { font-size: 2.8rem; color: var(--pink); filter: drop-shadow(0 0 15px var(--pink)); }
+        .sc-container { width: 100%; height: 450px; border-radius: 35px; overflow: hidden; background: #000; }
+        
+        .controls { width: 100%; display: flex; flex-direction: column; gap: 25px; padding: 0 10px; }
+        .btn-row { display: flex; justify-content: center; align-items: center; gap: 45px; }
+        .btn-row button { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; transition: 0.3s; }
+        .play-btn { 
+            width: 70px; height: 70px; background: var(--pink); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            color: black !important; font-size: 2rem !important; 
+            box-shadow: 0 0 20px var(--pink-glow); transition: 0.2s !important;
+        }
+        .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--pink); }
+
         .vol-row { display: flex; align-items: center; gap: 15px; }
-        input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255, 255, 255, 0.1); height: 5px; border-radius: 10px; outline: none; }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; background: var(--pink); border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px var(--pink); }
+        input[type=range] { flex: 1; -webkit-appearance: none; background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 10px; outline: none; }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--pink); border-radius: 50%; cursor: pointer; box-shadow: 0 0 15px var(--pink); }
 
         @media (max-width: 1200px) {
-            #main-content { flex-direction: column; text-align: center; justify-content: center; gap: 40px; overflow-y: auto; padding: 60px 20px; }
-            .name-tag { font-size: 4.5rem; }
+            #main-content { flex-direction: column; text-align: center; justify-content: center; padding: 40px 20px; overflow-y: auto; }
+            .name-tag { font-size: 5rem; }
             .profile-side { align-items: center; }
-            .player-card { width: 100%; max-width: 450px; }
         }
     </style>
 </head>
@@ -131,7 +131,7 @@
                 </div>
                 <div class="discord-info">
                     <div id="discord-name" class="discord-user">Loading...</div>
-                    <div id="discord-activity" class="discord-activity">Not doing anything</div>
+                    <div id="discord-activity" class="discord-activity">Offline</div>
                 </div>
             </div>
         </div>
@@ -141,7 +141,9 @@
             <div class="controls">
                 <div class="btn-row">
                     <button onclick="ctrl('prev')"><i class="fas fa-step-backward"></i></button>
-                    <button class="play-btn" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
+                    <button class="play-btn" onclick="ctrl('toggle')">
+                        <i id="play-icon" class="fas fa-pause"></i>
+                    </button>
                     <button onclick="ctrl('next')"><i class="fas fa-step-forward"></i></button>
                 </div>
                 <div class="vol-row">
@@ -156,40 +158,36 @@
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
         let widget;
-        const DISCORD_ID = "1133036437597143041"; // <-- IDE ÍRD AZ ID-DAT!
+        let isPlaying = true;
+        const DISCORD_ID = "939688591381135401"; 
 
         async function fetchDiscord() {
             try {
                 const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
                 const data = await response.json();
                 const user = data.data;
-
-                // Avatar és Státusz
-                document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${939688591381135401}/${user.discord_user.avatar}.png`;
+                
+                if (user.discord_user.avatar) {
+                    document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png`;
+                }
                 
                 const statusColors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
                 document.getElementById('discord-status').style.background = statusColors[user.discord_status] || '#747f8d';
-                
                 document.getElementById('discord-name').innerText = user.discord_user.username;
-
-                // Aktivitás (Játék vagy Spotify)
-                if (user.activities && user.activities.length > 0) {
-                    const activity = user.activities.find(a => a.type === 0) || user.activities[0];
-                    document.getElementById('discord-activity').innerText = `Playing ${activity.name}`;
-                } else if (user.spotify) {
-                    document.getElementById('discord-activity').innerText = `Listening to ${user.spotify.song}`;
+                
+                if (user.activities.length > 0) {
+                    const act = user.activities.find(a => a.type === 0) || user.activities[0];
+                    document.getElementById('discord-activity').innerText = act.name === "Spotify" ? `Listening to ${user.spotify.song}` : `Playing ${act.name}`;
                 } else {
                     document.getElementById('discord-activity').innerText = "No activity";
                 }
-            } catch (e) { console.error("Discord error", e); }
+            } catch (e) { console.log("Lanyard Error:", e); }
         }
-
-        setInterval(fetchDiscord, 10000); // 10 másodpercenként frissít
-        fetchDiscord();
+        setInterval(fetchDiscord, 10000); fetchDiscord();
 
         function launch() {
             const playlistUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
-            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="420" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>`;
+            document.getElementById('sc-target').innerHTML = `<iframe id="sc-iframe" width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(playlistUrl)}&color=%23ff2d8d&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>`;
             
             widget = SC.Widget(document.getElementById('sc-iframe'));
             const slider = document.getElementById('volumeSlider');
@@ -207,9 +205,14 @@
 
         function ctrl(action) {
             if(!widget) return;
+            const icon = document.getElementById('play-icon');
             if(action === 'next') widget.next();
             if(action === 'prev') widget.prev();
-            if(action === 'toggle') widget.toggle();
+            if(action === 'toggle') {
+                widget.toggle();
+                isPlaying = !isPlaying;
+                icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+            }
         }
     </script>
 </body>
