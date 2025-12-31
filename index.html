@@ -50,31 +50,41 @@
         .socials a { color: var(--accent); font-size: 1.4rem; transition: 0.3s; opacity: 0.6; }
         .socials a:hover { opacity: 1; transform: translateY(-3px); }
 
-        /* JOBB OLDAL: WIDGET + EGYEDI VOLUME */
-        .widget-side { width: 420px; }
+        /* JOBB OLDAL: WIDGET + CUSTOM CONTROLS */
+        .widget-side { width: 420px; display: flex; flex-direction: column; gap: 15px; }
+        
         .sc-frame-container { 
-            width: 100%; height: 450px; border-radius: 24px; overflow: hidden; 
+            width: 100%; height: 380px; border-radius: 24px; overflow: hidden; 
             background: #000; border: 1px solid rgba(255,255,255,0.05);
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
         }
 
-        /* EGYEDI VOLUME CSÚSZKA */
-        .volume-control {
-            background: var(--glass); padding: 15px 20px; border-radius: 20px;
-            display: flex; align-items: center; gap: 15px;
+        /* EGYEDI VEZÉRLŐ PANEL */
+        .custom-player {
+            background: var(--glass); padding: 20px; border-radius: 24px;
             border: 1px solid rgba(197, 168, 128, 0.2);
+            display: flex; flex-direction: column; gap: 20px;
         }
-        .volume-control i { color: var(--accent); font-size: 1rem; }
+
+        .playback-btns { display: flex; align-items: center; justify-content: center; gap: 30px; }
+        .playback-btns button { 
+            background: none; border: none; color: var(--accent); 
+            font-size: 1.5rem; cursor: pointer; transition: 0.3s; opacity: 0.7;
+        }
+        .playback-btns button:hover { opacity: 1; transform: scale(1.1); }
+        .playback-btns .main-btn { font-size: 2.2rem; opacity: 1; }
+
+        .volume-control { display: flex; align-items: center; gap: 15px; padding: 0 10px; }
+        .volume-control i { color: var(--accent); font-size: 0.9rem; opacity: 0.6; }
         
         input[type=range] {
             flex: 1; -webkit-appearance: none; background: rgba(255,255,255,0.1);
             height: 4px; border-radius: 2px; outline: none;
         }
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 15px; height: 15px;
+            -webkit-appearance: none; width: 14px; height: 14px;
             background: var(--accent); border-radius: 50%; cursor: pointer;
-            box-shadow: 0 0 10px rgba(197, 168, 128, 0.5);
+            box-shadow: 0 0 10px rgba(197, 168, 128, 0.4);
         }
 
         @media (max-width: 1100px) {
@@ -95,18 +105,20 @@
     </video>
 
     <div id="main-content">
-        <div class="profile-wrapper">
-            <div class="profile-container">
-                <img src="assets/profile.gif" class="profile-img">
-            </div>
-            <div class="profile-info">
-                <h1 class="name-tag">Hyside</h1>
-                <p class="bio-text">Hyside vagyok content creator és egy unalmas ember.</p>
-                <div class="socials">
-                    <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
-                    <a href="https://instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
-                    <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
+        <div class="profile-side">
+            <div class="profile-wrapper">
+                <div class="profile-container">
+                    <img src="assets/profile.gif" class="profile-img">
+                </div>
+                <div class="profile-info">
+                    <h1 class="name-tag">Hyside</h1>
+                    <p class="bio-text">Hyside vagyok content creator és egy unalmas ember.</p>
+                    <div class="socials">
+                        <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
+                        <a href="https://instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
+                        <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -114,33 +126,47 @@
         <div class="widget-side">
             <div class="sc-frame-container" id="sc-target"></div>
             
-            <div class="volume-control">
-                <i class="fas fa-volume-down"></i>
-                <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.8">
-                <i class="fas fa-volume-up"></i>
+            <div class="custom-player">
+                <div class="playback-btns">
+                    <button onclick="ctrl('prev')"><i class="fas fa-backward"></i></button>
+                    <button class="main-btn" onclick="ctrl('toggle')"><i id="play-icon" class="fas fa-pause"></i></button>
+                    <button onclick="ctrl('next')"><i class="fas fa-forward"></i></button>
+                </div>
+
+                <div class="volume-control">
+                    <i class="fas fa-volume-off"></i>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="80">
+                    <i class="fas fa-volume-up"></i>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="https://w.soundcloud.com/player/api.js"></script>
     <script>
+        let widget;
+        let isPlaying = true;
+
         function launch() {
             const fullUrl = "https://soundcloud.com/user-880127680/sets/everything-too";
             const encodedUrl = encodeURIComponent(fullUrl);
             
-            const scWidget = `<iframe id="sc-iframe" width="100%" height="450" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodedUrl}&color=%23c5a880&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false"></iframe>`;
+            const scWidgetHtml = `<iframe id="sc-iframe" width="100%" height="380" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodedUrl}&color=%23c5a880&auto_play=true&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false"></iframe>`;
             
-            document.getElementById('sc-target').innerHTML = scWidget;
+            document.getElementById('sc-target').innerHTML = scWidgetHtml;
             
-            // SoundCloud API inicializálás a hangerőhöz
             const iframe = document.getElementById('sc-iframe');
-            const widget = SC.Widget(iframe);
+            widget = SC.Widget(iframe);
             const slider = document.getElementById('volumeSlider');
 
-            // Hangerő állítása az API-n keresztül
+            // API események
+            widget.bind(SC.Widget.Events.READY, () => {
+                widget.setVolume(slider.value);
+            });
+
+            // Hangerő csúszka kezelése
             slider.addEventListener('input', () => {
-                // A SoundCloud Widget API setVolume metódusa 0-100 között vár értéket
-                widget.setVolume(slider.value * 100);
+                widget.setVolume(slider.value);
             });
 
             document.getElementById('bg-video').play();
@@ -151,6 +177,21 @@
                 document.getElementById('main-content').style.visibility = 'visible';
                 document.getElementById('main-content').style.opacity = '1';
             }, 800);
+        }
+
+        // Vezérlő funkciók
+        function ctrl(action) {
+            if(!widget) return;
+            
+            const icon = document.getElementById('play-icon');
+            
+            if(action === 'next') widget.next();
+            if(action === 'prev') widget.prev();
+            if(action === 'toggle') {
+                widget.toggle();
+                isPlaying = !isPlaying;
+                icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+            }
         }
     </script>
 </body>
