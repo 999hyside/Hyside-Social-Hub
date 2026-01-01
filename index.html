@@ -46,43 +46,56 @@
             position: relative; z-index: 10;
             min-height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 1.5s ease; gap: 25px;
+            opacity: 0; transition: opacity 1.5s ease; gap: 20px;
             transform: scale(1.05);
         }
 
         .pfp-wrapper { 
-            width: 160px; height: 160px; border-radius: 50%; 
+            width: 150px; height: 150px; border-radius: 50%; 
             border: 5px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow); 
             overflow: hidden; 
         }
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
-        .name-tag { font-size: 5rem; font-weight: 900; text-shadow: 0 0 30px var(--pink-glow); text-transform: uppercase; margin: 0; color: var(--pink); letter-spacing: 5px; }
+        .name-tag { font-size: 4.5rem; font-weight: 900; text-shadow: 0 0 30px var(--pink-glow); text-transform: uppercase; margin: 0; color: var(--pink); letter-spacing: 5px; }
+
+        .socials a { color: white; font-size: 2.2rem; transition: 0.3s; margin: 0 15px; }
+        .socials a:hover { color: var(--pink); transform: translateY(-5px); filter: drop-shadow(0 0 10px var(--pink-glow)); }
+
+        /* DISCORD CARD */
+        .discord-card {
+            background: rgba(255, 45, 141, 0.1); backdrop-filter: blur(15px);
+            border: 2px solid var(--pink); border-radius: 20px;
+            padding: 12px 20px; width: 360px; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 0 20px rgba(255, 45, 141, 0.3);
+            margin-bottom: 5px;
+        }
+        .discord-pfp-container { position: relative; width: 55px; height: 55px; }
+        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--pink); }
+        #discord-status-dot {
+            position: absolute; bottom: 2px; right: 2px;
+            width: 12px; height: 12px; border-radius: 50%;
+            border: 2px solid #000; background: #747f8d;
+        }
+        #discord-name { color: var(--pink); font-weight: 900; font-size: 1.1rem; }
 
         .widget-container {
             background: rgba(0, 0, 0, 0.9); padding: 25px; border-radius: 30px;
             width: 420px; text-align: center; backdrop-filter: blur(10px);
-            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 15px;
             border: 2px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow);
         }
 
-        /* --- A TITOK NYITJA: MASZKOLÁS --- */
         .yt-crop-container {
             width: 100%; height: 230px; border-radius: 20px;
-            overflow: hidden; /* Ez vágja le a kilógó részeket */
-            position: relative; background: #000;
+            overflow: hidden; position: relative; background: #000;
         }
 
+        /* Maszkolás a cím elrejtéséhez */
         #yt-player {
-            position: absolute; 
-            /* Kitoljuk a széleit, hogy a logó és a cím ne látsszon */
-            top: -65px; 
-            left: -10%;
-            width: 120%; 
-            height: calc(100% + 130px); 
-            pointer-events: none;
+            position: absolute; top: -65px; left: -10%;
+            width: 120%; height: calc(100% + 130px); pointer-events: none;
         }
-        /* ---------------------------------- */
 
         .controls { display: flex; align-items: center; gap: 40px; font-size: 2.5rem; color: var(--pink); }
         .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 15px var(--pink-glow); }
@@ -116,6 +129,24 @@
         </div>
         <h1 class="name-tag">Hyside</h1>
 
+        <div class="socials">
+            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
+            <a href="https://www.instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
+            <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
+        </div>
+
+        <div class="discord-card">
+            <div class="discord-pfp-container">
+                <img id="discord-pfp" src="https://cdn.discordapp.com/embed/avatars/0.png">
+                <div id="discord-status-dot"></div>
+            </div>
+            <div class="discord-info">
+                <div id="discord-name">Hyside</div>
+                <div id="discord-activity" style="color:white; font-size:0.85rem; opacity: 0.8;">Offline</div>
+            </div>
+        </div>
+
         <div class="widget-container">
             <div class="yt-crop-container">
                 <div id="yt-player"></div>
@@ -123,7 +154,7 @@
             
             <div class="controls">
                 <i class="fas fa-step-backward" onclick="player.previousVideo()"></i>
-                <i id="play-btn" class="fas fa-pause-circle" style="font-size: 4rem;" onclick="togglePlay()"></i>
+                <i id="play-btn" class="fas fa-pause-circle" style="font-size: 3.5rem;" onclick="togglePlay()"></i>
                 <i class="fas fa-step-forward" onclick="player.nextVideo()"></i>
             </div>
 
@@ -138,6 +169,7 @@
     </div>
 
     <script>
+        const DISCORD_ID = "939688591381135401";
         const PLAYLIST_ID = "PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE";
         let player;
         let isPlaying = false;
@@ -156,8 +188,7 @@
                     'showinfo': 0,
                     'rel': 0,
                     'iv_load_policy': 3,
-                    'modestbranding': 1,
-                    'disablekb': 1
+                    'modestbranding': 1
                 },
                 events: {
                     'onReady': (e) => { e.target.setShuffle(true); },
@@ -187,22 +218,42 @@
         function launch() {
             document.getElementById('enter-screen').style.opacity = '0';
             document.getElementById('bg-video').play().catch(()=>{});
-
             if (player) {
                 player.unMute();
                 player.setVolume(50);
                 player.playVideoAt(0);
-                setTimeout(() => { 
-                    player.setShuffle(true);
-                    player.nextVideo(); 
-                }, 800);
+                setTimeout(() => { player.setShuffle(true); player.nextVideo(); }, 800);
             }
-
             setTimeout(() => {
                 document.getElementById('enter-screen').style.display = 'none';
                 document.getElementById('main-content').style.opacity = '1';
             }, 800);
         }
+
+        async function updateDiscord() {
+            try {
+                const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+                const j = await r.json();
+                if (j.success) {
+                    const d = j.data;
+                    document.getElementById('discord-name').innerText = d.discord_user.global_name || d.discord_user.username;
+                    if(d.discord_user.avatar) {
+                        document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${d.discord_user.avatar}.png?size=128`;
+                    }
+                    const dot = document.getElementById('discord-status-dot');
+                    const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
+                    dot.style.background = colors[d.discord_status] || '#747f8d';
+                    let act = d.discord_status.charAt(0).toUpperCase() + d.discord_status.slice(1);
+                    if (d.activities.length > 0) {
+                        const a = d.activities.find(x => x.type === 0) || d.activities[0];
+                        act = a.name + (a.state ? ": " + a.state : "");
+                    }
+                    document.getElementById('discord-activity').innerText = act;
+                }
+            } catch (e) {}
+        }
+        updateDiscord();
+        setInterval(updateDiscord, 15000);
     </script>
 </body>
 </html>
