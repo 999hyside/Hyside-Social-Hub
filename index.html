@@ -10,7 +10,7 @@
 
         :root {
             --pink: #ff2d8d;
-            --pink-glow: rgba(255, 45, 141, 0.8);
+            --pink-glow: rgba(255, 45, 141, 0.9);
         }
 
         body, html {
@@ -24,10 +24,9 @@
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1000; object-fit: cover;
-            filter: brightness(0.25); pointer-events: none;
+            filter: brightness(0.2); pointer-events: none;
         }
 
-        /* BELÉPŐ KÉPERNYŐ */
         #enter-screen {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -35,72 +34,70 @@
         }
 
         .enter-btn {
-            background: none; border: 2px solid var(--pink); color: var(--pink);
-            padding: 15px 50px; font-size: 1.5rem; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 5px; cursor: pointer;
-            transition: 0.3s; text-shadow: 0 0 15px var(--pink-glow);
-            box-shadow: 0 0 20px var(--pink-glow);
-            border-radius: 5px;
+            background: none; border: 3px solid var(--pink); color: var(--pink);
+            padding: 20px 60px; font-size: 2rem; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 8px; cursor: pointer;
+            transition: 0.3s; text-shadow: 0 0 20px var(--pink-glow);
+            box-shadow: 0 0 30px var(--pink-glow);
+            border-radius: 10px;
         }
-        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 40px var(--pink-glow); }
+        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 50px var(--pink-glow); transform: scale(1.05); }
 
-        /* FŐ TARTALOM */
         #main-content {
             position: relative; z-index: 10;
             min-height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 1.5s ease; gap: 25px;
+            opacity: 0; transition: opacity 1.5s ease; gap: 30px;
+            transform: scale(1.1); /* Ezzel az egész tartalom 10%-kal nagyobb */
         }
 
         .pfp-wrapper { 
-            width: 160px; height: 160px; border-radius: 50%; 
-            border: 4px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow); 
+            width: 180px; height: 180px; border-radius: 50%; 
+            border: 5px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow); 
             overflow: hidden; 
         }
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
-        .name-tag { font-size: 5rem; font-weight: 900; text-shadow: 0 0 25px var(--pink-glow); text-transform: uppercase; margin: 0; color: var(--pink); }
+        .name-tag { font-size: 6rem; font-weight: 900; text-shadow: 0 0 30px var(--pink-glow); text-transform: uppercase; margin: 0; color: var(--pink); letter-spacing: 5px; }
 
-        /* DISCORD WIDGET - PINK GLOW */
         .discord-card {
-            background: rgba(255, 45, 141, 0.05); backdrop-filter: blur(12px);
-            border: 1px solid var(--pink); border-radius: 20px;
-            padding: 15px 20px; width: 340px; display: flex; align-items: center; gap: 15px;
-            box-shadow: 0 0 15px rgba(255, 45, 141, 0.3);
+            background: rgba(255, 45, 141, 0.08); backdrop-filter: blur(15px);
+            border: 2px solid var(--pink); border-radius: 25px;
+            padding: 18px 25px; width: 380px; display: flex; align-items: center; gap: 20px;
+            box-shadow: 0 0 25px rgba(255, 45, 141, 0.4);
         }
-        .discord-pfp-container { position: relative; width: 60px; height: 60px; }
-        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--pink); }
+        .discord-pfp-container { position: relative; width: 70px; height: 70px; }
+        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--pink); }
         #discord-status-dot {
-            position: absolute; bottom: 2px; right: 2px;
-            width: 14px; height: 14px; border-radius: 50%;
-            border: 2px solid #000; background: #747f8d;
+            position: absolute; bottom: 3px; right: 3px;
+            width: 16px; height: 16px; border-radius: 50%;
+            border: 3px solid #000; background: #747f8d;
         }
-        #discord-name { color: var(--pink); font-weight: 900; font-size: 1.1rem; }
+        #discord-name { color: var(--pink); font-weight: 900; font-size: 1.3rem; text-shadow: 0 0 10px var(--pink-glow); }
 
-        /* YOUTUBE PLAYER WIDGET - PINK GLOW */
         .widget-container {
-            background: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 25px;
-            width: 360px; text-align: center; backdrop-filter: blur(10px);
-            display: flex; flex-direction: column; align-items: center; gap: 15px;
-            border: 2px solid var(--pink); box-shadow: 0 0 20px var(--pink-glow);
+            background: rgba(0, 0, 0, 0.85); padding: 25px; border-radius: 30px;
+            width: 400px; text-align: center; backdrop-filter: blur(12px);
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            border: 2px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow);
         }
 
         .yt-crop-container {
-            width: 100%; height: 200px; border-radius: 15px;
+            width: 100%; height: 220px; border-radius: 20px;
             overflow: hidden; position: relative; background: #000;
         }
 
         #yt-player {
-            position: absolute; top: -55px; left: -10%;
-            width: 120%; height: 310px; pointer-events: none;
+            position: absolute; top: -60px; left: -10%;
+            width: 120%; height: 340px; pointer-events: none;
         }
 
-        .controls { display: flex; align-items: center; gap: 35px; font-size: 2.2rem; color: var(--pink); }
-        .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 10px var(--pink-glow); }
-        .controls i:hover { transform: scale(1.2); color: white; text-shadow: 0 0 20px var(--pink-glow); }
+        .controls { display: flex; align-items: center; gap: 40px; font-size: 2.5rem; color: var(--pink); }
+        .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 15px var(--pink-glow); }
+        .controls i:hover { transform: scale(1.2); color: white; }
 
-        .socials a { color: white; font-size: 2.2rem; transition: 0.3s; }
-        .socials a:hover { color: var(--pink); transform: translateY(-3px); filter: drop-shadow(0 0 10px var(--pink-glow)); }
+        .socials a { color: white; font-size: 2.5rem; transition: 0.3s; }
+        .socials a:hover { color: var(--pink); transform: translateY(-5px); filter: drop-shadow(0 0 15px var(--pink-glow)); }
     </style>
 </head>
 <body>
@@ -119,7 +116,7 @@
         </div>
         <h1 class="name-tag">Hyside</h1>
 
-        <div class="socials" style="display: flex; gap: 30px;">
+        <div class="socials" style="display: flex; gap: 35px;">
             <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
             <a href="https://www.instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
             <a href="https://www.twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
@@ -133,7 +130,7 @@
             </div>
             <div class="discord-info">
                 <div id="discord-name">Hyside</div>
-                <div id="discord-activity" style="color:white; font-size:0.85rem; opacity: 0.8;">Frissítés...</div>
+                <div id="discord-activity" style="color:white; font-size:1rem; opacity: 0.9;">Betöltés...</div>
             </div>
         </div>
 
@@ -141,10 +138,10 @@
             <div class="yt-crop-container">
                 <div id="yt-player"></div>
             </div>
-            <div style="color: var(--pink); font-weight: 900; font-size: 0.9rem; letter-spacing: 3px; text-shadow: 0 0 5px var(--pink-glow);">MEME PLAYER</div>
+            <div style="color: var(--pink); font-weight: 900; font-size: 1rem; letter-spacing: 4px; text-shadow: 0 0 10px var(--pink-glow);">MEME PLAYER</div>
             <div class="controls">
                 <i class="fas fa-step-backward" onclick="ytPlayer.previousVideo()"></i>
-                <i class="fas fa-play-circle" onclick="ytPlayer.playVideo()"></i>
+                <i class="fas fa-random" onclick="ytPlayer.nextVideo()"></i>
                 <i class="fas fa-step-forward" onclick="ytPlayer.nextVideo()"></i>
             </div>
         </div>
@@ -161,11 +158,21 @@
                 playerVars: { 
                     'listType': 'playlist', 
                     'list': 'PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE', 
+                    'autoplay': 0,
                     'controls': 0,
-                    'modestbranding': 1,
-                    'rel': 0
+                    'mute': 1, // Először némítva indul a biztos lejátszásért
+                    'loop': 1
                 },
-                events: { 'onReady': () => { ytReady = true; ytPlayer.setShuffle(true); } }
+                events: { 
+                    'onReady': (event) => { 
+                        ytReady = true; 
+                        event.target.setShuffle(true); 
+                    },
+                    'onStateChange': (event) => {
+                        // Ha megállna magától (0 az Ended), indítsa újra a következőt
+                        if (event.data === 0) { event.target.nextVideo(); }
+                    }
+                }
             });
         }
 
@@ -174,10 +181,12 @@
             document.getElementById('bg-video').play().catch(()=>{});
 
             if(ytReady) {
-                ytPlayer.unMute();
-                ytPlayer.setVolume(50);
                 ytPlayer.playVideo();
-                setTimeout(() => { ytPlayer.nextVideo(); }, 600);
+                ytPlayer.unMute(); // Itt oldjuk fel a némítást a kattintás után
+                ytPlayer.setVolume(50);
+                setTimeout(() => { 
+                    ytPlayer.nextVideo(); 
+                }, 500);
             }
 
             setTimeout(() => {
