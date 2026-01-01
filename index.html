@@ -2,6 +2,7 @@
 <html lang="hu">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hyside | Official</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -10,100 +11,109 @@
         :root {
             --pink: #ff2d8d;
             --pink-glow: rgba(255, 45, 141, 0.8);
+            --meme-green: #00ff00;
         }
 
         body, html {
             margin: 0; padding: 0; 
             height: 100vh; width: 100vw;
             background: #000; font-family: 'Inter', sans-serif;
-            color: white; overflow-x: hidden; overflow-y: auto;
+            color: white; overflow: hidden;
         }
 
+        /* HÁTTÉR VIDEÓ (CSAK MUSIC MODE-BAN HASZNÁLVA) */
         #bg-video {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1000;
             object-fit: cover;
-            filter: brightness(0.3);
+            filter: brightness(0.4);
             pointer-events: none;
         }
 
-        /* MÓDOSÍTOTT ENTER SCREEN */
+        /* ENTER SCREEN STÍLUSOK */
         #enter-screen {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.8s ease;
-            gap: 30px;
+            z-index: 10000; transition: opacity 0.8s ease; gap: 25px;
         }
 
         .enter-btn {
-            background: none;
-            border: 2px solid var(--pink);
-            color: var(--pink);
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-shadow: 0 0 10px var(--pink-glow);
-            box-shadow: 0 0 15px rgba(255, 45, 141, 0.2);
+            background: rgba(0,0,0,0.6); border: 2px solid var(--pink); color: var(--pink);
+            padding: 18px 40px; font-size: 1.1rem; font-weight: 900; text-transform: uppercase;
+            letter-spacing: 4px; cursor: pointer; transition: all 0.3s ease; width: 280px;
         }
+        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 30px var(--pink-glow); transform: scale(1.05); }
+        .btn-meme { border-color: var(--meme-green); color: var(--meme-green); }
+        .btn-meme:hover { background: var(--meme-green); color: black; box-shadow: 0 0 30px var(--meme-green); }
 
-        .enter-btn:hover {
-            background: var(--pink);
-            color: white;
-            box-shadow: 0 0 30px var(--pink-glow);
-        }
-
+        /* FŐ TARTALOM */
         #main-content {
-            position: relative;
-            z-index: 10;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 1.5s ease;
-            gap: 20px;
-            padding: 40px 0;
+            position: relative; z-index: 10; min-height: 100vh;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 1.5s ease; gap: 20px;
         }
 
-        /* Eredeti stílusaid maradnak... */
-        .pfp-wrapper { width: 200px; height: 200px; border-radius: 50%; border: 5px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow); overflow: hidden; }
+        /* PROFIL ÉS KÁRTYA STÍLUSOK */
+        .pfp-wrapper { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow); overflow: hidden; }
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        .name-tag { font-size: 6rem; font-weight: 900; text-shadow: 0 0 30px var(--pink-glow); text-transform: uppercase; margin: 0; }
-        .discord-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 15px 25px; width: 350px; display: flex; align-items: center; gap: 20px; margin: 15px 0; box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); }
-        .discord-avatar-container { position: relative; width: 70px; height: 70px; }
-        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        #discord-status-dot { position: absolute; bottom: 2px; right: 2px; width: 18px; height: 18px; border-radius: 50%; border: 3px solid #1a1a1a; background: #747f8d; }
-        .discord-info { display: flex; flex-direction: column; gap: 4px; text-align: left; }
-        #discord-name { font-weight: 700; font-size: 1.2rem; color: white; }
-        #discord-activity { font-size: 0.9rem; color: #b9bbbe; }
-        .music-player { display: flex; flex-direction: column; align-items: center; gap: 15px; background: rgba(0, 0, 0, 0.8); padding: 25px; border-radius: 30px; border: 1px solid var(--pink); width: 380px; text-align: center; backdrop-filter: blur(10px); }
-        #track-art { width: 90px; height: 90px; border-radius: 12px; border: 2px solid var(--pink); }
-        #track-title { font-size: 1.1rem; color: var(--pink); font-weight: 800; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .controls { display: flex; align-items: center; gap: 40px; }
-        .control-btn { background: none; border: none; color: white; font-size: 2.2rem; cursor: pointer; }
-        #video-toggle { position: fixed; bottom: 25px; right: 25px; background: rgba(0, 0, 0, 0.6); border: 2px solid var(--pink); color: white; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; z-index: 1001; display: flex; align-items: center; justify-content: center; }
+        .name-tag { font-size: 5rem; font-weight: 900; text-shadow: 0 0 25px var(--pink-glow); text-transform: uppercase; margin: 0; }
+        
+        .discord-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 15px 25px; width: 350px; display: flex; align-items: center; gap: 20px; }
+        #discord-pfp { width: 65px; height: 65px; border-radius: 50%; }
+        
+        /* ZENELEJÁTSZÓ KÁRTYA ÁLTALÁNOS STÍLUSOK */
+        .player-card {
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+            background: rgba(0, 0, 0, 0.8); padding: 20px; border-radius: 25px;
+            width: 350px; text-align: center; backdrop-filter: blur(10px);
+            margin-top: 15px; /* Kicsit lejjebb, hogy ne legyen túl közel a Discord kártyához */
+        }
+
+        .player-card img { width: 80px; height: 80px; border-radius: 10px; margin-bottom: 10px; }
+        .player-card .title { color: var(--pink); font-weight: bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; width:100%; }
+        .player-card .controls { display: flex; align-items: center; justify-content: center; gap: 30px; margin: 10px 0; }
+        .player-card .control-btn { background: none; border: none; color: white; font-size: 1.8rem; cursor: pointer; }
+        .player-card .control-btn.lg { font-size: 2.5rem; }
+        .player-card input[type="range"] { width:80%; accent-color: var(--pink); }
+
+        /* SPECIFIKUS ZENELEJÁTSZÓ (SOUNDCLOUD) */
+        #music-player-card { border: 1px solid var(--pink); }
+        #music-player-card .title { color: var(--pink); }
+        #music-player-card img { border: 1px solid var(--pink); }
+
+        /* SPECIFIKUS MEME LEJÁTSZÓ (YOUTUBE) */
+        #meme-player-card { 
+            border: 1px solid var(--meme-green); 
+            display: none; /* Alapból rejtett */
+        }
+        #meme-player-card .title { color: var(--meme-green); }
+        #meme-player-card img { border: 1px solid var(--meme-green); }
+
+        /* YOUTUBE IFRAME A MEME KÁRTYÁBAN */
+        #youtube-mini-player {
+            width: 100%; /* Kitölti a kártya szélességét */
+            height: 200px; /* Fix magasság */
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        /* Eltávolítjuk a videó váltó gombot, mert kétféle háttér lesz */
+        #video-toggle { display: none; }
     </style>
 </head>
 <body>
 
     <div id="enter-screen">
         <button class="enter-btn" onclick="launch('music')">Music Mode</button>
-        <button class="enter-btn" onclick="launch('meme')" style="border-color: #00ff00; color: #00ff00; text-shadow: 0 0 10px #00ff00;">Meme Mode</button>
+        <button class="enter-btn btn-meme" onclick="launch('meme')">Meme Mode (YT Playlist)</button>
     </div>
 
     <video id="bg-video" loop muted playsinline>
-        <source id="video-source" src="assets/video.mp4" type="video/mp4">
+        <source src="assets/video.mp4" type="video/mp4">
     </video>
-
-    <button id="video-toggle" onclick="toggleVideo()"><i id="vid-icon" class="fas fa-video"></i></button>
 
     <div id="main-content">
         <div class="pfp-wrapper">
@@ -111,128 +121,210 @@
         </div>
         <h1 class="name-tag">Hyside</h1>
 
-        <div class="socials" style="display: flex; gap: 30px;">
-            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-steam"></i></a>
-            <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-twitch"></i></a>
-            <a href="https://soundcloud.com/user-880127680" target="_blank" style="color:white; font-size:2.5rem;"><i class="fab fa-soundcloud"></i></a>
+        <div class="socials" style="display: flex; gap: 25px;">
+            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-steam"></i></a>
+            <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-twitch"></i></a>
+            <a href="https://soundcloud.com/user-880127680" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-soundcloud"></i></a>
         </div>
 
         <div class="discord-card">
-            <div class="discord-avatar-container">
+            <div style="position: relative;">
                 <img id="discord-pfp" src="" alt="">
-                <div id="discord-status-dot"></div>
+                <div id="discord-status-dot" style="position:absolute; bottom:2px; right:2px; width:15px; height:15px; border-radius:50%; border:2px solid black;"></div>
             </div>
-            <div class="discord-info">
-                <div id="discord-name">Betöltés...</div>
-                <div id="discord-activity">Offline</div>
+            <div style="text-align: left;">
+                <div id="discord-name" style="font-weight:bold;">Betöltés...</div>
+                <div id="discord-activity" style="font-size:0.8rem; color: #aaa;">Offline</div>
             </div>
         </div>
 
-        <div class="music-player" id="main-player">
-            <img id="track-art" src="" alt="Art">
-            <div id="track-title">Zene betöltése...</div>
+        <div class="player-card" id="music-player-card">
+            <img id="track-art" src="" alt="">
+            <div id="track-title" class="title">Zene...</div>
             <div class="controls">
-                <i class="fas fa-step-backward control-btn" onclick="widget.prev()"></i>
-                <i id="play-icon" class="fas fa-play control-btn" style="font-size:3rem;" onclick="ctrl()"></i>
-                <i class="fas fa-step-forward control-btn" onclick="widget.next()"></i>
+                <i class="fas fa-step-backward control-btn" onclick="scWidget.prev()"></i>
+                <i id="sc-play-icon" class="fas fa-play control-btn lg" onclick="scTogglePlay()"></i>
+                <i class="fas fa-step-forward control-btn" onclick="scWidget.next()"></i>
             </div>
-            <input type="range" id="volumeSlider" min="0" max="100" value="10" style="accent-color: var(--pink); cursor:pointer; width:80%;">
+            <input type="range" id="scVolumeSlider" min="0" max="100" value="15">
+        </div>
+
+        <div class="player-card" id="meme-player-card">
+            <div id="youtube-mini-player"></div> <div id="yt-track-title" class="title">Meme videó betöltése...</div>
+            <div class="controls">
+                <i class="fas fa-step-backward control-btn" onclick="ytPlayer.previousVideo()"></i>
+                <i id="yt-play-icon" class="fas fa-play control-btn lg" onclick="ytTogglePlay()"></i>
+                <i class="fas fa-step-forward control-btn" onclick="ytPlayer.nextVideo()"></i>
+            </div>
+            <input type="range" id="ytVolumeSlider" min="0" max="100" value="50">
         </div>
     </div>
 
-    <div style="position: absolute; visibility: hidden;">
-        <iframe id="sc-iframe" width="100%" height="166" scrolling="no" frameborder="no" 
-            allow="autoplay; encrypted-media" 
-            src="https://w.soundcloud.com/player/?url=https://soundcloud.com/user-880127680/sets/everything-too&auto_play=false"></iframe>
+    <div style="display:none;">
+        <iframe id="sc-iframe" src="https://w.soundcloud.com/player/?url=https://soundcloud.com/user-880127680/sets/everything-too&auto_play=false"></iframe>
     </div>
 
     <script src="https://w.soundcloud.com/player/api.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
     <script>
-        const widget = SC.Widget(document.getElementById('sc-iframe'));
-        const video = document.getElementById('bg-video');
-        const videoSource = document.getElementById('video-source');
+        const scWidget = SC.Widget(document.getElementById('sc-iframe'));
         const DISCORD_ID = "939688591381135401";
+        const YOUTUBE_PLAYLIST_ID = 'PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE'; // A te playlist ID-d
+        let ytPlayer;
 
-        // MEME VIDEÓK LISTÁJA
-        const memeVideos = [
-            "assets/meme1.mp4",
-            "assets/meme2.mp4",
-            "assets/meme3.mp4"
-        ];
+        // --- YOUTUBE API BETÖLTÉSE ---
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('youtube-mini-player', {
+                height: '100%',
+                width: '100%',
+                playerVars: {
+                    'listType': 'playlist',
+                    'list': YOUTUBE_PLAYLIST_ID,
+                    'autoplay': 0, // Kézi indítás
+                    'controls': 0, // Rejtett vezérlők
+                    'disablekb': 1,
+                    'enablejsapi': 1,
+                    'loop': 1,
+                    'modestbranding': 1,
+                    'origin': window.location.origin,
+                    'playlist': YOUTUBE_PLAYLIST_ID, // Loophoz is kell
+                    'iv_load_policy': 3 // Annotációk kikapcsolása
+                },
+                events: {
+                    'onReady': onYoutubePlayerReady,
+                    'onStateChange': onYoutubePlayerStateChange
+                }
+            });
+        }
 
-        async function updateDiscordStatus() {
+        function onYoutubePlayerReady(event) {
+            event.target.setShuffle(true); // Véletlenszerű lejátszás
+            event.target.mute(); // Alapból némítva indul
+            document.getElementById('ytVolumeSlider').value = ytPlayer.getVolume(); // Hangerő szinkronizálás
+        }
+
+        function onYoutubePlayerStateChange(event) {
+            const playIcon = document.getElementById('yt-play-icon');
+            if (event.data === YT.PlayerState.PLAYING) {
+                playIcon.className = 'fas fa-pause control-btn lg';
+                updateYoutubeTrackTitle();
+            } else {
+                playIcon.className = 'fas fa-play control-btn lg';
+            }
+        }
+
+        function updateYoutubeTrackTitle() {
+            if (ytPlayer && ytPlayer.getVideoData()) {
+                document.getElementById('yt-track-title').innerText = ytPlayer.getVideoData().title;
+            }
+        }
+
+        // --- LAUNCH FÜGGVÉNY (MODE VÁLASZTÁS) ---
+        function launch(mode) {
+            const bgVideo = document.getElementById('bg-video');
+            const musicPlayerCard = document.getElementById('music-player-card');
+            const memePlayerCard = document.getElementById('meme-player-card');
+            
+            // Rejtjük az Enter képernyőt
+            document.getElementById('enter-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('enter-screen').style.display = 'none';
+                document.getElementById('main-content').style.opacity = '1';
+            }, 800);
+
+            if (mode === 'meme') {
+                // Meme mód: elrejtjük a SoundCloud lejátszót és a háttérvideót
+                musicPlayerCard.style.display = 'none';
+                bgVideo.style.display = 'none';
+                
+                // Megjelenítjük a YouTube meme lejátszót
+                memePlayerCard.style.display = 'flex';
+                
+                // YouTube videó elindítása, véletlenszerűen
+                if (ytPlayer) {
+                    ytPlayer.unMute(); // Hang bekapcsolása
+                    ytPlayer.setVolume(document.getElementById('ytVolumeSlider').value); // Hangerő beállítása
+                    ytPlayer.setShuffle(true); // Biztos, ami biztos, újra beállítjuk a shuffle-t
+                    ytPlayer.playVideo(); // Lejátszás indítása
+                    updateYoutubeTrackTitle(); // Cím frissítése
+                }
+            } else {
+                // Music mód: elrejtjük a YouTube meme lejátszót
+                memePlayerCard.style.display = 'none';
+                
+                // Megjelenítjük a SoundCloud lejátszót és a háttérvideót
+                musicPlayerCard.style.display = 'flex';
+                bgVideo.style.display = 'block'; // Visszaállítjuk a háttérvideót
+                bgVideo.play().catch(e => console.log("Háttér videó hiba:", e)); // Biztos, ami biztos
+                
+                // SoundCloud zene indítása
+                scWidget.setVolume(document.getElementById('scVolumeSlider').value);
+                scWidget.play();
+            }
+        }
+
+        // --- DISCORD LANYARD INTEGRÁCIÓ ---
+        async function updateDiscord() {
             try {
-                const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-                const data = await response.json();
-                const user = data.data;
-                document.getElementById('discord-name').innerText = user.discord_user.global_name || user.discord_user.username;
-                document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.discord_user.avatar}.png`;
-                const statusColors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
-                document.getElementById('discord-status-dot').style.background = statusColors[user.discord_status] || '#747f8d';
-                if (user.activities.length > 0) {
-                    const activity = user.activities.find(a => a.type === 0) || user.activities[0];
-                    document.getElementById('discord-activity').innerText = activity.state || activity.name || "Nincs állapot";
+                const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+                const d = await r.json();
+                const u = d.data;
+                document.getElementById('discord-name').innerText = u.discord_user.global_name || u.discord_user.username;
+                document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${u.discord_user.avatar}.png`;
+                const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
+                document.getElementById('discord-status-dot').style.background = colors[u.discord_status] || '#747f8d';
+                
+                if (u.activities.length > 0) {
+                    const act = u.activities.find(a => a.type === 0) || u.activities[0];
+                    document.getElementById('discord-activity').innerText = act.state || act.name || "Nincs állapot";
                 } else {
-                    document.getElementById('discord-activity').innerText = user.discord_status === 'offline' ? 'Offline' : 'Online';
+                    document.getElementById('discord-activity').innerText = u.discord_status === 'offline' ? 'Offline' : 'Online';
                 }
             } catch (e) { console.error("Discord hiba:", e); }
         }
+        setInterval(updateDiscord, 10000); updateDiscord();
 
-        setInterval(updateDiscordStatus, 10000);
-        updateDiscordStatus();
+        // --- SOUNDCLOUD PLAYER VEZÉRLÉS ---
+        scWidget.bind(SC.Widget.Events.PLAY, () => {
+            scWidget.getCurrentSound(s => {
+                document.getElementById('track-title').innerText = s.title;
+                if(s.artwork_url) document.getElementById('track-art').src = s.artwork_url.replace('large', 't500x500');
+            });
+            document.getElementById('sc-play-icon').className = 'fas fa-pause control-btn lg';
+        });
+        scWidget.bind(SC.Widget.Events.PAUSE, () => {
+            document.getElementById('sc-play-icon').className = 'fas fa-play control-btn lg';
+        });
 
-        // MÓDOSÍTOTT LAUNCH FÜGGVÉNY
-        function launch(mode) {
-            if (mode === 'meme') {
-                // Meme mód: zenelejátszó elrejtése
-                document.getElementById('main-player').style.display = 'none';
-                
-                // Random meme videó kiválasztása
-                const randomMeme = memeVideos[Math.floor(Math.random() * memeVideos.length)];
-                videoSource.src = randomMeme;
-                video.load(); // Videó frissítése az új forrással
+        function scTogglePlay() {
+            scWidget.toggle();
+        }
+        document.getElementById('scVolumeSlider').oninput = (e) => scWidget.setVolume(e.target.value);
+
+        // --- YOUTUBE PLAYER VEZÉRLÉS ---
+        function ytTogglePlay() {
+            if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) {
+                ytPlayer.pauseVideo();
             } else {
-                // Music mód: zene indítása
-                widget.setVolume(10);
-                widget.play();
+                ytPlayer.playVideo();
             }
-
-            video.play();
-
-            const enterScreen = document.getElementById('enter-screen');
-            enterScreen.style.opacity = '0';
-            
-            setTimeout(() => {
-                enterScreen.style.display = 'none';
-                document.getElementById('main-content').style.opacity = '1';
-            }, 800);
         }
+        document.getElementById('ytVolumeSlider').oninput = (e) => {
+            if (ytPlayer) {
+                ytPlayer.setVolume(e.target.value);
+                if (e.target.value > 0) ytPlayer.unMute();
+                else ytPlayer.mute();
+            }
+        };
 
-        function toggleVideo() {
-            const icon = document.getElementById('vid-icon');
-            if (video.paused) { video.play(); icon.className = "fas fa-video"; }
-            else { video.pause(); icon.className = "fas fa-video-slash"; }
-        }
-
-        widget.bind(SC.Widget.Events.PLAY, () => {
-            widget.getCurrentSound((sound) => {
-                document.getElementById('track-title').innerText = sound.title;
-                if(sound.artwork_url) document.getElementById('track-art').src = sound.artwork_url.replace('large', 't500x500');
-            });
-            document.getElementById('play-icon').className = 'fas fa-pause control-btn';
-        });
-
-        function ctrl() {
-            widget.toggle();
-            widget.isPaused((p) => {
-                document.getElementById('play-icon').className = p ? 'fas fa-play control-btn' : 'fas fa-pause control-btn';
-            });
-        }
-
-        document.getElementById('volumeSlider').addEventListener('input', (e) => {
-            widget.setVolume(e.target.value);
-        });
+        // Kezdeti hangerő beállítása
+        window.onload = () => {
+            scWidget.setVolume(15);
+            document.getElementById('scVolumeSlider').value = 15;
+            document.getElementById('ytVolumeSlider').value = 50; // Kezdeti YouTube hangerő
+        };
     </script>
 </body>
 </html>
