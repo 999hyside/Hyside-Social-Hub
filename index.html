@@ -95,7 +95,6 @@
         .controls { display: flex; align-items: center; gap: 35px; font-size: 2.5rem; color: var(--pink); }
         .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 15px var(--pink-glow); }
         .controls i:hover { transform: scale(1.2); color: white; }
-        .play-pause-btn { font-size: 3.5rem; }
 
         .socials a { color: white; font-size: 2.5rem; transition: 0.3s; }
         .socials a:hover { color: var(--pink); transform: translateY(-5px); filter: drop-shadow(0 0 15px var(--pink-glow)); }
@@ -142,7 +141,7 @@
             <div style="color: var(--pink); font-weight: 900; font-size: 1rem; letter-spacing: 4px; text-shadow: 0 0 10px var(--pink-glow);">MEME PLAYER</div>
             <div class="controls">
                 <i class="fas fa-step-backward" onclick="ytPlayer.previousVideo()"></i>
-                <i id="master-play-pause" class="fas fa-play-circle play-pause-btn" onclick="togglePlayPause()"></i>
+                <i id="master-play-pause" class="fas fa-play-circle" style="font-size: 3.5rem;" onclick="togglePlayPause()"></i>
                 <i class="fas fa-step-forward" onclick="ytPlayer.nextVideo()"></i>
             </div>
         </div>
@@ -153,23 +152,24 @@
         const DISCORD_ID = "939688591381135401";
         const PLAYLIST_ID = "PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE";
         let ytPlayer;
-        let ytReady = false;
         let isPlaying = false;
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
-                playerVars: { 
-                    'listType': 'playlist', 
-                    'list': PLAYLIST_ID,
+                height: '340',
+                width: '120%',
+                playerVars: {
+                    'autoplay': 0,
                     'controls': 0,
+                    'disablekb': 1,
+                    'modestbranding': 1,
                     'mute': 1,
-                    'origin': window.location.origin
+                    'rel': 0,
+                    'showinfo': 0
                 },
-                events: { 
-                    'onReady': (event) => { 
-                        ytReady = true; 
-                        event.target.setShuffle(true);
-                        // Előkészítjük a listát
+                events: {
+                    'onReady': (event) => {
+                        // Betöltjük a playlistet de nem indítjuk el
                         event.target.cuePlaylist({
                             listType: 'playlist',
                             list: PLAYLIST_ID
@@ -178,13 +178,12 @@
                     'onStateChange': (event) => {
                         const btn = document.getElementById('master-play-pause');
                         if (event.data === YT.PlayerState.PLAYING) {
-                            btn.className = "fas fa-pause-circle play-pause-btn";
+                            btn.className = "fas fa-pause-circle";
                             isPlaying = true;
                         } else {
-                            btn.className = "fas fa-play-circle play-pause-btn";
+                            btn.className = "fas fa-play-circle";
                             isPlaying = false;
                         }
-                        // Automatikus továbblépés a végén
                         if (event.data === YT.PlayerState.ENDED) {
                             ytPlayer.nextVideo();
                         }
@@ -194,7 +193,6 @@
         }
 
         function togglePlayPause() {
-            if (!ytReady) return;
             if (isPlaying) ytPlayer.pauseVideo();
             else ytPlayer.playVideo();
         }
@@ -203,15 +201,21 @@
             document.getElementById('enter-screen').style.opacity = '0';
             document.getElementById('bg-video').play().catch(()=>{});
 
-            if(ytReady) {
+            // Erőteljes indítás
+            if(ytPlayer && typeof ytPlayer.loadPlaylist === 'function') {
                 ytPlayer.unMute();
                 ytPlayer.setVolume(50);
-                // Fontos: a playVideo() előtt egy konkrét parancs a listának
-                ytPlayer.playPlaylist(); 
+                ytPlayer.loadPlaylist({
+                    listType: 'playlist',
+                    list: PLAYLIST_ID,
+                    index: 0,
+                    suggestedQuality: 'small'
+                });
+                
                 setTimeout(() => {
                     ytPlayer.setShuffle(true);
                     ytPlayer.nextVideo();
-                }, 600);
+                }, 800);
             }
 
             setTimeout(() => {
@@ -233,7 +237,6 @@
                     const dot = document.getElementById('discord-status-dot');
                     const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
                     dot.style.background = colors[d.discord_status] || '#747f8d';
-
                     let act = "Online";
                     if (d.activities && d.activities.length > 0) {
                         const a = d.activities.find(x => x.type === 0) || d.activities[0];
