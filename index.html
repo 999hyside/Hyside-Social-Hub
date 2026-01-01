@@ -48,7 +48,7 @@
             min-height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
             opacity: 0; transition: opacity 1.5s ease; gap: 30px;
-            transform: scale(1.1); /* Ezzel az egész tartalom 10%-kal nagyobb */
+            transform: scale(1.1);
         }
 
         .pfp-wrapper { 
@@ -92,9 +92,11 @@
             width: 120%; height: 340px; pointer-events: none;
         }
 
-        .controls { display: flex; align-items: center; gap: 40px; font-size: 2.5rem; color: var(--pink); }
+        /* GOMBOK STÍLUSA */
+        .controls { display: flex; align-items: center; gap: 35px; font-size: 2.5rem; color: var(--pink); }
         .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 15px var(--pink-glow); }
         .controls i:hover { transform: scale(1.2); color: white; }
+        .play-pause-btn { font-size: 3.5rem; } /* A középső gomb legyen nagyobb */
 
         .socials a { color: white; font-size: 2.5rem; transition: 0.3s; }
         .socials a:hover { color: var(--pink); transform: translateY(-5px); filter: drop-shadow(0 0 15px var(--pink-glow)); }
@@ -141,7 +143,7 @@
             <div style="color: var(--pink); font-weight: 900; font-size: 1rem; letter-spacing: 4px; text-shadow: 0 0 10px var(--pink-glow);">MEME PLAYER</div>
             <div class="controls">
                 <i class="fas fa-step-backward" onclick="ytPlayer.previousVideo()"></i>
-                <i class="fas fa-random" onclick="ytPlayer.nextVideo()"></i>
+                <i id="master-play-pause" class="fas fa-pause-circle play-pause-btn" onclick="togglePlayPause()"></i>
                 <i class="fas fa-step-forward" onclick="ytPlayer.nextVideo()"></i>
             </div>
         </div>
@@ -152,6 +154,7 @@
         const DISCORD_ID = "939688591381135401";
         let ytPlayer;
         let ytReady = false;
+        let isPlaying = false;
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
@@ -160,7 +163,7 @@
                     'list': 'PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE', 
                     'autoplay': 0,
                     'controls': 0,
-                    'mute': 1, // Először némítva indul a biztos lejátszásért
+                    'mute': 1,
                     'loop': 1
                 },
                 events: { 
@@ -169,11 +172,28 @@
                         event.target.setShuffle(true); 
                     },
                     'onStateChange': (event) => {
-                        // Ha megállna magától (0 az Ended), indítsa újra a következőt
+                        const btn = document.getElementById('master-play-pause');
+                        if (event.data === YT.PlayerState.PLAYING) {
+                            btn.className = "fas fa-pause-circle play-pause-btn";
+                            isPlaying = true;
+                        } else {
+                            btn.className = "fas fa-play-circle play-pause-btn";
+                            isPlaying = false;
+                        }
                         if (event.data === 0) { event.target.nextVideo(); }
                     }
                 }
             });
+        }
+
+        // Play/Pause váltó funkció
+        function togglePlayPause() {
+            if (!ytReady) return;
+            if (isPlaying) {
+                ytPlayer.pauseVideo();
+            } else {
+                ytPlayer.playVideo();
+            }
         }
 
         function launch() {
@@ -182,11 +202,9 @@
 
             if(ytReady) {
                 ytPlayer.playVideo();
-                ytPlayer.unMute(); // Itt oldjuk fel a némítást a kattintás után
+                ytPlayer.unMute();
                 ytPlayer.setVolume(50);
-                setTimeout(() => { 
-                    ytPlayer.nextVideo(); 
-                }, 500);
+                setTimeout(() => { ytPlayer.nextVideo(); }, 500);
             }
 
             setTimeout(() => {
