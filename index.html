@@ -92,11 +92,10 @@
             width: 120%; height: 340px; pointer-events: none;
         }
 
-        /* GOMBOK STÍLUSA */
         .controls { display: flex; align-items: center; gap: 35px; font-size: 2.5rem; color: var(--pink); }
         .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 15px var(--pink-glow); }
         .controls i:hover { transform: scale(1.2); color: white; }
-        .play-pause-btn { font-size: 3.5rem; } /* A középső gomb legyen nagyobb */
+        .play-pause-btn { font-size: 3.5rem; }
 
         .socials a { color: white; font-size: 2.5rem; transition: 0.3s; }
         .socials a:hover { color: var(--pink); transform: translateY(-5px); filter: drop-shadow(0 0 15px var(--pink-glow)); }
@@ -143,7 +142,7 @@
             <div style="color: var(--pink); font-weight: 900; font-size: 1rem; letter-spacing: 4px; text-shadow: 0 0 10px var(--pink-glow);">MEME PLAYER</div>
             <div class="controls">
                 <i class="fas fa-step-backward" onclick="ytPlayer.previousVideo()"></i>
-                <i id="master-play-pause" class="fas fa-pause-circle play-pause-btn" onclick="togglePlayPause()"></i>
+                <i id="master-play-pause" class="fas fa-play-circle play-pause-btn" onclick="togglePlayPause()"></i>
                 <i class="fas fa-step-forward" onclick="ytPlayer.nextVideo()"></i>
             </div>
         </div>
@@ -152,6 +151,7 @@
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         const DISCORD_ID = "939688591381135401";
+        const PLAYLIST_ID = "PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE";
         let ytPlayer;
         let ytReady = false;
         let isPlaying = false;
@@ -160,16 +160,20 @@
             ytPlayer = new YT.Player('yt-player', {
                 playerVars: { 
                     'listType': 'playlist', 
-                    'list': 'PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE', 
-                    'autoplay': 0,
+                    'list': PLAYLIST_ID,
                     'controls': 0,
                     'mute': 1,
-                    'loop': 1
+                    'origin': window.location.origin
                 },
                 events: { 
                     'onReady': (event) => { 
                         ytReady = true; 
-                        event.target.setShuffle(true); 
+                        event.target.setShuffle(true);
+                        // Előkészítjük a listát
+                        event.target.cuePlaylist({
+                            listType: 'playlist',
+                            list: PLAYLIST_ID
+                        });
                     },
                     'onStateChange': (event) => {
                         const btn = document.getElementById('master-play-pause');
@@ -180,20 +184,19 @@
                             btn.className = "fas fa-play-circle play-pause-btn";
                             isPlaying = false;
                         }
-                        if (event.data === 0) { event.target.nextVideo(); }
+                        // Automatikus továbblépés a végén
+                        if (event.data === YT.PlayerState.ENDED) {
+                            ytPlayer.nextVideo();
+                        }
                     }
                 }
             });
         }
 
-        // Play/Pause váltó funkció
         function togglePlayPause() {
             if (!ytReady) return;
-            if (isPlaying) {
-                ytPlayer.pauseVideo();
-            } else {
-                ytPlayer.playVideo();
-            }
+            if (isPlaying) ytPlayer.pauseVideo();
+            else ytPlayer.playVideo();
         }
 
         function launch() {
@@ -201,10 +204,14 @@
             document.getElementById('bg-video').play().catch(()=>{});
 
             if(ytReady) {
-                ytPlayer.playVideo();
                 ytPlayer.unMute();
                 ytPlayer.setVolume(50);
-                setTimeout(() => { ytPlayer.nextVideo(); }, 500);
+                // Fontos: a playVideo() előtt egy konkrét parancs a listának
+                ytPlayer.playPlaylist(); 
+                setTimeout(() => {
+                    ytPlayer.setShuffle(true);
+                    ytPlayer.nextVideo();
+                }, 600);
             }
 
             setTimeout(() => {
