@@ -29,7 +29,6 @@
             filter: brightness(0.3); pointer-events: none;
         }
 
-        /* VÁLASZTÓ KÉPERNYŐ */
         #enter-screen {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -37,7 +36,7 @@
         }
 
         .mode-btn {
-            background: none; border: 2px solid var(--pink); color: var(--pink);
+            background: rgba(0,0,0,0.5); border: 2px solid var(--pink); color: var(--pink);
             padding: 15px 40px; font-size: 1.2rem; font-weight: 900;
             text-transform: uppercase; letter-spacing: 5px; cursor: pointer;
             transition: 0.3s; text-shadow: 0 0 10px var(--pink-glow);
@@ -47,7 +46,6 @@
         .btn-meme { border-color: var(--meme-green); color: var(--meme-green); text-shadow: 0 0 10px var(--meme-glow); }
         .btn-meme:hover { background: var(--meme-green); color: black; box-shadow: 0 0 30px var(--meme-glow); }
 
-        /* FŐ TARTALOM */
         #main-content {
             position: relative; z-index: 10;
             min-height: 100vh; display: flex; flex-direction: column;
@@ -59,12 +57,10 @@
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         .name-tag { font-size: 5rem; font-weight: 900; text-shadow: 0 0 25px var(--pink-glow); text-transform: uppercase; margin: 0; }
 
-        /* DISCORD CARD - Most már kívül van a widgeteken, hogy mindig látszódjon */
         .discord-card {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
             padding: 12px 20px; width: 340px; display: flex; align-items: center; gap: 15px;
-            margin-bottom: 10px;
         }
 
         .widget-container {
@@ -74,7 +70,7 @@
         }
 
         #music-widget { border: 1px solid var(--pink); }
-        #meme-widget { border: 1px solid var(--meme-green); display: none; box-shadow: 0 0 15px var(--meme-glow); }
+        #meme-widget { border: 1px solid var(--meme-green); display: none; }
 
         .track-title { font-size: 1rem; font-weight: 800; margin: 5px 0; width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         #music-widget .track-title { color: var(--pink); }
@@ -82,7 +78,6 @@
 
         .controls { display: flex; align-items: center; gap: 25px; font-size: 1.8rem; }
         .controls i { cursor: pointer; transition: 0.2s; }
-        .controls i:hover { transform: scale(1.1); color: #fff; }
 
         .yt-crop-container {
             width: 100%; height: 200px; border-radius: 15px;
@@ -112,7 +107,7 @@
         </div>
         <h1 class="name-tag">Hyside</h1>
 
-        <div class="socials" style="display: flex; gap: 25px; margin-bottom: 10px;">
+        <div class="socials" style="display: flex; gap: 25px;">
             <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-steam"></i></a>
             <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-instagram"></i></a>
             <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-twitch"></i></a>
@@ -160,47 +155,49 @@
         const scWidget = SC.Widget(document.getElementById('sc-iframe'));
         const DISCORD_ID = "939688591381135401";
         let ytPlayer;
+        let ytReady = false;
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
                 playerVars: {
                     'listType': 'playlist',
                     'list': 'PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE',
-                    'autoplay': 0,
-                    'controls': 0,
-                    'showinfo': 0,
-                    'rel': 0,
-                    'modestbranding': 1,
-                    'iv_load_policy': 3
+                    'mute': 0,
+                    'controls': 0
                 },
-                events: {
-                    'onReady': (e) => {
-                        e.target.setShuffle(true);
-                    }
-                }
+                events: { 'onReady': () => { ytReady = true; ytPlayer.setShuffle(true); } }
             });
         }
 
-        async function launch(mode) {
+        function launch(mode) {
             document.getElementById('enter-screen').style.opacity = '0';
-            document.getElementById('bg-video').play();
+            const bg = document.getElementById('bg-video');
+            bg.play().catch(() => {}); // Háttérvideó kényszerítése
 
             if(mode === 'meme') {
                 document.getElementById('music-widget').style.display = 'none';
                 document.getElementById('meme-widget').style.display = 'flex';
                 
-                // YouTube azonnali indítás
-                if (ytPlayer) {
-                    ytPlayer.unMute();
-                    ytPlayer.setVolume(60);
-                    ytPlayer.setShuffle(true);
-                    ytPlayer.playVideo();
-                    setTimeout(() => ytPlayer.nextVideo(), 300); // Kényszerített keverés az elején
-                }
+                // YouTube indítási kísérlet folyamatosan, amíg be nem tölt
+                let ytAttempt = setInterval(() => {
+                    if(ytReady) {
+                        ytPlayer.unMute();
+                        ytPlayer.setVolume(50);
+                        ytPlayer.playVideo();
+                        ytPlayer.setShuffle(true);
+                        setTimeout(() => ytPlayer.nextVideo(), 500);
+                        clearInterval(ytAttempt);
+                    }
+                }, 100);
             } else {
-                // SoundCloud azonnali indítás
-                scWidget.setVolume(30);
-                scWidget.play();
+                // SoundCloud indítása többszöri próbálkozással
+                let scAttempt = setInterval(() => {
+                    scWidget.play();
+                    scWidget.setVolume(30);
+                }, 500);
+                
+                scWidget.bind(SC.Widget.Events.PLAY, () => clearInterval(scAttempt));
+                setTimeout(() => clearInterval(scAttempt), 5000); // 5 mp után feladja
             }
 
             setTimeout(() => {
@@ -209,19 +206,17 @@
             }, 800);
         }
 
-        // SoundCloud vezérlés
+        // SoundCloud UI frissítés
         scWidget.bind(SC.Widget.Events.PLAY, () => {
-            scWidget.getCurrentSound((s) => {
+            scWidget.getCurrentSound(s => {
                 document.getElementById('track-title').innerText = s.title;
                 if(s.artwork_url) document.getElementById('track-art').src = s.artwork_url.replace('large', 't500x500');
             });
             document.getElementById('play-icon').className = 'fas fa-pause';
         });
-        scWidget.bind(SC.Widget.Events.PAUSE, () => {
-            document.getElementById('play-icon').className = 'fas fa-play';
-        });
+        scWidget.bind(SC.Widget.Events.PAUSE, () => document.getElementById('play-icon').className = 'fas fa-play');
 
-        // Lanyard Discord - Ez most már mindig fut
+        // Discord frissítés
         async function updateDiscord() {
             try {
                 const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
@@ -229,15 +224,10 @@
                 const u = d.data;
                 document.getElementById('discord-name').innerText = u.discord_user.global_name || u.discord_user.username;
                 document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${u.discord_user.avatar}.png`;
-                if (u.activities && u.activities.length > 0) {
-                    document.getElementById('discord-activity').innerText = u.activities[0].state || u.activities[0].name;
-                } else {
-                    document.getElementById('discord-activity').innerText = u.discord_status;
-                }
-            } catch (e) {}
+                if(u.activities.length > 0) document.getElementById('discord-activity').innerText = u.activities[0].state || u.activities[0].name;
+            } catch(e) {}
         }
-        setInterval(updateDiscord, 10000); 
-        updateDiscord();
+        setInterval(updateDiscord, 10000); updateDiscord();
     </script>
 </body>
 </html>
