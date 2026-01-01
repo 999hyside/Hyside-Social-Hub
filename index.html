@@ -27,7 +27,6 @@
             filter: brightness(0.15); pointer-events: none;
         }
 
-        /* BELÉPŐ KÉPERNYŐ */
         #enter-screen {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -42,9 +41,7 @@
             box-shadow: 0 0 30px var(--pink-glow);
             border-radius: 15px;
         }
-        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 60px var(--pink-glow); transform: scale(1.05); }
 
-        /* FŐ TARTALOM */
         #main-content {
             position: relative; z-index: 10;
             min-height: 100vh; display: flex; flex-direction: column;
@@ -62,23 +59,6 @@
         
         .name-tag { font-size: 5rem; font-weight: 900; text-shadow: 0 0 30px var(--pink-glow); text-transform: uppercase; margin: 0; color: var(--pink); letter-spacing: 5px; }
 
-        /* DISCORD WIDGET */
-        .discord-card {
-            background: rgba(255, 45, 141, 0.1); backdrop-filter: blur(15px);
-            border: 2px solid var(--pink); border-radius: 20px;
-            padding: 15px 25px; width: 380px; display: flex; align-items: center; gap: 20px;
-            box-shadow: 0 0 20px rgba(255, 45, 141, 0.3);
-        }
-        .discord-pfp-container { position: relative; width: 60px; height: 60px; }
-        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--pink); }
-        #discord-status-dot {
-            position: absolute; bottom: 2px; right: 2px;
-            width: 14px; height: 14px; border-radius: 50%;
-            border: 2px solid #000; background: #747f8d;
-        }
-        #discord-name { color: var(--pink); font-weight: 900; font-size: 1.2rem; }
-
-        /* WIDGET BOX */
         .widget-container {
             background: rgba(0, 0, 0, 0.9); padding: 25px; border-radius: 30px;
             width: 420px; text-align: center; backdrop-filter: blur(10px);
@@ -86,22 +66,28 @@
             border: 2px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow);
         }
 
+        /* --- A TITOK NYITJA: MASZKOLÁS --- */
         .yt-crop-container {
             width: 100%; height: 230px; border-radius: 20px;
-            overflow: hidden; position: relative; background: #000;
+            overflow: hidden; /* Ez vágja le a kilógó részeket */
+            position: relative; background: #000;
         }
 
         #yt-player {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%; pointer-events: none;
+            position: absolute; 
+            /* Kitoljuk a széleit, hogy a logó és a cím ne látsszon */
+            top: -65px; 
+            left: -10%;
+            width: 120%; 
+            height: calc(100% + 130px); 
+            pointer-events: none;
         }
+        /* ---------------------------------- */
 
         .controls { display: flex; align-items: center; gap: 40px; font-size: 2.5rem; color: var(--pink); }
         .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 15px var(--pink-glow); }
         .controls i:hover { transform: scale(1.1); color: white; }
-        .play-pause-btn { font-size: 4rem; }
 
-        /* VOLUME SLIDER */
         .volume-box { display: flex; align-items: center; gap: 15px; width: 85%; color: var(--pink); }
         .volume-slider {
             -webkit-appearance: none; width: 100%; height: 4px;
@@ -112,9 +98,6 @@
             background: var(--pink); border-radius: 50%; cursor: pointer;
             box-shadow: 0 0 10px var(--pink-glow);
         }
-
-        .socials a { color: white; font-size: 2.5rem; transition: 0.3s; }
-        .socials a:hover { color: var(--pink); transform: translateY(-5px); filter: drop-shadow(0 0 10px var(--pink-glow)); }
     </style>
 </head>
 <body>
@@ -133,24 +116,6 @@
         </div>
         <h1 class="name-tag">Hyside</h1>
 
-        <div class="socials" style="display: flex; gap: 35px;">
-            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
-            <a href="https://www.instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
-            <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
-        </div>
-
-        <div class="discord-card">
-            <div class="discord-pfp-container">
-                <img id="discord-pfp" src="https://cdn.discordapp.com/embed/avatars/0.png">
-                <div id="discord-status-dot"></div>
-            </div>
-            <div class="discord-info">
-                <div id="discord-name">Hyside</div>
-                <div id="discord-activity" style="color:white; font-size:0.9rem; opacity: 0.8;">Betöltés...</div>
-            </div>
-        </div>
-
         <div class="widget-container">
             <div class="yt-crop-container">
                 <div id="yt-player"></div>
@@ -158,7 +123,7 @@
             
             <div class="controls">
                 <i class="fas fa-step-backward" onclick="player.previousVideo()"></i>
-                <i id="play-btn" class="fas fa-play-circle play-pause-btn" onclick="togglePlay()"></i>
+                <i id="play-btn" class="fas fa-pause-circle" style="font-size: 4rem;" onclick="togglePlay()"></i>
                 <i class="fas fa-step-forward" onclick="player.nextVideo()"></i>
             </div>
 
@@ -173,12 +138,10 @@
     </div>
 
     <script>
-        const DISCORD_ID = "939688591381135401";
         const PLAYLIST_ID = "PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE";
         let player;
         let isPlaying = false;
 
-        // YouTube API betöltése
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -186,37 +149,31 @@
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
-                height: '100%',
-                width: '100%',
                 playerVars: {
                     'listType': 'playlist',
                     'list': PLAYLIST_ID,
-                    'autoplay': 0,
                     'controls': 0,
-                    'disablekb': 1,
+                    'showinfo': 0,
+                    'rel': 0,
+                    'iv_load_policy': 3,
                     'modestbranding': 1,
-                    'mute': 1,
-                    'loop': 1
+                    'disablekb': 1
                 },
                 events: {
-                    'onReady': onPlayerReady,
+                    'onReady': (e) => { e.target.setShuffle(true); },
                     'onStateChange': onPlayerStateChange
                 }
             });
-        }
-
-        function onPlayerReady(event) {
-            event.target.setShuffle(true);
         }
 
         function onPlayerStateChange(event) {
             const btn = document.getElementById('play-btn');
             if (event.data == YT.PlayerState.PLAYING) {
                 isPlaying = true;
-                btn.className = "fas fa-pause-circle play-pause-btn";
+                btn.className = "fas fa-pause-circle";
             } else {
                 isPlaying = false;
-                btn.className = "fas fa-play-circle play-pause-btn";
+                btn.className = "fas fa-play-circle";
             }
         }
 
@@ -225,9 +182,7 @@
             else player.playVideo();
         }
 
-        function changeVolume(val) {
-            player.setVolume(val);
-        }
+        function changeVolume(val) { player.setVolume(val); }
 
         function launch() {
             document.getElementById('enter-screen').style.opacity = '0';
@@ -236,7 +191,6 @@
             if (player) {
                 player.unMute();
                 player.setVolume(50);
-                // Kényszerített indítás playlist módban
                 player.playVideoAt(0);
                 setTimeout(() => { 
                     player.setShuffle(true);
@@ -249,33 +203,6 @@
                 document.getElementById('main-content').style.opacity = '1';
             }, 800);
         }
-
-        // Lanyard Discord API
-        async function updateDiscord() {
-            try {
-                const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-                const j = await r.json();
-                if (j.success) {
-                    const d = j.data;
-                    document.getElementById('discord-name').innerText = d.discord_user.global_name || d.discord_user.username;
-                    if(d.discord_user.avatar) {
-                        document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${d.discord_user.avatar}.png?size=128`;
-                    }
-                    const dot = document.getElementById('discord-status-dot');
-                    const colors = { online: '#43b581', idle: '#faa61a', dnd: '#f04747', offline: '#747f8d' };
-                    dot.style.background = colors[d.discord_status] || '#747f8d';
-                    
-                    let act = "Online";
-                    if (d.activities && d.activities.length > 0) {
-                        const a = d.activities.find(x => x.type === 0) || d.activities[0];
-                        act = a.state ? `${a.name}: ${a.state}` : a.name;
-                    }
-                    document.getElementById('discord-activity').innerText = act;
-                }
-            } catch (e) {}
-        }
-        updateDiscord();
-        setInterval(updateDiscord, 15000);
     </script>
 </body>
 </html>
