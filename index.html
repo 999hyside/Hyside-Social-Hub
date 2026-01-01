@@ -9,8 +9,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
 
         :root {
-            --pink: #ff2d8d;
-            --pink-glow: rgba(255, 45, 141, 0.8);
             --meme-green: #00ff00;
             --meme-glow: rgba(0, 255, 0, 0.8);
         }
@@ -29,22 +27,23 @@
             filter: brightness(0.3); pointer-events: none;
         }
 
+        /* BELÉPŐ KÉPERNYŐ (KÖTELEZŐ A HANGHOZ) */
         #enter-screen {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 10000; transition: opacity 0.8s ease; gap: 20px;
+            z-index: 10000; transition: opacity 0.8s ease;
         }
 
-        .mode-btn {
-            background: rgba(0,0,0,0.5); border: 2px solid var(--pink); color: var(--pink);
-            padding: 15px 40px; font-size: 1.2rem; font-weight: 900;
+        .enter-btn {
+            background: none; border: 2px solid var(--meme-green); color: var(--meme-green);
+            padding: 15px 50px; font-size: 1.5rem; font-weight: 900;
             text-transform: uppercase; letter-spacing: 5px; cursor: pointer;
-            transition: 0.3s; text-shadow: 0 0 10px var(--pink-glow); width: 300px;
+            transition: 0.3s; text-shadow: 0 0 10px var(--meme-glow);
+            box-shadow: 0 0 15px var(--meme-glow);
         }
-        .mode-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 30px var(--pink-glow); }
-        .btn-meme { border-color: var(--meme-green); color: var(--meme-green); text-shadow: 0 0 10px var(--meme-glow); }
-        .btn-meme:hover { background: var(--meme-green); color: black; box-shadow: 0 0 30px var(--meme-glow); }
+        .enter-btn:hover { background: var(--meme-green); color: black; box-shadow: 0 0 40px var(--meme-glow); }
 
+        /* FŐ TARTALOM */
         #main-content {
             position: relative; z-index: 10;
             min-height: 100vh; display: flex; flex-direction: column;
@@ -52,39 +51,36 @@
             opacity: 0; transition: opacity 1.5s ease; gap: 20px;
         }
 
-        .pfp-wrapper { width: 180px; height: 180px; border-radius: 50%; border: 4px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow); overflow: hidden; }
+        .pfp-wrapper { 
+            width: 160px; height: 160px; border-radius: 50%; 
+            border: 4px solid var(--meme-green); box-shadow: 0 0 30px var(--meme-glow); 
+            overflow: hidden; 
+        }
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-        .name-tag { font-size: 5rem; font-weight: 900; text-shadow: 0 0 25px var(--pink-glow); text-transform: uppercase; margin: 0; }
+        
+        .name-tag { font-size: 5rem; font-weight: 900; text-shadow: 0 0 25px var(--meme-glow); text-transform: uppercase; margin: 0; color: var(--meme-green); }
 
-        /* DISCORD CARD STABILIZÁLÁS */
+        /* DISCORD WIDGET */
         .discord-card {
             background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+            border: 1px solid rgba(0, 255, 0, 0.2); border-radius: 20px;
             padding: 12px 20px; width: 340px; display: flex; align-items: center; gap: 15px;
         }
         .discord-pfp-container { position: relative; width: 60px; height: 60px; }
-        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; }
+        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--meme-green); }
         #discord-status-dot {
             position: absolute; bottom: 2px; right: 2px;
             width: 14px; height: 14px; border-radius: 50%;
             border: 2px solid #1a1a1a; background: #747f8d;
         }
 
+        /* YOUTUBE WIDGET */
         .widget-container {
             background: rgba(0, 0, 0, 0.85); padding: 20px; border-radius: 25px;
             width: 360px; text-align: center; backdrop-filter: blur(10px);
             display: flex; flex-direction: column; align-items: center; gap: 10px;
+            border: 1px solid var(--meme-green); box-shadow: 0 0 15px var(--meme-glow);
         }
-
-        #music-widget { border: 1px solid var(--pink); }
-        #meme-widget { border: 1px solid var(--meme-green); display: none; }
-
-        .track-title { font-size: 1rem; font-weight: 800; margin: 5px 0; width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        #music-widget .track-title { color: var(--pink); }
-        #meme-widget .track-title { color: var(--meme-green); }
-
-        .controls { display: flex; align-items: center; gap: 25px; font-size: 1.8rem; }
-        .controls i { cursor: pointer; transition: 0.2s; }
 
         .yt-crop-container {
             width: 100%; height: 200px; border-radius: 15px;
@@ -95,13 +91,19 @@
             position: absolute; top: -55px; left: -10%;
             width: 120%; height: 310px; pointer-events: none;
         }
+
+        .controls { display: flex; align-items: center; gap: 30px; font-size: 2rem; color: var(--meme-green); }
+        .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 10px var(--meme-glow); }
+        .controls i:hover { transform: scale(1.2); color: white; }
+
+        .socials a { color: white; font-size: 2rem; transition: 0.3s; }
+        .socials a:hover { color: var(--meme-green); transform: translateY(-3px); }
     </style>
 </head>
 <body>
 
     <div id="enter-screen">
-        <button class="mode-btn" onclick="launch('music')">Music Mode</button>
-        <button class="mode-btn btn-meme" onclick="launch('meme')">Meme Mode</button>
+        <button class="enter-btn" onclick="launch()">Enter</button>
     </div>
 
     <video id="bg-video" loop muted playsinline>
@@ -115,10 +117,10 @@
         <h1 class="name-tag">Hyside</h1>
 
         <div class="socials" style="display: flex; gap: 25px;">
-            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-steam"></i></a>
-            <a href="https://www.instagram.com/_._bence_.__/" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.twitch.tv/hyside_" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-twitch"></i></a>
-            <a href="https://soundcloud.com/user-880127680" target="_blank" style="color:white; font-size:2rem;"><i class="fab fa-soundcloud"></i></a>
+            <a href="https://steamcommunity.com/profiles/76561199172658323/" target="_blank"><i class="fab fa-steam"></i></a>
+            <a href="https://www.instagram.com/_._bence_.__/" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.twitch.tv/hyside_" target="_blank"><i class="fab fa-twitch"></i></a>
+            <a href="https://soundcloud.com/user-880127680" target="_blank"><i class="fab fa-soundcloud"></i></a>
         </div>
 
         <div class="discord-card">
@@ -128,26 +130,16 @@
             </div>
             <div class="discord-info">
                 <div id="discord-name" style="font-weight:700;">Hyside</div>
-                <div id="discord-activity" style="color:#b9bbbe; font-size:0.8rem;">Státusz lekérése...</div>
+                <div id="discord-activity" style="color:#b9bbbe; font-size:0.8rem;">Betöltés...</div>
             </div>
         </div>
 
-        <div id="music-widget" class="widget-container">
-            <img id="track-art" src="" style="width:80px; height:80px; border-radius:10px; border:2px solid var(--pink);">
-            <div class="track-title" id="track-title">Zene betöltése...</div>
-            <div class="controls" style="color: var(--pink);">
-                <i class="fas fa-step-backward" onclick="skipTrack('prev')"></i>
-                <i id="play-icon" class="fas fa-play" style="font-size:2.5rem;" onclick="scWidget.toggle()"></i>
-                <i class="fas fa-step-forward" onclick="skipTrack('next')"></i>
-            </div>
-        </div>
-
-        <div id="meme-widget" class="widget-container">
+        <div class="widget-container">
             <div class="yt-crop-container">
                 <div id="yt-player"></div>
             </div>
-            <div class="track-title">Meme Mode Active</div>
-            <div class="controls" style="color: var(--meme-green);">
+            <div style="color: var(--meme-green); font-weight: 800; font-size: 0.9rem; letter-spacing: 2px;">MEME PLAYER</div>
+            <div class="controls">
                 <i class="fas fa-backward" onclick="ytPlayer.previousVideo()"></i>
                 <i class="fas fa-random" onclick="ytPlayer.nextVideo()"></i>
                 <i class="fas fa-forward" onclick="ytPlayer.nextVideo()"></i>
@@ -155,67 +147,55 @@
         </div>
     </div>
 
-    <iframe id="sc-iframe" style="display:none;" src="https://w.soundcloud.com/player/?url=https://soundcloud.com/user-880127680/sets/everything-too&auto_play=false"></iframe>
-
-    <script src="https://w.soundcloud.com/player/api.js"></script>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        const scWidget = SC.Widget(document.getElementById('sc-iframe'));
         const DISCORD_ID = "939688591381135401";
         let ytPlayer;
         let ytReady = false;
-        let scReady = false;
 
-        scWidget.bind(SC.Widget.Events.READY, () => {
-            scReady = true;
-            scWidget.setVolume(30);
-        });
-
-        function skipTrack(direction) {
-            if (direction === 'next') scWidget.next();
-            else scWidget.prev();
-            setTimeout(() => { scWidget.play(); }, 400);
-        }
-
+        // YouTube API inicializálás
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
-                playerVars: { 'listType': 'playlist', 'list': 'PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE', 'controls': 0 },
-                events: { 'onReady': () => { ytReady = true; ytPlayer.setShuffle(true); } }
+                playerVars: { 
+                    'listType': 'playlist', 
+                    'list': 'PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE', 
+                    'controls': 0,
+                    'disablekb': 1,
+                    'rel': 0,
+                    'modestbranding': 1
+                },
+                events: { 
+                    'onReady': () => { 
+                        ytReady = true; 
+                        ytPlayer.setShuffle(true); 
+                    } 
+                }
             });
         }
 
-        function launch(mode) {
+        // Indítás gombnyomásra
+        function launch() {
             document.getElementById('enter-screen').style.opacity = '0';
             document.getElementById('bg-video').play().catch(()=>{});
 
-            if(mode === 'meme') {
-                document.getElementById('music-widget').style.display = 'none';
-                document.getElementById('meme-widget').style.display = 'flex';
-                if(ytReady) {
-                    ytPlayer.unMute();
-                    ytPlayer.playVideo();
-                    setTimeout(() => ytPlayer.nextVideo(), 500);
-                }
-            } else {
-                if(scReady) scWidget.play();
-                else setTimeout(() => scWidget.play(), 1000);
+            // YouTube lejátszás azonnali kényszerítése
+            if(ytReady) {
+                ytPlayer.unMute();
+                ytPlayer.setVolume(50);
+                ytPlayer.playVideo();
+                // Egy kis késleltetés után ugrunk egy random videóra a listában
+                setTimeout(() => {
+                    ytPlayer.nextVideo();
+                }, 500);
             }
+
             setTimeout(() => {
                 document.getElementById('enter-screen').style.display = 'none';
                 document.getElementById('main-content').style.opacity = '1';
             }, 800);
         }
 
-        scWidget.bind(SC.Widget.Events.PLAY, () => {
-            scWidget.getCurrentSound(s => {
-                document.getElementById('track-title').innerText = s.title;
-                if(s.artwork_url) document.getElementById('track-art').src = s.artwork_url.replace('large', 't500x500');
-            });
-            document.getElementById('play-icon').className = 'fas fa-pause';
-        });
-        scWidget.bind(SC.Widget.Events.PAUSE, () => document.getElementById('play-icon').className = 'fas fa-play');
-
-        // TELJESEN ÚJRAÍRT DISCORD LANYARD LOGIKA
+        // Discord Lanyard API Integration
         async function updateDiscord() {
             try {
                 const response = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
@@ -224,9 +204,11 @@
                 if (json.success) {
                     const data = json.data;
                     
-                    // Név és Avatar
+                    // Név és Profilkép
                     document.getElementById('discord-name').innerText = data.discord_user.global_name || data.discord_user.username;
-                    document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${data.discord_user.avatar}.png?size=128`;
+                    if(data.discord_user.avatar) {
+                        document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${data.discord_user.avatar}.png?size=128`;
+                    }
                     
                     // Státusz pötty színe
                     const statusDot = document.getElementById('discord-status-dot');
@@ -238,27 +220,24 @@
                     };
                     statusDot.style.background = statusColors[data.discord_status] || '#747f8d';
 
-                    // Tevékenység szöveg
+                    // Aktivitás szöveg
                     let activityText = "Semmit nem csinál";
                     if (data.activities && data.activities.length > 0) {
-                        // Kikeressük a valódi játékot vagy Custom Status-t
                         const activity = data.activities.find(a => a.type === 0) || data.activities[0];
                         activityText = activity.state ? `${activity.name}: ${activity.state}` : activity.name;
                     } else {
-                        // Ha nincs aktivitás, csak a státuszt írjuk ki szépen
                         const statusNames = { online: "Elérhető", idle: "Távollét", dnd: "Ne zavarj", offline: "Offline" };
                         activityText = statusNames[data.discord_status] || "Offline";
                     }
                     document.getElementById('discord-activity').innerText = activityText;
                 }
             } catch (error) {
-                console.error("Lanyard API hiba:", error);
+                console.log("Discord API hiba");
             }
         }
 
-        // Discord frissítés indítása
         updateDiscord();
-        setInterval(updateDiscord, 15000); // 15 másodpercenként frissít
+        setInterval(updateDiscord, 15000);
     </script>
 </body>
 </html>
