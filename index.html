@@ -24,9 +24,10 @@
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -1000; object-fit: cover;
-            filter: brightness(0.2); pointer-events: none;
+            filter: brightness(0.15); pointer-events: none;
         }
 
+        /* BELÉPŐ KÉPERNYŐ */
         #enter-screen {
             position: fixed; inset: 0; background: #000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -35,51 +36,54 @@
 
         .enter-btn {
             background: none; border: 3px solid var(--pink); color: var(--pink);
-            padding: 20px 60px; font-size: 2.2rem; font-weight: 900;
-            text-transform: uppercase; letter-spacing: 8px; cursor: pointer;
+            padding: 20px 60px; font-size: 2.5rem; font-weight: 900;
+            text-transform: uppercase; letter-spacing: 10px; cursor: pointer;
             transition: 0.3s; text-shadow: 0 0 20px var(--pink-glow);
             box-shadow: 0 0 30px var(--pink-glow);
-            border-radius: 12px;
+            border-radius: 15px;
         }
-        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 50px var(--pink-glow); transform: scale(1.05); }
+        .enter-btn:hover { background: var(--pink); color: white; box-shadow: 0 0 60px var(--pink-glow); transform: scale(1.05); }
 
+        /* FŐ TARTALOM */
         #main-content {
             position: relative; z-index: 10;
             min-height: 100vh; display: flex; flex-direction: column;
             justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 1.5s ease; gap: 30px;
-            transform: scale(1.1);
+            opacity: 0; transition: opacity 1.5s ease; gap: 25px;
+            transform: scale(1.05);
         }
 
         .pfp-wrapper { 
-            width: 170px; height: 170px; border-radius: 50%; 
+            width: 160px; height: 160px; border-radius: 50%; 
             border: 5px solid var(--pink); box-shadow: 0 0 40px var(--pink-glow); 
             overflow: hidden; 
         }
         .pfp-wrapper img { width: 100%; height: 100%; object-fit: cover; }
         
-        .name-tag { font-size: 5.5rem; font-weight: 900; text-shadow: 0 0 30px var(--pink-glow); text-transform: uppercase; margin: 0; color: var(--pink); letter-spacing: 5px; }
+        .name-tag { font-size: 5rem; font-weight: 900; text-shadow: 0 0 30px var(--pink-glow); text-transform: uppercase; margin: 0; color: var(--pink); letter-spacing: 5px; }
 
+        /* DISCORD WIDGET */
         .discord-card {
-            background: rgba(255, 45, 141, 0.08); backdrop-filter: blur(15px);
-            border: 2px solid var(--pink); border-radius: 25px;
+            background: rgba(255, 45, 141, 0.1); backdrop-filter: blur(15px);
+            border: 2px solid var(--pink); border-radius: 20px;
             padding: 15px 25px; width: 380px; display: flex; align-items: center; gap: 20px;
-            box-shadow: 0 0 25px rgba(255, 45, 141, 0.4);
+            box-shadow: 0 0 20px rgba(255, 45, 141, 0.3);
         }
-        .discord-pfp-container { position: relative; width: 65px; height: 65px; }
-        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 2px solid var(--pink); }
+        .discord-pfp-container { position: relative; width: 60px; height: 60px; }
+        #discord-pfp { width: 100%; height: 100%; border-radius: 50%; border: 1px solid var(--pink); }
         #discord-status-dot {
-            position: absolute; bottom: 3px; right: 3px;
-            width: 16px; height: 16px; border-radius: 50%;
-            border: 3px solid #000; background: #747f8d;
+            position: absolute; bottom: 2px; right: 2px;
+            width: 14px; height: 14px; border-radius: 50%;
+            border: 2px solid #000; background: #747f8d;
         }
-        #discord-name { color: var(--pink); font-weight: 900; font-size: 1.3rem; text-shadow: 0 0 10px var(--pink-glow); }
+        #discord-name { color: var(--pink); font-weight: 900; font-size: 1.2rem; }
 
+        /* WIDGET BOX */
         .widget-container {
-            background: rgba(0, 0, 0, 0.85); padding: 25px; border-radius: 35px;
-            width: 420px; text-align: center; backdrop-filter: blur(12px);
-            display: flex; flex-direction: column; align-items: center; gap: 15px;
-            border: 2px solid var(--pink); box-shadow: 0 0 35px var(--pink-glow);
+            background: rgba(0, 0, 0, 0.9); padding: 25px; border-radius: 30px;
+            width: 420px; text-align: center; backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            border: 2px solid var(--pink); box-shadow: 0 0 30px var(--pink-glow);
         }
 
         .yt-crop-container {
@@ -89,37 +93,28 @@
 
         #yt-player {
             position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none;
+            width: 100%; height: 100%; pointer-events: none;
         }
 
-        .controls { display: flex; align-items: center; gap: 35px; font-size: 2.5rem; color: var(--pink); }
+        .controls { display: flex; align-items: center; gap: 40px; font-size: 2.5rem; color: var(--pink); }
         .controls i { cursor: pointer; transition: 0.2s; text-shadow: 0 0 15px var(--pink-glow); }
-        .controls i:hover { transform: scale(1.15); color: white; }
-        .play-pause-btn { font-size: 3.8rem; }
+        .controls i:hover { transform: scale(1.1); color: white; }
+        .play-pause-btn { font-size: 4rem; }
 
-        /* HANGERŐ CSÚSZKA STÍLUS */
-        .volume-container {
-            display: flex; align-items: center; gap: 10px; width: 80%;
-            margin-top: 10px; color: var(--pink);
-        }
+        /* VOLUME SLIDER */
+        .volume-box { display: flex; align-items: center; gap: 15px; width: 85%; color: var(--pink); }
         .volume-slider {
-            -webkit-appearance: none;
-            width: 100%; height: 5px;
-            background: rgba(255, 45, 141, 0.2);
-            border-radius: 5px; outline: none;
-            cursor: pointer;
+            -webkit-appearance: none; width: 100%; height: 4px;
+            background: rgba(255, 45, 141, 0.3); border-radius: 5px; outline: none;
         }
         .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 15px; height: 15px;
-            background: var(--pink); border-radius: 50%;
-            box-shadow: 0 0 10px var(--pink-glow); cursor: pointer;
-            transition: 0.2s;
+            -webkit-appearance: none; width: 16px; height: 16px;
+            background: var(--pink); border-radius: 50%; cursor: pointer;
+            box-shadow: 0 0 10px var(--pink-glow);
         }
-        .volume-slider::-webkit-slider-thumb:hover { transform: scale(1.3); }
 
         .socials a { color: white; font-size: 2.5rem; transition: 0.3s; }
-        .socials a:hover { color: var(--pink); transform: translateY(-5px); filter: drop-shadow(0 0 15px var(--pink-glow)); }
+        .socials a:hover { color: var(--pink); transform: translateY(-5px); filter: drop-shadow(0 0 10px var(--pink-glow)); }
     </style>
 </head>
 <body>
@@ -152,83 +147,101 @@
             </div>
             <div class="discord-info">
                 <div id="discord-name">Hyside</div>
-                <div id="discord-activity" style="color:white; font-size:1rem; opacity: 0.9;">Betöltés...</div>
+                <div id="discord-activity" style="color:white; font-size:0.9rem; opacity: 0.8;">Betöltés...</div>
             </div>
         </div>
 
         <div class="widget-container">
             <div class="yt-crop-container">
-                <iframe id="yt-player" 
-                    src="https://www.youtube.com/embed/videoseries?list=PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE&enablejsapi=1&autoplay=0&controls=0&mute=1&loop=1&modestbranding=1&rel=0" 
-                    frameborder="0" allow="autoplay; encrypted-media"></iframe>
+                <div id="yt-player"></div>
             </div>
             
             <div class="controls">
-                <i class="fas fa-step-backward" onclick="prevVid()"></i>
-                <i id="master-play-pause" class="fas fa-play-circle play-pause-btn" onclick="togglePlayPause()"></i>
-                <i class="fas fa-step-forward" onclick="nextVid()"></i>
+                <i class="fas fa-step-backward" onclick="player.previousVideo()"></i>
+                <i id="play-btn" class="fas fa-play-circle play-pause-btn" onclick="togglePlay()"></i>
+                <i class="fas fa-step-forward" onclick="player.nextVideo()"></i>
             </div>
 
-            <div class="volume-container">
+            <div class="volume-box">
                 <i class="fas fa-volume-down"></i>
-                <input type="range" class="volume-slider" min="0" max="100" value="50" oninput="setVolume(this.value)">
+                <input type="range" class="volume-slider" min="0" max="100" value="50" oninput="changeVolume(this.value)">
                 <i class="fas fa-volume-up"></i>
             </div>
             
-            <div style="color: var(--pink); font-weight: 900; font-size: 0.9rem; letter-spacing: 4px; text-shadow: 0 0 10px var(--pink-glow);">MEME PLAYER</div>
+            <div style="color: var(--pink); font-weight: 900; font-size: 0.9rem; letter-spacing: 4px;">MEME PLAYER</div>
         </div>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
     <script>
         const DISCORD_ID = "939688591381135401";
+        const PLAYLIST_ID = "PLyGoIDaiTrkE6yJ9XgvPqO3DMtM5Dx_QE";
         let player;
         let isPlaying = false;
 
+        // YouTube API betöltése
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('yt-player', {
+                height: '100%',
+                width: '100%',
+                playerVars: {
+                    'listType': 'playlist',
+                    'list': PLAYLIST_ID,
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'modestbranding': 1,
+                    'mute': 1,
+                    'loop': 1
+                },
                 events: {
-                    'onStateChange': (event) => {
-                        const btn = document.getElementById('master-play-pause');
-                        if (event.data == YT.PlayerState.PLAYING) {
-                            isPlaying = true;
-                            btn.className = "fas fa-pause-circle play-pause-btn";
-                        } else {
-                            isPlaying = false;
-                            btn.className = "fas fa-play-circle play-pause-btn";
-                        }
-                    },
-                    'onReady': (e) => { e.target.setShuffle(true); }
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
                 }
             });
         }
 
-        function setVolume(val) {
-            if (player && player.setVolume) {
-                player.setVolume(val);
+        function onPlayerReady(event) {
+            event.target.setShuffle(true);
+        }
+
+        function onPlayerStateChange(event) {
+            const btn = document.getElementById('play-btn');
+            if (event.data == YT.PlayerState.PLAYING) {
+                isPlaying = true;
+                btn.className = "fas fa-pause-circle play-pause-btn";
+            } else {
+                isPlaying = false;
+                btn.className = "fas fa-play-circle play-pause-btn";
             }
         }
 
-        function togglePlayPause() {
+        function togglePlay() {
             if (isPlaying) player.pauseVideo();
             else player.playVideo();
         }
 
-        function nextVid() { player.nextVideo(); }
-        function prevVid() { player.previousVideo(); }
+        function changeVolume(val) {
+            player.setVolume(val);
+        }
 
         function launch() {
             document.getElementById('enter-screen').style.opacity = '0';
             document.getElementById('bg-video').play().catch(()=>{});
 
-            if(player) {
+            if (player) {
                 player.unMute();
                 player.setVolume(50);
-                player.playVideo();
-                setTimeout(() => {
+                // Kényszerített indítás playlist módban
+                player.playVideoAt(0);
+                setTimeout(() => { 
                     player.setShuffle(true);
-                    player.nextVideo();
-                }, 1000);
+                    player.nextVideo(); 
+                }, 800);
             }
 
             setTimeout(() => {
@@ -237,6 +250,7 @@
             }, 800);
         }
 
+        // Lanyard Discord API
         async function updateDiscord() {
             try {
                 const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
@@ -260,7 +274,6 @@
                 }
             } catch (e) {}
         }
-
         updateDiscord();
         setInterval(updateDiscord, 15000);
     </script>
