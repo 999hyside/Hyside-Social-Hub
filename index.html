@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -125,9 +126,9 @@
             <img id="track-art" src="" style="width:80px; height:80px; border-radius:10px; border:2px solid var(--pink);">
             <div class="track-title" id="track-title">Zene betöltése...</div>
             <div class="controls" style="color: var(--pink);">
-                <i class="fas fa-step-backward" onclick="scWidget.prev()"></i>
+                <i class="fas fa-step-backward" onclick="skipTrack('prev')"></i>
                 <i id="play-icon" class="fas fa-play" style="font-size:2.5rem;" onclick="scWidget.toggle()"></i>
-                <i class="fas fa-step-forward" onclick="scWidget.next()"></i>
+                <i class="fas fa-step-forward" onclick="skipTrack('next')"></i>
             </div>
         </div>
 
@@ -155,11 +156,23 @@
         let ytReady = false;
         let scReady = false;
 
-        // SoundCloud Ready esemény
         scWidget.bind(SC.Widget.Events.READY, () => {
             scReady = true;
             scWidget.setVolume(30);
         });
+
+        // Új Skip funkció a Music módhoz, ami kényszeríti a lejátszást
+        function skipTrack(direction) {
+            if (direction === 'next') {
+                scWidget.next();
+            } else {
+                scWidget.prev();
+            }
+            // Kis késleltetés után kényszerítjük a lejátszást, ha megállna
+            setTimeout(() => {
+                scWidget.play();
+            }, 300);
+        }
 
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('yt-player', {
@@ -184,7 +197,6 @@
                 if(scReady) {
                     scWidget.play();
                 } else {
-                    // Ha még nem állt készre, várunk kicsit
                     setTimeout(() => scWidget.play(), 1000);
                 }
             }
@@ -195,7 +207,6 @@
             }, 800);
         }
 
-        // SoundCloud UI frissítés
         scWidget.bind(SC.Widget.Events.PLAY, () => {
             scWidget.getCurrentSound(s => {
                 document.getElementById('track-title').innerText = s.title;
@@ -205,24 +216,21 @@
         });
         scWidget.bind(SC.Widget.Events.PAUSE, () => document.getElementById('play-icon').className = 'fas fa-play');
 
-        // Discord Lanyard Fix
         async function updateDiscord() {
             try {
                 const r = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
                 const res = await r.json();
                 if(!res.success) return;
-                
                 const u = res.data;
                 document.getElementById('discord-name').innerText = u.discord_user.global_name || u.discord_user.username;
                 document.getElementById('discord-pfp').src = `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${u.discord_user.avatar}.png`;
-                
-                let activity = u.discord_status.toUpperCase();
+                let activity = u.discord_status === "online" ? "Online" : u.discord_status;
                 if(u.activities && u.activities.length > 0) {
                     const act = u.activities.find(a => a.type === 0) || u.activities[0];
                     activity = act.state || act.name;
                 }
                 document.getElementById('discord-activity').innerText = activity;
-            } catch(e) { console.log("Discord error"); }
+            } catch(e) {}
         }
         setInterval(updateDiscord, 10000); updateDiscord();
     </script>
