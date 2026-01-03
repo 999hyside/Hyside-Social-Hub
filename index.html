@@ -27,28 +27,39 @@
             filter: brightness(0.15); pointer-events: none;
         }
 
-        /* JOBB OLDALI VIDEÓ NÉGYZET */
+        /* JOBB OLDALI VIDEÓ KERET */
         .right-video-container {
             position: fixed;
-            right: 40px;
+            right: 50px;
             top: 50%;
             transform: translateY(-50%);
-            width: 300px;
-            height: 300px;
+            width: 320px;
+            height: 320px;
             border: 3px solid var(--pink);
             border-radius: 20px;
-            overflow: hidden;
+            overflow: hidden; /* Ez vágja le a címet és a logót */
             box-shadow: 0 0 30px var(--pink-glow);
             z-index: 100;
             background: #000;
-            display: none; /* Alapból rejtve az Enterig */
+            display: none;
         }
 
-        .right-video-container iframe {
+        /* Maszkolás: nagyítjuk a videót, hogy a szélén lévő feliratok eltűnjenek */
+        .video-clipper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform: scale(1.5); /* Erősebb nagyítás a tiszta képért */
+        }
+
+        .video-clipper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             border: none;
-            pointer-events: none; /* Ne lehessen rákattintani */
+            pointer-events: none;
         }
 
         #enter-screen {
@@ -142,7 +153,9 @@
     </div>
 
     <div id="right-video" class="right-video-container">
-        <iframe src="https://www.youtube.com/embed/PDJLvF1dUek?autoplay=1&mute=1&loop=1&playlist=PDJLvF1dUek&controls=0&showinfo=0" allow="autoplay"></iframe>
+        <div class="video-clipper">
+            <iframe src="https://www.youtube.com/embed/PDJLvF1dUek?autoplay=1&mute=1&loop=1&playlist=PDJLvF1dUek&controls=0&modestbranding=1&rel=0&iv_load_policy=3" allow="autoplay"></iframe>
+        </div>
     </div>
 
     <video id="bg-video" loop muted playsinline>
@@ -245,7 +258,7 @@
             document.getElementById('enter-screen').style.opacity = '0';
             document.getElementById('bg-video').play().catch(()=>{});
             
-            // Jobb oldali videó megjelenítése
+            // Jobb oldali videó aktiválása
             document.getElementById('right-video').style.display = 'block';
 
             if (player) {
